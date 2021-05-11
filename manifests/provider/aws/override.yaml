@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+data:
+  repositories: |
+    - url: https://github.com/giantswarm/config
+    - url: https://github.com/giantswarm/aws-app-collection
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: management-cluster-fleet
+  namespace: argocd
+spec:
+  description: Management Cluster AWS fleet
+  sourceRepos:
+    - 'https://github.com/giantswarm/aws-app-collection'
+

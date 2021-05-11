@@ -1,9 +1,10 @@
 # management-clusters-fleet
 GitOps for Giant Swarm management clusters
 
+
 ## Updating Argo CD manifests
 
-Running
+Run
 
 ```
 hack/update-argocd-manifests.sh <version>
