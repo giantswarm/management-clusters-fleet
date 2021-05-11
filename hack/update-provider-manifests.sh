@@ -14,6 +14,6 @@ $KUSTOMIZE version
 
 for provider in $(ls manifests/provider); do
   echo "${AUTOGENMSG}" > "${SRCROOT}/build/${provider}-mc-fleet.yaml"
-  ${KUSTOMIZE} build ${SRCROOT}/manifests/provider/${provider} > "${SRCROOT}/build/${provider}-mc-fleet.yaml"
+  ${KUSTOMIZE} build ${SRCROOT}/manifests/provider/${provider} >> "${SRCROOT}/build/${provider}-mc-fleet.yaml"
 done
 
