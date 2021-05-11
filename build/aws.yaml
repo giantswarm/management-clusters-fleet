@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: management-cluster-fleet
+  namespace: argocd
+spec:
+  description: Management Cluster AWS fleet
+  destinations:
+  - namespace: giantswarm
+    server: https://kubernetes.default.svc
+  - namespace: monitoring
+    server: https://kubernetes.default.svc
+  - namespace: kube-system
+    server: https://kubernetes.default.svc
+  - server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://github.com/giantswarm/aws-app-collection

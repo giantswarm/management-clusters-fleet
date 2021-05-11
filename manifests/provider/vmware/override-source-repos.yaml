@@ -1,0 +1,10 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: management-cluster-fleet
+  namespace: argocd
+spec:
+  description: Management Cluster VMWare fleet
+  sourceRepos:
+    - 'https://github.com/giantswarm/vmware-app-collection'
+
