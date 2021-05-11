@@ -25,8 +25,8 @@ cd manifests/base && $KUSTOMIZE edit set image quay.io/argoproj/argocd=${IMAGE_N
 
 sed -i "/dex/d" manifests/base/kustomization.yaml
 
-echo "${AUTOGENMSG}" > "${SRCROOT}/manifests/install.yaml"
-$KUSTOMIZE build "manifests/cluster-install" >> "${SRCROOT}/manifests/install.yaml"
+echo "${AUTOGENMSG}" > "${SRCROOT}/build/install.yaml"
+$KUSTOMIZE build "manifests/cluster-install" >> "${SRCROOT}/build/install.yaml"
 
 cd -
 rm $WORK_DIR -Rf
