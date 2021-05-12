@@ -10,5 +10,8 @@ Run
 hack/update-argocd-manifests.sh <version>
 ```
 
-This script will render `manifests/install.yaml` file with all the required resources.
+This script will render:
+  - `build/argocd/install.yaml` file with all the upstream resources
+  - `build/mc-fleet/<provider>.yaml` file with the project for self-managed provider application.
+
 If no version provided, script uses `master` branch and `latest` Docker image.
