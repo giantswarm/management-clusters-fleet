@@ -10,5 +10,8 @@ Run
 hack/update-argocd-manifests.sh <version>
 ```
 
-This script will render `manifests/install.yaml` file with all the required resources.
+This script will render `manifests/install-<provider>.yaml` files with
+  - upstream resources
+  - Argo CD project and its configuration per provider
+
 If no version provided, script uses `master` branch and `latest` Docker image.

@@ -2092,25 +2092,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   labels:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: argocd-redis
-    app.kubernetes.io/part-of: argocd
-  name: argocd-redis
-  namespace: argocd
-rules:
-- apiGroups:
-  - security.openshift.io
-  resourceNames:
-  - nonroot
-  resources:
-  - securitycontextconstraints
-  verbs:
-  - use
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  labels:
     app.kubernetes.io/component: server
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
@@ -2497,10 +2478,8 @@ spec:
         ports:
         - containerPort: 6379
       securityContext:
-        fsGroup: 1000
-        runAsGroup: 1000
         runAsNonRoot: true
-        runAsUser: 1000
+        runAsUser: 999
       serviceAccountName: argocd-redis
 ---
 apiVersion: apps/v1
@@ -2543,7 +2522,7 @@ spec:
         - argocd-repo-server
         - --redis
         - argocd-redis:6379
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: quay.io/giantswarm/argocd:master
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -2640,7 +2619,7 @@ spec:
         - argocd-server
         - --staticassets
         - /shared/app
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: quay.io/giantswarm/argocd:master
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -2663,6 +2642,8 @@ spec:
           capabilities:
             drop:
             - all
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
         volumeMounts:
         - mountPath: /app/config/ssh
           name: ssh-known-hosts
@@ -2670,8 +2651,16 @@ spec:
           name: tls-certs
         - mountPath: /app/config/server/tls
           name: argocd-repo-server-tls
+        - mountPath: /home/argocd
+          name: plugins-home
+        - mountPath: /tmp
+          name: tmp
       serviceAccountName: argocd-server
       volumes:
+      - emptyDir: {}
+        name: plugins-home
+      - emptyDir: {}
+        name: tmp
       - emptyDir: {}
         name: static-files
       - configMap:
@@ -2734,7 +2723,7 @@ spec:
         - "20"
         - --operation-processors
         - "10"
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: quay.io/giantswarm/argocd:master
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -2756,6 +2745,8 @@ spec:
           capabilities:
             drop:
             - all
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
         volumeMounts:
         - mountPath: /app/config/controller/tls
           name: argocd-repo-server-tls
@@ -2772,3 +2763,128 @@ spec:
             path: ca.crt
           optional: true
           secretName: argocd-repo-server-tls
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: argocd-application-controller-network-policy
+  namespace: argocd
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-application-controller
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: argocd-redis-network-policy
+  namespace: argocd
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: argocd-server
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: argocd-repo-server
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: argocd-application-controller
+    ports:
+    - port: 6379
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-redis
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: argocd-repo-server-network-policy
+  namespace: argocd
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: argocd-server
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: argocd-application-controller
+    ports:
+    - port: 8081
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-repo-server
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: argocd-server-network-policy
+  namespace: argocd
+spec:
+  ingress:
+  - {}
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-server
+  policyTypes:
+  - Ingress
+---
+apiVersion: v1
+data:
+  configManagementPlugins: |
+    # this will be updated after we have working configctl plugin ready
+    - name: myPlugin
+      init:                          # Optional command to initialize application source directory
+        command: ["ls"]
+        args: ["."]
+      generate:                      # Command to generate manifests YAML
+        command: ["sh"]
+        args: ["-c", "echo '################ ERROR #######' >&2 ; exit 5"]
+  repositories: |
+    - url: https://github.com/giantswarm/config
+    - url: https://github.com/giantswarm/azure-app-collection
+  repository.credentials: |
+    - url: https://github.com/giantswarm
+      usernameSecret:
+        name: github-giantswarm-https-credentials
+        key: username
+      passwordSecret:
+        name: github-giantswarm-https-credentials
+        key: password
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cm
+  namespace: argocd
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: management-cluster-fleet
+  namespace: argocd
+spec:
+  description: Management Cluster Azure fleet
+  destinations:
+  - namespace: argocd
+    server: https://kubernetes.default.svc
+  - namespace: giantswarm
+    server: https://kubernetes.default.svc
+  - namespace: monitoring
+    server: https://kubernetes.default.svc
+  - namespace: kube-system
+    server: https://kubernetes.default.svc
+  - server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://github.com/giantswarm/azure-app-collection
