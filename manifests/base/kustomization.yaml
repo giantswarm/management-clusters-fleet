@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ./mc-argocd-project.yaml
-- ./mc-argocd-app.yaml
-- ./mc-fleet-configmap.yaml
 - ./mc-fleet-project.yaml
+- ./mc-fleet-apps.yaml
+- ./mc-argocd-cm.yaml
+- ./mc-collections-project.yaml
