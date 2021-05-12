@@ -12,7 +12,7 @@ data:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-collections
+  name: management-clusters-fleet-collections
   namespace: argocd
 spec:
   description: Management Cluster Azure collection
@@ -22,7 +22,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-app-provider
+  name: management-clusters-fleet-argocd-provider
   namespace: argocd
 spec:
   source:

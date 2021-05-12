@@ -35,8 +35,8 @@ ${KUSTOMIZE} build "manifests/cluster-install" >> "${SRCROOT}/build/argocd/insta
 cd ${SRCROOT}
 rm $WORK_DIR -Rf
 
-mkdir -p ${SRCROOT}/build/mc-fleet
+mkdir -p ${SRCROOT}/build/provider
 for provider in $(ls ${SRCROOT}/manifests/provider); do
-  echo "${AUTOGENMSG}" > "${SRCROOT}/build/mc-fleet/${provider}.yaml"
-  ${KUSTOMIZE} build ${SRCROOT}/manifests/provider/${provider} >> "${SRCROOT}/build/mc-fleet/${provider}.yaml"
+  echo "${AUTOGENMSG}" > "${SRCROOT}/build/provider/${provider}.yaml"
+  ${KUSTOMIZE} build ${SRCROOT}/manifests/provider/${provider} >> "${SRCROOT}/build/provider/${provider}.yaml"
 done

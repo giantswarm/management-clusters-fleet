@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-collections
+  name: management-clusters-fleet-collections
   namespace: argocd
 spec:
-  description: Management Clusters Collections
+  description: Management Clusters Fleet Collections
   # Allow manifests to deploy from any Git repos
   sourceRepos:
     - '*'

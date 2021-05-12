@@ -12,7 +12,7 @@ data:
         args: ["-c", "echo '################ ERROR #######' >&2 ; exit 5"]
   repositories: |
     - url: https://github.com/giantswarm/config
-    - url: https://github.com/giantswarm/kvm-app-collection
+    - url: https://github.com/giantswarm/vmware-app-collection
   repository.credentials: |
     - url: https://github.com/giantswarm
       usernameSecret:
@@ -32,25 +32,7 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-collections
-  namespace: argocd
-spec:
-  description: Management Cluster KVM Collection
-  destinations:
-  - namespace: giantswarm
-    server: https://kubernetes.default.svc
-  - namespace: monitoring
-    server: https://kubernetes.default.svc
-  - namespace: kube-system
-    server: https://kubernetes.default.svc
-  - server: https://kubernetes.default.svc
-  sourceRepos:
-  - https://github.com/giantswarm/kvm-app-collection
----
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: management-clusters-fleet
+  name: management-clusters-fleet-argocd
   namespace: argocd
 spec:
   clusterResourceWhitelist:
@@ -64,15 +46,33 @@ spec:
   - https://github.com/giantswarm/management-clusters-fleet.git
 ---
 apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: management-clusters-fleet-collections
+  namespace: argocd
+spec:
+  description: Management Cluster VMWare collection
+  destinations:
+  - namespace: giantswarm
+    server: https://kubernetes.default.svc
+  - namespace: monitoring
+    server: https://kubernetes.default.svc
+  - namespace: kube-system
+    server: https://kubernetes.default.svc
+  - server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://github.com/giantswarm/vmware-app-collection
+---
+apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-app
+  name: management-clusters-fleet-argocd
   namespace: argocd
 spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: management-clusters-fleet
+  project: management-clusters-fleet-argocd
   source:
     path: build/argocd
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
@@ -85,15 +85,15 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-app-provider
+  name: management-clusters-fleet-argocd-provider
   namespace: argocd
 spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: management-clusters-fleet
+  project: management-clusters-fleet-argocd
   source:
-    path: manifests/provider/kvm
+    path: manifests/provider/vmware
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
   syncPolicy:

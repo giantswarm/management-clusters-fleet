@@ -1,11 +1,28 @@
 ---
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: AppProject
 metadata:
-  name: management-clusters-fleet-app
+  name: management-clusters-fleet-argocd
   namespace: argocd
 spec:
-  project: management-clusters-fleet
+  description: Management Clusters Fleet
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+    - 'https://github.com/giantswarm/management-clusters-fleet.git'
+  destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: management-clusters-fleet-argocd
+  namespace: argocd
+spec:
+  project: management-clusters-fleet-argocd
   source:
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
@@ -21,10 +38,10 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-app-provider
+  name: management-clusters-fleet-argocd-provider
   namespace: argocd
 spec:
-  project: management-clusters-fleet
+  project: management-clusters-fleet-argocd
   source:
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
