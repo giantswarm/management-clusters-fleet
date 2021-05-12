@@ -12,7 +12,7 @@ data:
         args: ["-c", "echo '################ ERROR #######' >&2 ; exit 5"]
   repositories: |
     - url: https://github.com/giantswarm/config
-    - url: https://github.com/giantswarm/aws-app-collection
+    - url: https://github.com/giantswarm/azure-app-collection
   repository.credentials: |
     - url: https://github.com/giantswarm
       usernameSecret:
@@ -48,7 +48,7 @@ metadata:
   name: management-cluster-fleet
   namespace: argocd
 spec:
-  description: Management Cluster AWS fleet
+  description: Management Cluster Azure fleet
   destinations:
   - namespace: argocd
     server: https://kubernetes.default.svc
@@ -60,7 +60,7 @@ spec:
     server: https://kubernetes.default.svc
   - server: https://kubernetes.default.svc
   sourceRepos:
-  - https://github.com/giantswarm/aws-app-collection
+  - https://github.com/giantswarm/azure-app-collection
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -73,7 +73,7 @@ spec:
     server: https://kubernetes.default.svc
   project: management-cluster-argocd
   source:
-    path: build/install.yaml
+    path: build/argocd
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: ideas
   syncPolicy:
@@ -92,7 +92,7 @@ spec:
     server: https://kubernetes.default.svc
   project: management-cluster-argocd
   source:
-    path: manifests/provider/aws
+    path: manifests/provider/azure
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: ideas
   syncPolicy:

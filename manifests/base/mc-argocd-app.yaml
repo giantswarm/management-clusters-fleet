@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: ideas
-    path: build/install.yaml
+    path: build/argocd
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
