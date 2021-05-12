@@ -15,7 +15,7 @@ metadata:
   name: management-clusters-fleet
   namespace: argocd
 spec:
-  description: Management Cluster VMWare collections
+  description: Management Cluster VMWare collection
   sourceRepos:
     - 'https://github.com/giantswarm/vmware-app-collection'
 ---

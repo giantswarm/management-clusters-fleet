@@ -35,7 +35,7 @@ metadata:
   name: management-clusters-collections
   namespace: argocd
 spec:
-  description: Management Cluster Azure collections
+  description: Management Cluster Azure collection
   destinations:
   - namespace: giantswarm
     server: https://kubernetes.default.svc

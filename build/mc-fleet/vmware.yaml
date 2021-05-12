@@ -56,7 +56,7 @@ spec:
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
-  description: Management Cluster VMWare collections
+  description: Management Cluster VMWare collection
   destinations:
   - namespace: argocd
     server: https://kubernetes.default.svc
