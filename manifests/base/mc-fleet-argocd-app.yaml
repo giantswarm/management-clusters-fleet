@@ -1,0 +1,37 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mc-fleet-argocd-app
+  namespace: argocd
+spec:
+  project: management-cluster-fleet
+  source:
+    repoURL: https://github.com/giantswarm/management-clusters-fleet.git
+    targetRevision: main
+    path: build/install.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true 
+      allowEmpty: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mc-fleet-argocd-app-project
+  namespace: argocd
+spec:
+  project: management-cluster-fleet
+  source:
+    repoURL: https://github.com/giantswarm/management-clusters-fleet.git
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true 
+      allowEmpty: true 

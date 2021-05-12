@@ -18,4 +18,12 @@ spec:
   description: Management Cluster Azure fleet
   sourceRepos:
     - 'https://github.com/giantswarm/azure-app-collection'
-
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mc-fleet-argocd-app-project
+  namespace: argocd
+spec:
+  source:
+    path: manifests/provider/azure

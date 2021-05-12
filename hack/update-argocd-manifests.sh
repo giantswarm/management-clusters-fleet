@@ -31,5 +31,10 @@ sed -i "/dex/d" manifests/base/kustomization.yaml
 echo "${AUTOGENMSG}" > "${SRCROOT}/build/install.yaml"
 ${KUSTOMIZE} build "manifests/cluster-install" >> "${SRCROOT}/build/install.yaml"
 
-cd -
+cd ${SRCROOT}
 rm $WORK_DIR -Rf
+
+for provider in $(ls ${SRCROOT}/manifests/provider); do
+  echo "${AUTOGENMSG}" > "${SRCROOT}/build/${provider}-mc-fleet.yaml"
+  ${KUSTOMIZE} build ${SRCROOT}/manifests/provider/${provider} >> "${SRCROOT}/build/${provider}-mc-fleet.yaml"
+done

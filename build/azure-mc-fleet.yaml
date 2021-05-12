@@ -1,0 +1,88 @@
+# This is an auto-generated file. DO NOT EDIT
+apiVersion: v1
+data:
+  configManagementPlugins: |
+    # this will be updated after we have working configctl plugin ready
+    - name: myPlugin
+      init:                          # Optional command to initialize application source directory
+        command: ["ls"]
+        args: ["."]
+      generate:                      # Command to generate manifests YAML
+        command: ["sh"]
+        args: ["-c", "echo '################ ERROR #######' >&2 ; exit 5"]
+  repositories: |
+    - url: https://github.com/giantswarm/config
+    - url: https://github.com/giantswarm/azure-app-collection
+  repository.credentials: |
+    - url: https://github.com/giantswarm
+      usernameSecret:
+        name: github-giantswarm-https-credentials
+        key: username
+      passwordSecret:
+        name: github-giantswarm-https-credentials
+        key: password
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cm
+  namespace: argocd
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: management-cluster-fleet
+  namespace: argocd
+spec:
+  description: Management Cluster Azure fleet
+  destinations:
+  - namespace: argocd
+    server: https://kubernetes.default.svc
+  - namespace: giantswarm
+    server: https://kubernetes.default.svc
+  - namespace: monitoring
+    server: https://kubernetes.default.svc
+  - namespace: kube-system
+    server: https://kubernetes.default.svc
+  - server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://github.com/giantswarm/azure-app-collection
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mc-fleet-argocd-app
+  namespace: argocd
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: management-cluster-fleet
+  source:
+    path: build/install.yaml
+    repoURL: https://github.com/giantswarm/management-clusters-fleet.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mc-fleet-argocd-app-project
+  namespace: argocd
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: management-cluster-fleet
+  source:
+    path: manifests/provider/azure
+    repoURL: https://github.com/giantswarm/management-clusters-fleet.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true

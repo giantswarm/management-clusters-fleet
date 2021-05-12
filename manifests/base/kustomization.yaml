@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
 - ./mc-fleet-configmap.yaml
 - ./mc-fleet-project.yaml
+- ./mc-fleet-argocd-app.yaml
