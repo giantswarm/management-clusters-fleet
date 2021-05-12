@@ -5,7 +5,7 @@ metadata:
   name: management-clusters-fleet-argocd
   namespace: argocd
 spec:
-  description: Management Clusters Fleet
+  description: Management Clusters Fleet Argo CD
   # Allow manifests to deploy from any Git repos
   sourceRepos:
     - 'https://github.com/giantswarm/management-clusters-fleet.git'
