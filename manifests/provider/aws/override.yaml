@@ -22,7 +22,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mc-fleet-argocd-app-project
+  name: mc-argocd-app-project
   namespace: argocd
 spec:
   source:

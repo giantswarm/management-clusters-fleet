@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mc-fleet-argocd-app
+  name: mc-argocd-app
   namespace: argocd
 spec:
-  project: management-cluster-fleet
+  project: management-cluster-argocd
   source:
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: main
+    targetRevision: ideas
     path: build/install.yaml
   destination:
     server: https://kubernetes.default.svc
@@ -21,13 +21,13 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mc-fleet-argocd-app-project
+  name: mc-argocd-app-project
   namespace: argocd
 spec:
-  project: management-cluster-fleet
+  project: management-cluster-argocd
   source:
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: main
+    targetRevision: ideas
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
