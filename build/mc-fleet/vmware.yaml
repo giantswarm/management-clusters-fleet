@@ -35,6 +35,9 @@ metadata:
   name: management-cluster-argocd
   namespace: argocd
 spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
   description: Management Cluster Argo CD
   destinations:
   - namespace: argocd
