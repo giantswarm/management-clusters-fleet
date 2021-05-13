@@ -23,7 +23,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-collections
+  name: management-clusters-fleet-collection
   namespace: argocd
 spec:
   project: management-clusters-fleet-collections
@@ -36,4 +36,3 @@ spec:
     automated:
       prune: true 
       allowEmpty: true
-
