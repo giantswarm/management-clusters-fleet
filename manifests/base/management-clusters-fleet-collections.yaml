@@ -5,8 +5,10 @@ metadata:
   name: management-clusters-fleet-collections
   namespace: argocd
 spec:
+  namespaceResourceBlacklist:
+  - group: 'application.giantswarm.io'
+    kind: Chart
   description: Management Clusters Fleet Collections
-  # Allow manifests to deploy from any Git repos
   sourceRepos:
     - '*'
   destinations:
