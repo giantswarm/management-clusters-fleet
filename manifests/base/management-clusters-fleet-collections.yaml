@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-collections
+  name: management-clusters-fleet-collection
   namespace: argocd
 spec:
   namespaceResourceBlacklist:
   - group: 'application.giantswarm.io'
     kind: Chart
-  description: Management Clusters Fleet Collections
+  description: Management Clusters Fleet Collection
   sourceRepos:
     - '*'
   destinations:
@@ -26,7 +26,7 @@ metadata:
   name: management-clusters-fleet-collection
   namespace: argocd
 spec:
-  project: management-clusters-fleet-collections
+  project: management-clusters-fleet-collection
   source:
     targetRevision: master
   destination:

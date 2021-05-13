@@ -48,7 +48,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-collections
+  name: management-clusters-fleet-collection
   namespace: argocd
 spec:
   description: Management Cluster Azure collection
@@ -107,13 +107,13 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-collections
+  name: management-clusters-fleet-collection
   namespace: argocd
 spec:
   destination:
     namespace: giantswarm
     server: https://kubernetes.default.svc
-  project: management-clusters-fleet-collections
+  project: management-clusters-fleet-collection
   source:
     path: helm/azure-app-collection-chart/templates
     repoURL: https://github.com/giantswarm/azure-app-collection.git
