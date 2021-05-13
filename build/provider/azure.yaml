@@ -32,7 +32,7 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-argocd
+  name: management-clusters-fleet
   namespace: argocd
 spec:
   clusterResourceWhitelist:
@@ -66,15 +66,15 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-argocd
+  name: management-clusters-fleet
   namespace: argocd
 spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: management-clusters-fleet-argocd
+  project: management-clusters-fleet
   source:
-    path: build/argocd
+    path: manifests/provider/azure
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
   syncPolicy:
@@ -85,15 +85,15 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-argocd-provider
+  name: management-clusters-fleet-argocd
   namespace: argocd
 spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: management-clusters-fleet-argocd
+  project: management-clusters-fleet
   source:
-    path: manifests/provider/azure
+    path: build/argocd
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
   syncPolicy:
