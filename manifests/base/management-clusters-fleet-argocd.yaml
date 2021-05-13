@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-argocd
+  name: management-clusters-fleet
   namespace: argocd
 spec:
-  description: Management Clusters Fleet Argo CD
+  description: Management Clusters Fleet
   # Allow manifests to deploy from any Git repos
   sourceRepos:
     - 'https://github.com/giantswarm/management-clusters-fleet.git'
@@ -19,10 +19,10 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-argocd
+  name: management-clusters-fleet
   namespace: argocd
 spec:
-  project: management-clusters-fleet-argocd
+  project: management-clusters-fleet
   source:
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
@@ -38,10 +38,10 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-argocd-provider
+  name: management-clusters-fleet-provider
   namespace: argocd
 spec:
-  project: management-clusters-fleet-argocd
+  project: management-clusters-fleet
   source:
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
