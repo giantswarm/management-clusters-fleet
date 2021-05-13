@@ -32,7 +32,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: management-clusters-fleet-collections
-  namespace: giantswarm
+  namespace: argocd
 spec:
   project: management-clusters-fleet-collections
   source:
