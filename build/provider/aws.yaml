@@ -32,7 +32,7 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-argocd
+  name: argocd
   namespace: argocd
 spec:
   clusterResourceWhitelist:
@@ -48,7 +48,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-collection
+  name: collections
   namespace: argocd
 spec:
   description: Management Cluster AWS collection
@@ -75,7 +75,7 @@ spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: management-clusters-fleet-argocd
+  project: argocd
   source:
     path: build/argocd
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
@@ -88,13 +88,13 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-argocd-provider
+  name: projects
   namespace: argocd
 spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: management-clusters-fleet-argocd
+  project: argocd
   source:
     path: manifests/provider/aws
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
@@ -107,13 +107,13 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-collection
+  name: provider-collection
   namespace: argocd
 spec:
   destination:
     namespace: giantswarm
     server: https://kubernetes.default.svc
-  project: management-clusters-fleet-collection
+  project: collections
   source:
     path: helm/aws-app-collection-chart/templates
     repoURL: https://github.com/giantswarm/aws-app-collection.git

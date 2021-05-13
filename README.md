@@ -1,6 +1,18 @@
 # management-clusters-fleet
+
 GitOps for Giant Swarm management clusters
 
+## Layout
+
+- AppProject: `argocd` contains:
+  - Application: `projects` manages:
+    - `argocd` AppProject
+    - `collections` AppProject
+  - Application: `argocd` manages:
+    - Upstream Argo CD manifests stored in `build/argocd/`
+- AppProject: `collections`:
+  - Application: `provider-collection` manages:
+    - Manifests from the provider-specific app collection
 
 ## Updating Argo CD manifests
 

@@ -12,7 +12,7 @@ data:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-argocd-provider
+  name: projects
   namespace: argocd
 spec:
   source:
@@ -21,7 +21,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-collection
+  name: collections
   namespace: argocd
 spec:
   description: Management Cluster KVM Collection
@@ -31,10 +31,9 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-collection
+  name: provider-collection
   namespace: argocd
 spec:
-  project: management-clusters-fleet-collection
   source:
     repoURL: https://github.com/giantswarm/kvm-app-collection.git
     path: helm/kvm-app-collection-chart/templates
