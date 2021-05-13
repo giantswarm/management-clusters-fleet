@@ -16,10 +16,16 @@ spec:
       subPath: konfigure
   initContainers:
   - args:
-    - --vault-address={{ .Values.Installation.V1.Auth.Vault.Address }}
+    - --vault-address=$(VAULT_ADDR)
     - --vault-role=argo
     - --vault-token-secret-name=argocd-vault-token
     - --vault-token-secret-namespace=argocd
+    env:
+    - name: VAULT_ADDR
+      valueFrom:
+        configMapKeyRef:
+          name: vault-address
+          key: vault-address
     image: "giantswarm/k8s-jwt-to-vault-token:0.1.0"
     imagePullPolicy: IfNotPresent
     name: ensure-vault-token
