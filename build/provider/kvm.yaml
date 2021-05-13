@@ -114,7 +114,7 @@ spec:
   source:
     path: helm/kvm-app-collection-chart/templates
     repoURL: https://github.com/giantswarm/kvm-app-collection.git
-    targetRevision: main
+    targetRevision: master
   syncPolicy:
     automated:
       allowEmpty: true

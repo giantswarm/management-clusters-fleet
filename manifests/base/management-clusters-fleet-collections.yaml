@@ -26,7 +26,7 @@ metadata:
 spec:
   project: management-clusters-fleet-collections
   source:
-    targetRevision: main
+    targetRevision: master
   destination:
     server: https://kubernetes.default.svc
     namespace: giantswarm

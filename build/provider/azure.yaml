@@ -114,7 +114,7 @@ spec:
   source:
     path: helm/azure-app-collection-chart/templates
     repoURL: https://github.com/giantswarm/azure-app-collection.git
-    targetRevision: main
+    targetRevision: master
   syncPolicy:
     automated:
       allowEmpty: true

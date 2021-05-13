@@ -114,7 +114,7 @@ spec:
   source:
     path: helm/vmware-app-collection-chart/templates
     repoURL: https://github.com/giantswarm/vmware-app-collection.git
-    targetRevision: main
+    targetRevision: master
   syncPolicy:
     automated:
       allowEmpty: true
