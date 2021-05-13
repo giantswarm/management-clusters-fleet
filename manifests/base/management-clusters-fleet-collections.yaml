@@ -17,3 +17,21 @@ spec:
     - namespace: kube-system
       server: https://kubernetes.default.svc
     - server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: management-clusters-fleet-collections
+  namespace: giantswarm
+spec:
+  project: management-clusters-fleet-collections
+  source:
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: giantswarm
+  syncPolicy:
+    automated:
+      prune: true 
+      allowEmpty: true
+

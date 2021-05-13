@@ -10,16 +10,6 @@ data:
     - url: https://github.com/giantswarm/aws-app-collection
 ---
 apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: management-clusters-fleet-collections
-  namespace: argocd
-spec:
-  description: Management Cluster AWS collection
-  sourceRepos:
-    - 'https://github.com/giantswarm/aws-app-collection'
----
-apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: management-clusters-fleet-argocd-provider
@@ -27,3 +17,24 @@ metadata:
 spec:
   source:
     path: manifests/provider/aws
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: management-clusters-fleet-collections
+  namespace: argocd
+spec:
+  description: Management Cluster AWS collection
+  sourceRepos:
+    - 'https://github.com/giantswarm/aws-app-collection.git'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: management-clusters-fleet-collections
+  namespace: giantswarm
+spec:
+  project: management-clusters-fleet-collections
+  source:
+    repoURL: https://github.com/giantswarm/aws-app-collection.git
+    path: helm/aws-app-collection-chart/templates

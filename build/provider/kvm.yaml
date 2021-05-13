@@ -38,7 +38,7 @@ spec:
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
-  description: Management Clusters Fleet
+  description: Management Clusters Fleet Argo CD
   destinations:
   - namespace: argocd
     server: https://kubernetes.default.svc
@@ -61,7 +61,7 @@ spec:
     server: https://kubernetes.default.svc
   - server: https://kubernetes.default.svc
   sourceRepos:
-  - https://github.com/giantswarm/kvm-app-collection
+  - https://github.com/giantswarm/kvm-app-collection.git
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -95,6 +95,25 @@ spec:
   source:
     path: manifests/provider/kvm
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: management-clusters-fleet-collections
+  namespace: giantswarm
+spec:
+  destination:
+    namespace: giantswarm
+    server: https://kubernetes.default.svc
+  project: management-clusters-fleet-collections
+  source:
+    path: helm/kvm-app-collection-chart/templates
+    repoURL: https://github.com/giantswarm/kvm-app-collection.git
     targetRevision: main
   syncPolicy:
     automated:
