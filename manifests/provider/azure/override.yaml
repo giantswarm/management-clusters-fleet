@@ -10,16 +10,6 @@ data:
     - url: https://github.com/giantswarm/azure-app-collection
 ---
 apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: management-clusters-fleet-collections
-  namespace: argocd
-spec:
-  description: Management Cluster Azure collection
-  sourceRepos:
-    - 'https://github.com/giantswarm/azure-app-collection'
----
-apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: management-clusters-fleet-argocd-provider
@@ -27,3 +17,24 @@ metadata:
 spec:
   source:
     path: manifests/provider/azure
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: management-clusters-fleet-collection
+  namespace: argocd
+spec:
+  description: Management Cluster Azure collection
+  sourceRepos:
+    - 'https://github.com/giantswarm/azure-app-collection.git'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: management-clusters-fleet-collection
+  namespace: argocd
+spec:
+  project: management-clusters-fleet-collection
+  source:
+    repoURL: https://github.com/giantswarm/azure-app-collection.git
+    path: helm/azure-app-collection-chart/templates

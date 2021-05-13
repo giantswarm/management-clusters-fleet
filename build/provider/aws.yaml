@@ -38,7 +38,7 @@ spec:
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
-  description: Management Clusters Fleet
+  description: Management Clusters Fleet Argo CD
   destinations:
   - namespace: argocd
     server: https://kubernetes.default.svc
@@ -48,7 +48,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-collections
+  name: management-clusters-fleet-collection
   namespace: argocd
 spec:
   description: Management Cluster AWS collection
@@ -60,8 +60,11 @@ spec:
   - namespace: kube-system
     server: https://kubernetes.default.svc
   - server: https://kubernetes.default.svc
+  namespaceResourceBlacklist:
+  - group: application.giantswarm.io
+    kind: Chart
   sourceRepos:
-  - https://github.com/giantswarm/aws-app-collection
+  - https://github.com/giantswarm/aws-app-collection.git
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -96,6 +99,25 @@ spec:
     path: manifests/provider/aws
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: false
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: management-clusters-fleet-collection
+  namespace: argocd
+spec:
+  destination:
+    namespace: giantswarm
+    server: https://kubernetes.default.svc
+  project: management-clusters-fleet-collection
+  source:
+    path: helm/aws-app-collection-chart/templates
+    repoURL: https://github.com/giantswarm/aws-app-collection.git
+    targetRevision: master
   syncPolicy:
     automated:
       allowEmpty: true

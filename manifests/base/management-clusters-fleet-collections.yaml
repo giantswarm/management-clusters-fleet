@@ -2,11 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-collections
+  name: management-clusters-fleet-collection
   namespace: argocd
 spec:
-  description: Management Clusters Fleet Collections
-  # Allow manifests to deploy from any Git repos
+  namespaceResourceBlacklist:
+  - group: 'application.giantswarm.io'
+    kind: Chart
+  description: Management Clusters Fleet Collection
   sourceRepos:
     - '*'
   destinations:
@@ -17,3 +19,20 @@ spec:
     - namespace: kube-system
       server: https://kubernetes.default.svc
     - server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: management-clusters-fleet-collection
+  namespace: argocd
+spec:
+  project: management-clusters-fleet-collection
+  source:
+    targetRevision: master
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: giantswarm
+  syncPolicy:
+    automated:
+      prune: true 
+      allowEmpty: true
