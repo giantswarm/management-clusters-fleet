@@ -9,8 +9,7 @@ metadata:
     app.kubernetes.io/part-of: argocd
 data:
   # See: https://argoproj.github.io/argo-cd/faq/#why-is-my-app-out-of-sync-even-after-syncing
-  application.instanceLabelKey: |
-    argocd.argoproj.io/instance
+  application.instanceLabelKey: "argocd.argoproj.io/instance"
   configManagementPlugins: |
     # this will be updated after we have working configctl plugin ready
     - name: myPlugin
