@@ -86,7 +86,7 @@ spec:
   syncPolicy:
     automated:
       allowEmpty: true
-      prune: true
+      prune: false
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
