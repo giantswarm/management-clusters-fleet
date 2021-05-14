@@ -60,6 +60,8 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: kube-system
     server: https://kubernetes.default.svc
+  - namespace: default
+    server: https://kubernetes.default.svc
   - server: https://kubernetes.default.svc
   namespaceResourceBlacklist:
   - group: application.giantswarm.io
