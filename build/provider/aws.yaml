@@ -106,6 +106,7 @@ spec:
     automated:
       allowEmpty: true
       prune: false
+      selfHeal: true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
