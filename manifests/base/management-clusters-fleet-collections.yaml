@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-collection
+  name: collections
   namespace: argocd
 spec:
   namespaceResourceBlacklist:
@@ -23,10 +23,10 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-collection
+  name: provider-collection
   namespace: argocd
 spec:
-  project: management-clusters-fleet-collection
+  project: collections
   source:
     targetRevision: master
   destination:
