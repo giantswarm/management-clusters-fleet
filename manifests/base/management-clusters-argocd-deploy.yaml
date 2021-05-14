@@ -25,7 +25,7 @@ spec:
       valueFrom:
         configMapKeyRef:
           name: vault-address
-          key: vault-address
+          key: VAULT_ADDR
     image: "giantswarm/k8s-jwt-to-vault-token:0.1.0"
     imagePullPolicy: IfNotPresent
     name: ensure-vault-token
