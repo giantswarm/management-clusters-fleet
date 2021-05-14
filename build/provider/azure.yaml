@@ -1,6 +1,7 @@
 # This is an auto-generated file. DO NOT EDIT
 apiVersion: v1
 data:
+  application.instanceLabelKey: argocd.argoproj.io/instance
   configManagementPlugins: |
     # this will be updated after we have working configctl plugin ready
     - name: myPlugin
@@ -32,13 +33,13 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-argocd
+  name: argocd
   namespace: argocd
 spec:
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
-  description: Management Clusters Fleet
+  description: Management Clusters Fleet Argo CD
   destinations:
   - namespace: argocd
     server: https://kubernetes.default.svc
@@ -48,7 +49,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: management-clusters-fleet-collections
+  name: collections
   namespace: argocd
 spec:
   description: Management Cluster Azure collection
@@ -60,8 +61,11 @@ spec:
   - namespace: kube-system
     server: https://kubernetes.default.svc
   - server: https://kubernetes.default.svc
+  namespaceResourceBlacklist:
+  - group: application.giantswarm.io
+    kind: Chart
   sourceRepos:
-  - https://github.com/giantswarm/azure-app-collection
+  - https://github.com/giantswarm/azure-app-collection.git
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -72,7 +76,7 @@ spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: management-clusters-fleet-argocd
+  project: argocd
   source:
     path: build/argocd
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
@@ -85,17 +89,36 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: management-clusters-fleet-argocd-provider
+  name: projects
   namespace: argocd
 spec:
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: management-clusters-fleet-argocd
+  project: argocd
   source:
     path: manifests/provider/azure
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: false
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: provider-collection
+  namespace: argocd
+spec:
+  destination:
+    namespace: giantswarm
+    server: https://kubernetes.default.svc
+  project: collections
+  source:
+    path: helm/azure-app-collection-chart/templates
+    repoURL: https://github.com/giantswarm/azure-app-collection.git
+    targetRevision: master
   syncPolicy:
     automated:
       allowEmpty: true
