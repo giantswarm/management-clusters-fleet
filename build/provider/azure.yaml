@@ -3,14 +3,20 @@ apiVersion: v1
 data:
   application.instanceLabelKey: argocd.argoproj.io/instance
   configManagementPlugins: |
-    # this will be updated after we have working configctl plugin ready
-    - name: myPlugin
-      init:                          # Optional command to initialize application source directory
-        command: ["ls"]
-        args: ["."]
-      generate:                      # Command to generate manifests YAML
+    - name: konfigure
+      generate:
         command: ["sh"]
-        args: ["-c", "echo '################ ERROR #######' >&2 ; exit 5"]
+        args:
+        - "-c"
+        - "konfigure generate
+          --installation=${KONFIGURE_INSTALLATION}
+          --app-name=${KONFIGURE_APP_NAME}
+          --app-catalog=${KONFIGURE_APP_CATALOG}
+          --app-version=${KONFIGURE_APP_VERSION}
+          --name=${ARGOCD_APP_NAME}
+          --namespace=${ARGOCD_APP_NAMESPACE}
+          --vault-secret-name=argocd-vault-token
+          --vault-secret-namespace=argocd"
   repositories: |
     - url: https://github.com/giantswarm/config
     - url: https://github.com/giantswarm/azure-app-collection
