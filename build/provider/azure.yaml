@@ -1,6 +1,7 @@
 # This is an auto-generated file. DO NOT EDIT
 apiVersion: v1
 data:
+  application.instanceLabelKey: argocd.argoproj.io/instance
   configManagementPlugins: |
     # this will be updated after we have working configctl plugin ready
     - name: myPlugin
