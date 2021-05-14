@@ -4,4 +4,3 @@ resources:
 - ./management-clusters-fleet-argocd.yaml
 - ./management-clusters-fleet-collections.yaml
 - ./management-clusters-argocd-cm.yaml
-- ./management-clusters-argocd-deploy.yaml

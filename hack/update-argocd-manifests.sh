@@ -29,9 +29,15 @@ cd -
 
 sed -i "/dex/d" manifests/base/kustomization.yaml
 
-mkdir -p ${SRCROOT}/build/argocd
-echo "${AUTOGENMSG}" > "${SRCROOT}/build/argocd/install.yaml"
-${KUSTOMIZE} build "manifests/cluster-install" >> "${SRCROOT}/build/argocd/install.yaml"
+${KUSTOMIZE} build "manifests/cluster-install" > "${SRCROOT}/hack/base/install.yaml"
 
 cd ${SRCROOT}
 rm $WORK_DIR -Rf
+
+cd ${SRCROOT}/hack
+mkdir -p ${SRCROOT}/build/argocd
+echo "${AUTOGENMSG}" > "${SRCROOT}/build/argocd/install.yaml"
+${KUSTOMIZE} build "overlay" >> "${SRCROOT}/build/argocd/install.yaml"
+
+cd ${SRCROOT}
+rm "${SRCROOT}/hack/base/install.yaml"
