@@ -12,7 +12,6 @@ data:
         command: ["sh"]
         args: ["-c", "echo '################ ERROR #######' >&2 ; exit 5"]
   repositories: |
-    - url: https://github.com/giantswarm/config
     - url: https://github.com/giantswarm/aws-app-collection
   repository.credentials: |
     - url: https://github.com/giantswarm

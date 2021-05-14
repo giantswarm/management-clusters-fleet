@@ -6,7 +6,6 @@ metadata:
   namespace: argocd
 data:
   repositories: |
-    - url: https://github.com/giantswarm/config
     - url: https://github.com/giantswarm/vmware-app-collection
 ---
 apiVersion: argoproj.io/v1alpha1
