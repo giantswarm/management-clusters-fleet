@@ -1,4 +1,4 @@
 resources:
-- ../../base
+- ../azure
 patchesStrategicMerge:
 - override.yaml

@@ -1,4 +1,4 @@
 resources:
-- ../../base
+- ../vmware
 patchesStrategicMerge:
 - override.yaml

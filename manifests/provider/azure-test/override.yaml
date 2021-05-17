@@ -1,43 +1,9 @@
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: argocd-cm
-  namespace: argocd
-data:
-  repositories: |
-    - url: https://github.com/giantswarm/config
-    - url: https://github.com/giantswarm/azure-app-collection
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: projects
-  namespace: argocd
-spec:
-  source:
-    path: manifests/provider/azure
----
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: collections
-  namespace: argocd
-spec:
-  description: Management Cluster Azure collection
-  sourceRepos:
-    - 'https://github.com/giantswarm/azure-app-collection.git'
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: provider-collection
   namespace: argocd
 spec:
-  project: collections
-  source:
-    repoURL: https://github.com/giantswarm/azure-app-collection.git
-    path: helm/azure-app-collection-chart/templates
   syncPolicy:
     automated:
       selfHeal: false

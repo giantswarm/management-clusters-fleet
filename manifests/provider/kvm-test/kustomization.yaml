@@ -1,4 +1,4 @@
 resources:
-- ../../base
+- ../kvm
 patchesStrategicMerge:
 - override.yaml
