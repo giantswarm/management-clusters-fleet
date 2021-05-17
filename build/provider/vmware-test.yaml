@@ -13,7 +13,7 @@ data:
         args: ["-c", "echo '################ ERROR #######' >&2 ; exit 5"]
   repositories: |
     - url: https://github.com/giantswarm/config
-    - url: https://github.com/giantswarm/azure-app-collection
+    - url: https://github.com/giantswarm/vmware-app-collection
   repository.credentials: |
     - url: https://github.com/giantswarm
       usernameSecret:
@@ -52,7 +52,7 @@ metadata:
   name: collections
   namespace: argocd
 spec:
-  description: Management Cluster Azure collection
+  description: Management Cluster VMWare collection
   destinations:
   - namespace: giantswarm
     server: https://kubernetes.default.svc
@@ -67,7 +67,7 @@ spec:
   - group: application.giantswarm.io
     kind: Chart
   sourceRepos:
-  - https://github.com/giantswarm/azure-app-collection.git
+  - https://github.com/giantswarm/vmware-app-collection.git
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -99,7 +99,7 @@ spec:
     server: https://kubernetes.default.svc
   project: argocd
   source:
-    path: manifests/provider/azure
+    path: manifests/provider/vmware
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
   syncPolicy:
@@ -119,11 +119,11 @@ spec:
     server: https://kubernetes.default.svc
   project: collections
   source:
-    path: helm/azure-app-collection-chart/templates
-    repoURL: https://github.com/giantswarm/azure-app-collection.git
+    path: helm/vmware-app-collection-chart/templates
+    repoURL: https://github.com/giantswarm/vmware-app-collection.git
     targetRevision: master
   syncPolicy:
     automated:
       allowEmpty: true
       prune: true
-      selfHeal: true
+      selfHeal: false
