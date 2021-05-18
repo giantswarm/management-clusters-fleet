@@ -12,6 +12,9 @@ build/argocd: ARGOCD_VERSION=v2.0.1
 build/argocd:
 	@echo "====> $@"
 	./hack/update-argocd-manifests.sh $(ARGOCD_VERSION)
+	echo "$(AUTOGENMSG)" > build/argocd/install.yaml
+	$(KUSTOMIZE) build manifests/argocd >> build/argocd/install.yaml
+	cp build/argocd/install.yaml manifests/bases/argocd
 
 build/provider: $(MANIFESTS)
 	@echo "====> $@"
