@@ -20,9 +20,13 @@ build/provider: $(MANIFESTS)
 	@echo "====> $@"
 	mkdir -p $@
 	@$(MAKE) build/provider/aws.yaml
+	@$(MAKE) build/provider/aws-test.yaml
 	@$(MAKE) build/provider/azure.yaml
+	@$(MAKE) build/provider/azure-test.yaml
 	@$(MAKE) build/provider/kvm.yaml
+	@$(MAKE) build/provider/kvm-test.yaml
 	@$(MAKE) build/provider/vmware.yaml
+	@$(MAKE) build/provider/vmware-test.yaml
 
 build/provider/%.yaml: $(MANIFESTS)
 	@echo "====> $@"

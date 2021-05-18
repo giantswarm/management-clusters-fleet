@@ -1,0 +1,4 @@
+resources:
+- ../aws
+patchesStrategicMerge:
+- override.yaml

@@ -1,0 +1,4 @@
+resources:
+- ../azure
+patchesStrategicMerge:
+- override.yaml

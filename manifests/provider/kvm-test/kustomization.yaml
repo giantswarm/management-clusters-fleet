@@ -1,0 +1,4 @@
+resources:
+- ../kvm
+patchesStrategicMerge:
+- override.yaml
