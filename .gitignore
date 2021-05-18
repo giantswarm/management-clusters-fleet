@@ -1,5 +1,3 @@
 manifests/bases/upstream-argocd/*
 !manifests/bases/upstream-argocd/kustomization.yaml
-
-manifests/bases/argocd/*
-!manifests/bases/argocd/kustomization.yaml
+!manifests/bases/upstream-argocd/install.yaml
