@@ -1,0 +1,19 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: projects
+  namespace: argocd
+spec:
+  source:
+    path: manifests/provider/aws-test
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: provider-collection
+  namespace: argocd
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: false

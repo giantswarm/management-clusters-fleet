@@ -99,7 +99,7 @@ spec:
     server: https://kubernetes.default.svc
   project: argocd
   source:
-    path: manifests/provider/azure
+    path: manifests/provider/azure-test
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
   syncPolicy:
@@ -126,4 +126,4 @@ spec:
     automated:
       allowEmpty: true
       prune: true
-      selfHeal: true
+      selfHeal: false
