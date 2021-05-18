@@ -2026,7 +2026,15 @@ metadata:
     app.kubernetes.io/name: argocd-application-controller
     app.kubernetes.io/part-of: argocd
   name: argocd-application-controller
-  namespace: argocd
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/component: dex-server
+    app.kubernetes.io/name: argocd-dex-server
+    app.kubernetes.io/part-of: argocd
+  name: argocd-dex-server
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -2036,17 +2044,6 @@ metadata:
     app.kubernetes.io/name: argocd-redis
     app.kubernetes.io/part-of: argocd
   name: argocd-redis
-  namespace: argocd
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  labels:
-    app.kubernetes.io/component: repo-server
-    app.kubernetes.io/name: argocd-repo-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-repo-server
-  namespace: argocd
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -2056,7 +2053,6 @@ metadata:
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
   name: argocd-server
-  namespace: argocd
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -2066,7 +2062,6 @@ metadata:
     app.kubernetes.io/name: argocd-application-controller
     app.kubernetes.io/part-of: argocd
   name: argocd-application-controller
-  namespace: argocd
 rules:
 - apiGroups:
   - ""
@@ -2102,11 +2097,29 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   labels:
+    app.kubernetes.io/component: dex-server
+    app.kubernetes.io/name: argocd-dex-server
+    app.kubernetes.io/part-of: argocd
+  name: argocd-dex-server
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
     app.kubernetes.io/component: redis
     app.kubernetes.io/name: argocd-redis
     app.kubernetes.io/part-of: argocd
   name: argocd-redis
-  namespace: argocd
 rules:
 - apiGroups:
   - security.openshift.io
@@ -2121,36 +2134,10 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   labels:
-    app.kubernetes.io/component: repo-server
-    app.kubernetes.io/name: argocd-repo-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-repo-server
-  namespace: argocd
-rules:
-- apiGroups:
-  - ""
-  resourceNames:
-  - argocd-vault-token
-  resources:
-  - secrets
-  verbs:
-  - create
-  - get
-  - list
-  - watch
-  - update
-  - patch
-  - delete
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  labels:
     app.kubernetes.io/component: server
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
   name: argocd-server
-  namespace: argocd
 rules:
 - apiGroups:
   - ""
@@ -2245,7 +2232,6 @@ metadata:
     app.kubernetes.io/name: argocd-application-controller
     app.kubernetes.io/part-of: argocd
   name: argocd-application-controller
-  namespace: argocd
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -2253,7 +2239,22 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: argocd-application-controller
-  namespace: argocd
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: dex-server
+    app.kubernetes.io/name: argocd-dex-server
+    app.kubernetes.io/part-of: argocd
+  name: argocd-dex-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argocd-dex-server
+subjects:
+- kind: ServiceAccount
+  name: argocd-dex-server
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -2263,7 +2264,6 @@ metadata:
     app.kubernetes.io/name: argocd-redis
     app.kubernetes.io/part-of: argocd
   name: argocd-redis
-  namespace: argocd
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -2271,25 +2271,6 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: argocd-redis
-  namespace: argocd
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: repo-server
-    app.kubernetes.io/name: argocd-repo-server
-    app.kubernetes.io/part-of: argocd
-  name: argocd-repo-server
-  namespace: argocd
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: argocd-repo-server
-subjects:
-- kind: ServiceAccount
-  name: argocd-repo-server
-  namespace: argocd
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -2299,7 +2280,6 @@ metadata:
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
   name: argocd-server
-  namespace: argocd
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -2307,7 +2287,6 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: argocd-server
-  namespace: argocd
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -2344,38 +2323,12 @@ subjects:
   namespace: argocd
 ---
 apiVersion: v1
-data:
-  application.instanceLabelKey: argocd.argoproj.io/instance
-  configManagementPlugins: |
-    - name: konfigure
-      generate:
-        command: ["sh"]
-        args:
-        - "-c"
-        - "konfigure generate
-          --installation=${KONFIGURE_INSTALLATION}
-          --app-name=${KONFIGURE_APP_NAME}
-          --app-catalog=${KONFIGURE_APP_CATALOG}
-          --app-version=${KONFIGURE_APP_VERSION}
-          --name=${ARGOCD_APP_NAME}
-          --namespace=${ARGOCD_APP_NAMESPACE}
-          --vault-secret-name=argocd-vault-token
-          --vault-secret-namespace=argocd"
-  repository.credentials: |
-    - url: https://github.com/giantswarm
-      usernameSecret:
-        name: github-giantswarm-https-credentials
-        key: username
-      passwordSecret:
-        name: github-giantswarm-https-credentials
-        key: password
 kind: ConfigMap
 metadata:
   labels:
     app.kubernetes.io/name: argocd-cm
     app.kubernetes.io/part-of: argocd
   name: argocd-cm
-  namespace: argocd
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -2384,7 +2337,6 @@ metadata:
     app.kubernetes.io/name: argocd-gpg-keys-cm
     app.kubernetes.io/part-of: argocd
   name: argocd-gpg-keys-cm
-  namespace: argocd
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -2393,7 +2345,6 @@ metadata:
     app.kubernetes.io/name: argocd-rbac-cm
     app.kubernetes.io/part-of: argocd
   name: argocd-rbac-cm
-  namespace: argocd
 ---
 apiVersion: v1
 data:
@@ -2411,7 +2362,6 @@ metadata:
     app.kubernetes.io/name: argocd-ssh-known-hosts-cm
     app.kubernetes.io/part-of: argocd
   name: argocd-ssh-known-hosts-cm
-  namespace: argocd
 ---
 apiVersion: v1
 data: null
@@ -2421,7 +2371,6 @@ metadata:
     app.kubernetes.io/name: argocd-tls-certs-cm
     app.kubernetes.io/part-of: argocd
   name: argocd-tls-certs-cm
-  namespace: argocd
 ---
 apiVersion: v1
 kind: Secret
@@ -2430,8 +2379,32 @@ metadata:
     app.kubernetes.io/name: argocd-secret
     app.kubernetes.io/part-of: argocd
   name: argocd-secret
-  namespace: argocd
 type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: dex-server
+    app.kubernetes.io/name: argocd-dex-server
+    app.kubernetes.io/part-of: argocd
+  name: argocd-dex-server
+spec:
+  ports:
+  - name: http
+    port: 5556
+    protocol: TCP
+    targetPort: 5556
+  - name: grpc
+    port: 5557
+    protocol: TCP
+    targetPort: 5557
+  - name: metrics
+    port: 5558
+    protocol: TCP
+    targetPort: 5558
+  selector:
+    app.kubernetes.io/name: argocd-dex-server
 ---
 apiVersion: v1
 kind: Service
@@ -2441,7 +2414,6 @@ metadata:
     app.kubernetes.io/name: argocd-metrics
     app.kubernetes.io/part-of: argocd
   name: argocd-metrics
-  namespace: argocd
 spec:
   ports:
   - name: metrics
@@ -2459,7 +2431,6 @@ metadata:
     app.kubernetes.io/name: argocd-redis
     app.kubernetes.io/part-of: argocd
   name: argocd-redis
-  namespace: argocd
 spec:
   ports:
   - name: tcp-redis
@@ -2476,7 +2447,6 @@ metadata:
     app.kubernetes.io/name: argocd-repo-server
     app.kubernetes.io/part-of: argocd
   name: argocd-repo-server
-  namespace: argocd
 spec:
   ports:
   - name: server
@@ -2498,7 +2468,6 @@ metadata:
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
   name: argocd-server
-  namespace: argocd
 spec:
   ports:
   - name: http
@@ -2520,7 +2489,6 @@ metadata:
     app.kubernetes.io/name: argocd-server-metrics
     app.kubernetes.io/part-of: argocd
   name: argocd-server-metrics
-  namespace: argocd
 spec:
   ports:
   - name: metrics
@@ -2534,11 +2502,67 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app.kubernetes.io/component: dex-server
+    app.kubernetes.io/name: argocd-dex-server
+    app.kubernetes.io/part-of: argocd
+  name: argocd-dex-server
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-dex-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: argocd-dex-server
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/part-of: argocd
+              topologyKey: kubernetes.io/hostname
+            weight: 5
+      containers:
+      - command:
+        - /shared/argocd-dex
+        - rundex
+        image: ghcr.io/dexidp/dex:v2.27.0
+        imagePullPolicy: Always
+        name: dex
+        ports:
+        - containerPort: 5556
+        - containerPort: 5557
+        - containerPort: 5558
+        volumeMounts:
+        - mountPath: /shared
+          name: static-files
+      initContainers:
+      - command:
+        - cp
+        - -n
+        - /usr/local/bin/argocd
+        - /shared/argocd-dex
+        image: quay.io/argoproj/argocd:v2.0.1
+        imagePullPolicy: Always
+        name: copyutil
+        volumeMounts:
+        - mountPath: /shared
+          name: static-files
+      serviceAccountName: argocd-dex-server
+      volumes:
+      - emptyDir: {}
+        name: static-files
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
     app.kubernetes.io/component: redis
     app.kubernetes.io/name: argocd-redis
     app.kubernetes.io/part-of: argocd
   name: argocd-redis
-  namespace: argocd
 spec:
   selector:
     matchLabels:
@@ -2589,7 +2613,6 @@ metadata:
     app.kubernetes.io/name: argocd-repo-server
     app.kubernetes.io/part-of: argocd
   name: argocd-repo-server
-  namespace: argocd
 spec:
   selector:
     matchLabels:
@@ -2614,14 +2637,14 @@ spec:
                   app.kubernetes.io/part-of: argocd
               topologyKey: kubernetes.io/hostname
             weight: 5
-      automountServiceAccountToken: true
+      automountServiceAccountToken: false
       containers:
       - command:
         - uid_entrypoint.sh
         - argocd-repo-server
         - --redis
         - argocd-redis:6379
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: quay.io/argoproj/argocd:v2.0.1
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -2646,9 +2669,6 @@ spec:
             drop:
             - all
         volumeMounts:
-        - mountPath: /usr/local/bin/konfigure
-          name: giantswarm-bin
-          subPath: konfigure
         - mountPath: /app/config/ssh
           name: ssh-known-hosts
         - mountPath: /app/config/tls
@@ -2659,36 +2679,7 @@ spec:
           name: gpg-keyring
         - mountPath: /app/config/reposerver/tls
           name: argocd-repo-server-tls
-      initContainers:
-      - args:
-        - --vault-address=$(VAULT_ADDR)
-        - --vault-role=argo
-        - --vault-token-secret-name=argocd-vault-token
-        - --vault-token-secret-namespace=argocd
-        env:
-        - name: VAULT_ADDR
-          valueFrom:
-            configMapKeyRef:
-              key: VAULT_ADDR
-              name: vault-address
-        image: giantswarm/k8s-jwt-to-vault-token:0.1.0
-        imagePullPolicy: IfNotPresent
-        name: ensure-vault-token
-      - args:
-        - cp konfigure /giantswarm-bin && chmod +x /giantswarm-bin/konfigure
-        command:
-        - sh
-        - -c
-        image: giantswarm/konfigure:0.1.0
-        imagePullPolicy: IfNotPresent
-        name: download-konfigure
-        volumeMounts:
-        - mountPath: /giantswarm-bin
-          name: giantswarm-bin
-      serviceAccountName: argocd-repo-server
       volumes:
-      - emptyDir: {}
-        name: giantswarm-bin
       - configMap:
           name: argocd-ssh-known-hosts-cm
         name: ssh-known-hosts
@@ -2720,7 +2711,6 @@ metadata:
     app.kubernetes.io/name: argocd-server
     app.kubernetes.io/part-of: argocd
   name: argocd-server
-  namespace: argocd
 spec:
   selector:
     matchLabels:
@@ -2750,7 +2740,7 @@ spec:
         - argocd-server
         - --staticassets
         - /shared/app
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: quay.io/argoproj/argocd:v2.0.1
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -2810,7 +2800,6 @@ metadata:
     app.kubernetes.io/name: argocd-application-controller
     app.kubernetes.io/part-of: argocd
   name: argocd-application-controller
-  namespace: argocd
 spec:
   replicas: 1
   selector:
@@ -2844,7 +2833,7 @@ spec:
         - "20"
         - --operation-processors
         - "10"
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: quay.io/argoproj/argocd:v2.0.1
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -2882,98 +2871,3 @@ spec:
             path: ca.crt
           optional: true
           secretName: argocd-repo-server-tls
----
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: argocd
-  namespace: argocd
-spec:
-  clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
-  description: Management Clusters Fleet Argo CD
-  destinations:
-  - namespace: argocd
-    server: https://kubernetes.default.svc
-  sourceRepos:
-  - https://github.com/giantswarm/management-clusters-fleet.git
----
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: collections
-  namespace: argocd
-spec:
-  description: Management Clusters Fleet Collection
-  destinations:
-  - namespace: giantswarm
-    server: https://kubernetes.default.svc
-  - namespace: monitoring
-    server: https://kubernetes.default.svc
-  - namespace: kube-system
-    server: https://kubernetes.default.svc
-  - namespace: default
-    server: https://kubernetes.default.svc
-  - server: https://kubernetes.default.svc
-  namespaceResourceBlacklist:
-  - group: application.giantswarm.io
-    kind: Chart
-  sourceRepos:
-  - '*'
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: argocd
-  namespace: argocd
-spec:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
-  project: argocd
-  source:
-    path: build/argocd
-    repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: main
-  syncPolicy:
-    automated:
-      allowEmpty: true
-      prune: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: projects
-  namespace: argocd
-spec:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
-  project: argocd
-  source:
-    repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: main
-  syncPolicy:
-    automated:
-      allowEmpty: true
-      prune: false
-      selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: provider-collection
-  namespace: argocd
-spec:
-  destination:
-    namespace: giantswarm
-    server: https://kubernetes.default.svc
-  project: collections
-  source:
-    targetRevision: master
-  syncPolicy:
-    automated:
-      allowEmpty: true
-      prune: true
-      selfHeal: true

@@ -9,6 +9,7 @@ metadata:
 spec:
   template:
     spec:
+      automountServiceAccountToken: true
       containers:
       - name: argocd-repo-server
         volumeMounts:
