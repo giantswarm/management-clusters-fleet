@@ -3,7 +3,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: argocd
-  namespace: argocd
 spec:
   description: Management Clusters Fleet Argo CD
   # Allow manifests to deploy from any Git repos
@@ -32,7 +31,7 @@ spec:
     namespace: argocd
   syncPolicy:
     automated:
-      prune: true 
+      prune: true
       allowEmpty: true
 ---
 apiVersion: argoproj.io/v1alpha1

@@ -3,7 +3,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: collections
-  namespace: argocd
 spec:
   namespaceResourceBlacklist:
   - group: 'application.giantswarm.io'
@@ -36,5 +35,5 @@ spec:
     namespace: giantswarm
   syncPolicy:
     automated:
-      prune: true 
+      prune: true
       allowEmpty: true
