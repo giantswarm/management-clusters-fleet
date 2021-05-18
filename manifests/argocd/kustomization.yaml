@@ -10,5 +10,6 @@ patchesStrategicMerge:
 - deploy.yaml
 - delete-dex.yaml
 resources:
+- argocd-repo-server-sa.yaml
 - management-clusters-fleet-argocd.yaml
 - management-clusters-fleet-collections.yaml

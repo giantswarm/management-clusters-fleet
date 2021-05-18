@@ -39,6 +39,7 @@ spec:
         volumeMounts:
         - mountPath: /giantswarm-bin
           name: giantswarm-bin
+      serviceAccountName: argocd-repo-server
       volumes:
       - name: giantswarm-bin
         emptyDir: {}
