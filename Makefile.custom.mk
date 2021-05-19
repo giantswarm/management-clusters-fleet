@@ -18,6 +18,8 @@ build/provider: $(MANIFESTS)
 	mkdir -p $@
 	@$(MAKE) bootstrap/aws.yaml
 	@$(MAKE) bootstrap/aws-test.yaml
+	@$(MAKE) bootstrap/aws-china.yaml
+	@$(MAKE) bootstrap/aws-china-test.yaml
 	@$(MAKE) bootstrap/azure.yaml
 	@$(MAKE) bootstrap/azure-test.yaml
 	@$(MAKE) bootstrap/kvm.yaml
