@@ -2570,7 +2570,7 @@ spec:
         - ""
         - --appendonly
         - "no"
-        image: redis:6.2.1-alpine
+        image: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/redis:6.2.1-alpine
         imagePullPolicy: Always
         name: redis
         ports:
