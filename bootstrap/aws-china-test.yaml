@@ -2361,7 +2361,7 @@ data:
           --vault-secret-namespace=argocd"
   repositories: |
     - url: https://github.com/giantswarm/config
-    - url: https://github.com/giantswarm/kvm-app-collection
+    - url: https://github.com/giantswarm/aws-app-collection
   repository.credentials: |
     - url: https://github.com/giantswarm
       usernameSecret:
@@ -2622,7 +2622,7 @@ spec:
         - argocd-repo-server
         - --redis
         - argocd-redis:6379
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/argocd:v2.0.1
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -2751,7 +2751,7 @@ spec:
         - argocd-server
         - --staticassets
         - /shared/app
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/argocd:v2.0.1
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -2845,7 +2845,7 @@ spec:
         - "20"
         - --operation-processors
         - "10"
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/argocd:v2.0.1
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -2906,7 +2906,7 @@ metadata:
   name: collections
   namespace: argocd
 spec:
-  description: Management Cluster KVM Collection
+  description: Management Cluster AWS collection
   destinations:
   - namespace: giantswarm
     server: https://kubernetes.default.svc
@@ -2921,7 +2921,7 @@ spec:
   - group: application.giantswarm.io
     kind: Chart
   sourceRepos:
-  - https://github.com/giantswarm/kvm-app-collection.git
+  - https://github.com/giantswarm/aws-app-collection.git
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -2934,7 +2934,7 @@ spec:
     server: https://kubernetes.default.svc
   project: argocd
   source:
-    path: manifests/provider/kvm
+    path: manifests/provider/aws-china-test
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     targetRevision: main
   syncPolicy:
@@ -2954,11 +2954,11 @@ spec:
     server: https://kubernetes.default.svc
   project: collections
   source:
-    path: helm/kvm-app-collection-chart/templates
-    repoURL: https://github.com/giantswarm/kvm-app-collection.git
+    path: helm/aws-app-collection-chart/templates
+    repoURL: https://github.com/giantswarm/aws-app-collection.git
     targetRevision: master
   syncPolicy:
     automated:
       allowEmpty: true
       prune: true
-      selfHeal: true
+      selfHeal: false
