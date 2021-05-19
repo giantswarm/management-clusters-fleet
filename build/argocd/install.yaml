@@ -2933,27 +2933,8 @@ spec:
     server: https://kubernetes.default.svc
   project: argocd
   source:
-    path: build/argocd
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: main
-  syncPolicy:
-    automated:
-      allowEmpty: true
-      prune: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: projects
-  namespace: argocd
-spec:
-  destination:
-    namespace: argocd
-    server: https://kubernetes.default.svc
-  project: argocd
-  source:
-    repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: main
+    targetRevision: konfigure2
   syncPolicy:
     automated:
       allowEmpty: true

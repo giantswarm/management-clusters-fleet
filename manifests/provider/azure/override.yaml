@@ -12,7 +12,7 @@ data:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: projects
+  name: argocd
   namespace: argocd
 spec:
   source:
