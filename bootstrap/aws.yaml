@@ -2936,7 +2936,7 @@ spec:
   source:
     path: manifests/provider/aws
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: konfigure2
+    targetRevision: main
   syncPolicy:
     automated:
       allowEmpty: true
