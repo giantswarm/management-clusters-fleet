@@ -19,7 +19,7 @@ spec:
       initContainers:
       - args:
         - --vault-address=$(VAULT_ADDR)
-        - --vault-role=argo
+        - --vault-role=konfigure
         - --vault-token-secret-name=argocd-vault-token
         - --vault-token-secret-namespace=argocd
         env:
