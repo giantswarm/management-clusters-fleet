@@ -6,8 +6,8 @@ images:
   newTag: v2.0.1
 namespace: argocd
 patchesStrategicMerge:
-- cm.yaml
-- deploy.yaml
+- argocd-cm.yaml
+- argocd-repo-server-deploy.yaml
 - delete-dex.yaml
 resources:
 - argocd-repo-server-sa.yaml
