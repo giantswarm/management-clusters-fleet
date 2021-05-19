@@ -16,16 +16,16 @@ build/argocd:
 build/provider: $(MANIFESTS)
 	@echo "====> $@"
 	mkdir -p $@
-	@$(MAKE) build/provider/aws.yaml
-	@$(MAKE) build/provider/aws-test.yaml
-	@$(MAKE) build/provider/azure.yaml
-	@$(MAKE) build/provider/azure-test.yaml
-	@$(MAKE) build/provider/kvm.yaml
-	@$(MAKE) build/provider/kvm-test.yaml
-	@$(MAKE) build/provider/vmware.yaml
-	@$(MAKE) build/provider/vmware-test.yaml
+	@$(MAKE) bootstrap/aws.yaml
+	@$(MAKE) bootstrap/aws-test.yaml
+	@$(MAKE) bootstrap/azure.yaml
+	@$(MAKE) bootstrap/azure-test.yaml
+	@$(MAKE) bootstrap/kvm.yaml
+	@$(MAKE) bootstrap/kvm-test.yaml
+	@$(MAKE) bootstrap/vmware.yaml
+	@$(MAKE) bootstrap/vmware-test.yaml
 
-build/provider/%.yaml: $(MANIFESTS)
+bootstrap/%.yaml: $(MANIFESTS)
 	@echo "====> $@"
 	echo "$(AUTOGENMSG)" > $@
 	$(KUSTOMIZE) build manifests/provider/$* >> $@

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: repo-server
+    app.kubernetes.io/name: argocd-repo-server
+    app.kubernetes.io/part-of: argocd
+  name: argocd-repo-server
+spec:
+  template:
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - name: argocd-repo-server
+        volumeMounts:
+        - mountPath: /usr/local/bin/konfigure
+          name: giantswarm-bin
+          subPath: konfigure
+      initContainers:
+      - args:
+        - --vault-address=$(VAULT_ADDR)
+        - --vault-role=konfigure
+        - --vault-token-secret-name=argocd-vault-token
+        - --vault-token-secret-namespace=argocd
+        env:
+        - name: VAULT_ADDR
+          valueFrom:
+            configMapKeyRef:
+              name: vault-address
+              key: VAULT_ADDR
+        image: "giantswarm/k8s-jwt-to-vault-token:0.1.0"
+        imagePullPolicy: IfNotPresent
+        name: ensure-vault-token
+      - args:
+        - "cp konfigure /giantswarm-bin && chmod +x /giantswarm-bin/konfigure"
+        command: ["sh", "-c"]
+        image: "giantswarm/konfigure:0.1.0"
+        imagePullPolicy: IfNotPresent
+        name: download-konfigure
+        volumeMounts:
+        - mountPath: /giantswarm-bin
+          name: giantswarm-bin
+      serviceAccountName: argocd-repo-server
+      volumes:
+      - name: giantswarm-bin
+        emptyDir: {}
