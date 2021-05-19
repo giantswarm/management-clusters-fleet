@@ -6,4 +6,5 @@ images:
 - name: quay.io/giantswarm/argocd
   newName: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/argocd
   newTag: v2.0.1
-
+- name: redis
+  newName: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/redis
