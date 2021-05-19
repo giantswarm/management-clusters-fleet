@@ -5,11 +5,12 @@ GitOps for Giant Swarm management clusters
 ## Layout
 
 - AppProject: `argocd` contains:
-  - Application: `projects` manages:
-    - `argocd` AppProject
-    - `collections` AppProject
   - Application: `argocd` manages:
-    - Upstream Argo CD manifests stored in `build/argocd/`
+    -  upstream Argo CD manifests
+    - `argocd` AppProject CR
+    - `argocd` Application CR
+    - `collections` AppProject CR
+    - `provider-collection` Application CR
   - Application: `provider-collection` manages:
     - Manifests from the provider-specific app collection
 
