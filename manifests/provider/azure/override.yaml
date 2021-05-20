@@ -26,6 +26,7 @@ metadata:
 spec:
   description: Management Cluster Azure collection
   sourceRepos:
+    - 'https://github.com/giantswarm/config.git'
     - 'https://github.com/giantswarm/azure-app-collection.git'
 ---
 apiVersion: argoproj.io/v1alpha1

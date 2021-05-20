@@ -2921,6 +2921,7 @@ spec:
   - group: application.giantswarm.io
     kind: Chart
   sourceRepos:
+  - https://github.com/giantswarm/config.git
   - https://github.com/giantswarm/azure-app-collection.git
 ---
 apiVersion: argoproj.io/v1alpha1

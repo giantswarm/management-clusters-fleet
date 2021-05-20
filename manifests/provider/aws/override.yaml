@@ -26,6 +26,7 @@ metadata:
 spec:
   description: Management Cluster AWS collection
   sourceRepos:
+    - 'https://github.com/giantswarm/config.git'
     - 'https://github.com/giantswarm/aws-app-collection.git'
 ---
 apiVersion: argoproj.io/v1alpha1
