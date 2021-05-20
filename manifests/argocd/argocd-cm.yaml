@@ -21,9 +21,7 @@ data:
           --app-catalog=${KONFIGURE_APP_CATALOG}
           --app-version=${KONFIGURE_APP_VERSION}
           --name=${ARGOCD_APP_NAME}
-          --namespace=${ARGOCD_APP_NAMESPACE}
-          --vault-secret-name=argocd-vault-token
-          --vault-secret-namespace=argocd"
+          --namespace=${ARGOCD_APP_NAMESPACE}"
   repository.credentials: |
     - url: https://github.com/giantswarm
       usernameSecret:

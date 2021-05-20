@@ -12,10 +12,31 @@ spec:
       automountServiceAccountToken: true
       containers:
       - name: argocd-repo-server
+        env:
+        - name: VAULT_ADDR
+          valueFrom:
+            configMapKeyRef:
+              key: VAULT_ADDR
+              name: management-cluster-metadata
+        - name: VAULT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: token
+              name: argocd-vault-token
+        - name: VAULT_CAPATH
+          value: /app/config/host-certs
+        - name: KONFIGURE_INSTALLATION
+          valueFrom:
+            configMapKeyRef:
+              key: NAME
+              name: management-cluster-metadata
         volumeMounts:
         - mountPath: /usr/local/bin/konfigure
           name: giantswarm-bin
           subPath: konfigure
+        - mountPath: /app/config/host-certs/ca-certificates.crt
+          name: host-certs
+          subPath: ca-certificates.crt
       initContainers:
       - args:
         - --vault-address=$(VAULT_ADDR)
@@ -26,7 +47,7 @@ spec:
         - name: VAULT_ADDR
           valueFrom:
             configMapKeyRef:
-              name: vault-address
+              name: management-cluster-metadata
               key: VAULT_ADDR
         image: "giantswarm/k8s-jwt-to-vault-token:0.1.0"
         imagePullPolicy: IfNotPresent
@@ -44,3 +65,8 @@ spec:
       volumes:
       - name: giantswarm-bin
         emptyDir: {}
+      - hostPath:
+          path: /etc/ssl/certs
+          type: ""
+        name: host-certs
+
