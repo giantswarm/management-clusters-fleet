@@ -2383,10 +2383,10 @@ data:
         - "konfigure generate
           --installation=${KONFIGURE_INSTALLATION}
           --app-name=${KONFIGURE_APP_NAME}
+          --app-destination-namespace=${ARGOCD_APP_NAMESPACE}
           --app-catalog=${KONFIGURE_APP_CATALOG}
           --app-version=${KONFIGURE_APP_VERSION}
-          --name=${ARGOCD_APP_NAME}
-          --namespace=${ARGOCD_APP_NAMESPACE}"
+          --name=${ARGOCD_APP_NAME}"
   repositories: |
     - url: https://github.com/giantswarm/config
     - url: https://github.com/giantswarm/aws-app-collection
