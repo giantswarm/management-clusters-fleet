@@ -2058,6 +2058,28 @@ metadata:
   name: argocd-server
   namespace: argocd
 ---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: argocd-repo-server
+spec:
+  allowPrivilegeEscalation: false
+  fsGroup:
+    rule: RunAsAny
+  runAsGroup:
+    rule: RunAsAny
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+  - secret
+  - configMap
+  - hostPath
+  - emptyDir
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -2139,6 +2161,14 @@ rules:
   - update
   - patch
   - delete
+- apiGroups:
+  - extensions
+  resourceNames:
+  - argocd-repo-server
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -2356,9 +2386,7 @@ data:
           --app-catalog=${KONFIGURE_APP_CATALOG}
           --app-version=${KONFIGURE_APP_VERSION}
           --name=${ARGOCD_APP_NAME}
-          --namespace=${ARGOCD_APP_NAMESPACE}
-          --vault-secret-name=argocd-vault-token
-          --vault-secret-namespace=argocd"
+          --namespace=${ARGOCD_APP_NAMESPACE}"
   repositories: |
     - url: https://github.com/giantswarm/config
     - url: https://github.com/giantswarm/vmware-app-collection
@@ -2622,6 +2650,24 @@ spec:
         - argocd-repo-server
         - --redis
         - argocd-redis:6379
+        env:
+        - name: VAULT_ADDR
+          valueFrom:
+            configMapKeyRef:
+              key: VAULT_ADDR
+              name: management-cluster-metadata
+        - name: VAULT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: token
+              name: argocd-vault-token
+        - name: VAULT_CAPATH
+          value: /app/config/host-certs
+        - name: KONFIGURE_INSTALLATION
+          valueFrom:
+            configMapKeyRef:
+              key: NAME
+              name: management-cluster-metadata
         image: quay.io/giantswarm/argocd:v2.0.1
         imagePullPolicy: Always
         livenessProbe:
@@ -2650,6 +2696,9 @@ spec:
         - mountPath: /usr/local/bin/konfigure
           name: giantswarm-bin
           subPath: konfigure
+        - mountPath: /app/config/host-certs/ca-certificates.crt
+          name: host-certs
+          subPath: ca-certificates.crt
         - mountPath: /app/config/ssh
           name: ssh-known-hosts
         - mountPath: /app/config/tls
@@ -2671,7 +2720,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: VAULT_ADDR
-              name: vault-address
+              name: management-cluster-metadata
         image: giantswarm/k8s-jwt-to-vault-token:0.1.0
         imagePullPolicy: IfNotPresent
         name: ensure-vault-token
@@ -2690,6 +2739,10 @@ spec:
       volumes:
       - emptyDir: {}
         name: giantswarm-bin
+      - hostPath:
+          path: /etc/ssl/certs
+          type: ""
+        name: host-certs
       - configMap:
           name: argocd-ssh-known-hosts-cm
         name: ssh-known-hosts
