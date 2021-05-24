@@ -2961,6 +2961,8 @@ metadata:
 spec:
   description: Management Cluster KVM Collection
   destinations:
+  - namespace: argocd
+    server: https://kubernetes.default.svc
   - namespace: giantswarm
     server: https://kubernetes.default.svc
   - namespace: monitoring
