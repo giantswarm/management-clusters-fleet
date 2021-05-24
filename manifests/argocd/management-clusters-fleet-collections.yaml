@@ -11,6 +11,8 @@ spec:
   sourceRepos:
     - '*'
   destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
     - namespace: giantswarm
       server: https://kubernetes.default.svc
     - namespace: monitoring
