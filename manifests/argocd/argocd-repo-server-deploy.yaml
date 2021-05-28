@@ -55,7 +55,7 @@ spec:
       - args:
         - "cp konfigure /giantswarm-bin && chmod +x /giantswarm-bin/konfigure"
         command: ["sh", "-c"]
-        image: "giantswarm/konfigure:0.3.0"
+        image: "giantswarm/konfigure:0.3.2"
         imagePullPolicy: IfNotPresent
         name: download-konfigure
         volumeMounts:
