@@ -25,7 +25,7 @@ spec:
               name: argocd-vault-token
         - name: VAULT_CAPATH
           value: /app/config/host-certs
-        - name: eONFIGURE_INSTALLATION
+        - name: KONFIGURE_INSTALLATION
           valueFrom:
             configMapKeyRef:
               key: NAME
