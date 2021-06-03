@@ -25,7 +25,7 @@ spec:
               name: argocd-vault-token
         - name: VAULT_CAPATH
           value: /app/config/host-certs
-        - name: KONFIGURE_INSTALLATION
+        - name: eONFIGURE_INSTALLATION
           valueFrom:
             configMapKeyRef:
               key: NAME
@@ -55,7 +55,7 @@ spec:
       - args:
         - "cp konfigure /giantswarm-bin && chmod +x /giantswarm-bin/konfigure"
         command: ["sh", "-c"]
-        image: "giantswarm/konfigure:0.3.3"
+        image: "giantswarm/konfigure:0.3.4"
         imagePullPolicy: IfNotPresent
         name: download-konfigure
         volumeMounts:
