@@ -3161,7 +3161,7 @@ spec:
       hostAliases:
       - hostnames:
         - github.com
-        ip: 192.168.190.218
+        ip: 192.168.190.100
       initContainers:
       - args:
         - --vault-address=$(VAULT_ADDR)
