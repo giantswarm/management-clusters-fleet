@@ -1,12 +1,6 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: argocd-repo-server
-spec:
-  template:
-    spec:
-      hostAliases:
-      - ip: "192.168.190.100"
-        hostnames:
-        - "github.com"
-      - $patch: replace
+- op: replace
+  path: /spec/template/spec/hostAliases
+  value:
+  - ip: "192.168.190.100"
+    hostnames:
+    - "github.com"
