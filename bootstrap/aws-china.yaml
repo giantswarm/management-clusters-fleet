@@ -3158,6 +3158,10 @@ spec:
           name: gpg-keyring
         - mountPath: /app/config/reposerver/tls
           name: argocd-repo-server-tls
+      hostAliases:
+      - hostnames:
+        - github.com
+        ip: 192.168.190.100
       initContainers:
       - args:
         - --vault-address=$(VAULT_ADDR)

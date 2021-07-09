@@ -1,10 +1,19 @@
 bases:
 - ../aws
-patchesStrategicMerge:
-- override.yaml
+
 images:
 - name: quay.io/giantswarm/argocd
   newName: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/argocd
   newTag: v2.0.1
 - name: redis
   newName: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/redis
+
+patchesStrategicMerge:
+- override.yaml
+
+patchesJson6902:
+- target:
+    version: v1
+    kind: Deployment
+    name: argocd-repo-server
+  path: argocd-repo-server-deploy-patch.yaml

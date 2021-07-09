@@ -7,4 +7,3 @@ metadata:
 spec:
   source:
     path: manifests/provider/aws-china
-
