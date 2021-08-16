@@ -37,4 +37,4 @@ metadata:
 spec:
   source:
     repoURL: https://github.com/giantswarm/kvm-app-collection.git
-    path: helm/kvm-app-collection-chart/templates
+    path: manifests 
