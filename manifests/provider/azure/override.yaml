@@ -38,4 +38,4 @@ spec:
   project: collections
   source:
     repoURL: https://github.com/giantswarm/azure-app-collection.git
-    path: helm/azure-app-collection-chart/templates
+    path: manifests

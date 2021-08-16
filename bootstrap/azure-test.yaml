@@ -3459,7 +3459,7 @@ spec:
     server: https://kubernetes.default.svc
   project: collections
   source:
-    path: helm/azure-app-collection-chart/templates
+    path: manifests
     repoURL: https://github.com/giantswarm/azure-app-collection.git
     targetRevision: master
   syncPolicy:

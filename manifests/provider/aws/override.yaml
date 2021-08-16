@@ -37,4 +37,4 @@ metadata:
 spec:
   source:
     repoURL: https://github.com/giantswarm/aws-app-collection.git
-    path: helm/aws-app-collection-chart/templates
+    path: manifests

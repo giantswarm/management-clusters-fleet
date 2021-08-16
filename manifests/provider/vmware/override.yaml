@@ -37,4 +37,4 @@ metadata:
 spec:
   source:
     repoURL: https://github.com/giantswarm/vmware-app-collection.git
-    path: helm/vmware-app-collection-chart/templates
+    path: manifests
