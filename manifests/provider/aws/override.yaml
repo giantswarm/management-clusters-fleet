@@ -37,4 +37,4 @@ metadata:
 spec:
   source:
     repoURL: https://github.com/giantswarm/aws-app-collection.git
-    path: manifests 
+    path: manifests
