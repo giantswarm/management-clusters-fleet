@@ -9,6 +9,7 @@ patchesStrategicMerge:
 - argocd-cm.yaml
 - argocd-repo-server-deploy.yaml
 - delete-dex.yaml
+- metrics.yaml
 resources:
 - argocd-repo-server-sa.yaml
 - argocd-repo-server-psp.yaml
