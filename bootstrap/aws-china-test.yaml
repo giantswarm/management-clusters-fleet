@@ -3463,7 +3463,7 @@ spec:
     server: https://kubernetes.default.svc
   project: collections
   source:
-    path: helm/aws-app-collection-chart/templates
+    path: manifests
     repoURL: https://github.com/giantswarm/aws-app-collection.git
     targetRevision: master
   syncPolicy:

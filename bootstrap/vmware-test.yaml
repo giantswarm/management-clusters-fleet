@@ -3459,7 +3459,7 @@ spec:
     server: https://kubernetes.default.svc
   project: collections
   source:
-    path: helm/vmware-app-collection-chart/templates
+    path: manifests
     repoURL: https://github.com/giantswarm/vmware-app-collection.git
     targetRevision: master
   syncPolicy:
