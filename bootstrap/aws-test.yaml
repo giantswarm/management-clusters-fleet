@@ -2914,10 +2914,13 @@ type: Opaque
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    giantswarm.io/monitoring-port: "8082"
   labels:
     app.kubernetes.io/component: metrics
     app.kubernetes.io/name: argocd-metrics
     app.kubernetes.io/part-of: argocd
+    giantswarm.io/monitoring: "true"
   name: argocd-metrics
   namespace: argocd
 spec:
