@@ -3240,7 +3240,7 @@ spec:
               key: reposerver.default.cache.expiration
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: quay.io/giantswarm/argocd:v2.1.0
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -3519,7 +3519,7 @@ spec:
               key: server.default.cache.expiration
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: quay.io/giantswarm/argocd:v2.1.0
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -3710,7 +3710,7 @@ spec:
               key: controller.default.cache.expiration
               name: argocd-cmd-params-cm
               optional: true
-        image: quay.io/giantswarm/argocd:v2.0.1
+        image: quay.io/giantswarm/argocd:v2.1.0
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -3811,7 +3811,7 @@ spec:
   source:
     path: manifests/provider/azure-test
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: main
+    targetRevision: upgrade-argo-to-v2.1.0
   syncPolicy:
     automated:
       allowEmpty: true
