@@ -3181,7 +3181,7 @@ spec:
         command:
         - sh
         - -c
-        image: giantswarm/konfigure:0.3.4
+        image: giantswarm/konfigure:0.3.7
         imagePullPolicy: IfNotPresent
         name: download-konfigure
         volumeMounts:
