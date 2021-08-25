@@ -38,5 +38,5 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      allowEmpty: true
+      allowEmpty: false
       selfHeal: true
