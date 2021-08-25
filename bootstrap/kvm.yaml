@@ -3447,8 +3447,8 @@ spec:
     targetRevision: main
   syncPolicy:
     automated:
-      allowEmpty: true
-      prune: false
+      allowEmpty: false
+      prune: true
       selfHeal: true
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -3467,6 +3467,6 @@ spec:
     targetRevision: master
   syncPolicy:
     automated:
-      allowEmpty: true
+      allowEmpty: false
       prune: true
       selfHeal: true
