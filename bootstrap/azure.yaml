@@ -2836,17 +2836,6 @@ data:
           --app-catalog=${KONFIGURE_APP_CATALOG}
           --app-version=${KONFIGURE_APP_VERSION}
           --name=${ARGOCD_APP_NAME}"
-  repositories: |
-    - url: https://github.com/giantswarm/config
-    - url: https://github.com/giantswarm/azure-app-collection
-  repository.credentials: |
-    - url: https://github.com/giantswarm
-      usernameSecret:
-        name: github-giantswarm-https-credentials
-        key: username
-      passwordSecret:
-        name: github-giantswarm-https-credentials
-        key: password
 kind: ConfigMap
 metadata:
   labels:
@@ -2910,6 +2899,26 @@ metadata:
   name: argocd-secret
   namespace: argocd
 type: Opaque
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    argocd.argoproj.io/secret-type: repository
+  name: repository-azure-app-collection
+  namespace: argocd
+stringData:
+  url: https://github.com/giantswarm/azure-app-collection
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    argocd.argoproj.io/secret-type: repository
+  name: repository-config
+  namespace: argocd
+stringData:
+  url: https://github.com/giantswarm/config
 ---
 apiVersion: v1
 kind: Service

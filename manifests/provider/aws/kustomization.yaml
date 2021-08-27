@@ -1,4 +1,6 @@
 bases:
 - ../../argocd
+resources:
+- repository-aws-app-collection.yaml
 patchesStrategicMerge:
 - override.yaml

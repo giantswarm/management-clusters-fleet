@@ -16,3 +16,4 @@ resources:
 - argocd-repo-server-rbac.yaml
 - management-clusters-fleet-argocd.yaml
 - management-clusters-fleet-collections.yaml
+- repository-config.yaml
