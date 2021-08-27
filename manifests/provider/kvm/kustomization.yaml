@@ -1,4 +1,6 @@
 bases:
 - ../../argocd
+resources:
+- repository-kvm-app-collection.yaml
 patchesStrategicMerge:
 - override.yaml
