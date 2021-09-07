@@ -1,5 +1,6 @@
 bases:
 - ../../argocd
+- ../../bases/flux
 resources:
 - repository-vmware-app-collection.yaml
 patchesStrategicMerge:

@@ -1,4 +1,11 @@
 # This is an auto-generated file. DO NOT EDIT
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app.kubernetes.io/name: flux
+  name: flux
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -2941,6 +2948,18 @@ metadata:
   namespace: argocd
 ---
 apiVersion: v1
+data:
+  configmap-values.yaml: |
+    image:
+      registry: registry-intl.cn-shanghai.aliyuncs.com
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: flux
+  name: flux-values
+  namespace: giantswarm
+---
+apiVersion: v1
 kind: Secret
 metadata:
   labels:
@@ -3769,6 +3788,23 @@ spec:
           optional: true
           secretName: argocd-repo-server-tls
 ---
+apiVersion: application.giantswarm.io/v1alpha1
+kind: App
+metadata:
+  labels:
+    app.kubernetes.io/name: flux
+  name: flux
+  namespace: giantswarm
+spec:
+  catalog: giantswarm
+  config:
+    configMap:
+      name: flux-values
+      namespace: giantswarm
+  name: flux-app
+  namespace: flux
+  version: 0.3.0
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -3824,7 +3860,7 @@ spec:
   source:
     path: manifests/provider/aws-china
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: upgrade-argo-to-v2.1.0
+    targetRevision: main
   syncPolicy:
     automated:
       allowEmpty: false

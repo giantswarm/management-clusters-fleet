@@ -1,0 +1,14 @@
+apiVersion: application.giantswarm.io/v1alpha1
+kind: App
+metadata:
+  name: flux
+  namespace: giantswarm
+spec:
+  catalog: giantswarm
+  name: flux-app
+  namespace: flux
+  version: 0.3.0
+  config:
+    configMap:
+      name: flux-values
+      namespace: giantswarm
