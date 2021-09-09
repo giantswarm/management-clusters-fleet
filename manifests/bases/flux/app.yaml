@@ -4,9 +4,11 @@ metadata:
   name: flux
   namespace: giantswarm
 spec:
+  kubeConfig:
+    inCluster: true
   catalog: giantswarm
   name: flux-app
-  namespace: flux
+  namespace: flux-system
   version: 0.3.0
   config:
     configMap:
