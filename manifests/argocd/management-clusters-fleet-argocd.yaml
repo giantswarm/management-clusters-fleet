@@ -17,9 +17,9 @@ spec:
       server: https://kubernetes.default.svc
     - namespace: giantswarm
       server: https://kubernetes.default.svc
-  clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+  namespaceResourceBlacklist:
+    - group: 'application.giantswarm.io'
+      kind: Chart
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
