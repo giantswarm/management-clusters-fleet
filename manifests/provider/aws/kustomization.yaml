@@ -1,6 +1,6 @@
 bases:
 - ../../argocd
-- ../../bases/flux
+- ../../bases/provider
 resources:
 - repository-aws-app-collection.yaml
 patchesStrategicMerge:

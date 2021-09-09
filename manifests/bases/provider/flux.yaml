@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: flux
+  namespace: argocd
+spec:
+  project: applications
+  source:
+    repoURL: https://github.com/giantswarm/aws-app-collection.git
+    path: manifests/bases/flux
+    targetRevision: v0.3.0
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: flux-system
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: false
+      selfHeal: true

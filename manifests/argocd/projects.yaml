@@ -1,0 +1,24 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: applications
+spec:
+  namespaceResourceBlacklist:
+  - group: 'application.giantswarm.io'
+    kind: Chart
+  description: Giant Swarm apps installed directly from the management-clusters-fleet repository.
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+    - namespace: giantswarm
+      server: https://kubernetes.default.svc
+    - namespace: monitoring
+      server: https://kubernetes.default.svc
+    - namespace: kube-system
+      server: https://kubernetes.default.svc
+    - namespace: default
+      server: https://kubernetes.default.svc
+    - server: https://kubernetes.default.svc

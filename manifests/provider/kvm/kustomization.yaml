@@ -1,6 +1,6 @@
 bases:
 - ../../argocd
-- ../../bases/flux
+- ../../bases/provider
 resources:
 - repository-kvm-app-collection.yaml
 patchesStrategicMerge:

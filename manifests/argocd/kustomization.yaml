@@ -14,6 +14,7 @@ resources:
 - argocd-repo-server-sa.yaml
 - argocd-repo-server-psp.yaml
 - argocd-repo-server-rbac.yaml
+- projects.yaml
 - management-clusters-fleet-argocd.yaml
 - management-clusters-fleet-collections.yaml
 - repository-config.yaml
