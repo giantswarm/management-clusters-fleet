@@ -3816,6 +3816,13 @@ spec:
   destinations:
   - namespace: argocd
     server: https://kubernetes.default.svc
+  - namespace: flux-system
+    server: https://kubernetes.default.svc
+  - namespace: giantswarm
+    server: https://kubernetes.default.svc
+  namespaceResourceBlacklist:
+  - group: application.giantswarm.io
+    kind: Chart
   sourceRepos:
   - https://github.com/giantswarm/management-clusters-fleet.git
 ---
