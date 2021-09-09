@@ -3820,6 +3820,9 @@ spec:
     server: https://kubernetes.default.svc
   - namespace: giantswarm
     server: https://kubernetes.default.svc
+  namespaceResourceBlacklist:
+  - group: application.giantswarm.io
+    kind: Chart
   sourceRepos:
   - https://github.com/giantswarm/management-clusters-fleet.git
 ---
@@ -3862,7 +3865,7 @@ spec:
   source:
     path: manifests/provider/kvm-test
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: fix-flux2
+    targetRevision: main
   syncPolicy:
     automated:
       allowEmpty: false
