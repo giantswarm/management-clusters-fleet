@@ -1,4 +1,11 @@
 # This is an auto-generated file. DO NOT EDIT
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app.kubernetes.io/name: flux
+  name: flux-system
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -2941,6 +2948,18 @@ metadata:
   namespace: argocd
 ---
 apiVersion: v1
+data:
+  configmap-values.yaml: |
+    image:
+      registry: registry-intl.cn-shanghai.aliyuncs.com
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: flux
+  name: flux-values
+  namespace: giantswarm
+---
+apiVersion: v1
 kind: Secret
 metadata:
   labels:
@@ -3769,6 +3788,25 @@ spec:
           optional: true
           secretName: argocd-repo-server-tls
 ---
+apiVersion: application.giantswarm.io/v1alpha1
+kind: App
+metadata:
+  labels:
+    app.kubernetes.io/name: flux
+  name: flux
+  namespace: giantswarm
+spec:
+  catalog: giantswarm
+  config:
+    configMap:
+      name: flux-values
+      namespace: giantswarm
+  kubeConfig:
+    inCluster: true
+  name: flux-app
+  namespace: flux-system
+  version: 0.3.0
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -3824,7 +3862,7 @@ spec:
   source:
     path: manifests/provider/aws-china-test
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: upgrade-argo-to-v2.1.0
+    targetRevision: main
   syncPolicy:
     automated:
       allowEmpty: false
@@ -3850,6 +3888,57 @@ spec:
       allowEmpty: false
       prune: true
       selfHeal: false
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  labels:
+    app.kubernetes.io/name: flux
+  name: flux-multi-tenancy
+spec:
+  rules:
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - Kustomization
+        - HelmRelease
+    name: serviceAccountName
+    validate:
+      message: .spec.serviceAccountName is required
+      pattern:
+        spec:
+          serviceAccountName: ?*
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - Kustomization
+        - HelmRelease
+    name: sourceRefNamespace
+    preconditions:
+      any:
+      - key: '{{request.object.spec.sourceRef.namespace}}'
+        operator: NotEquals
+        value: ""
+    validate:
+      deny:
+        conditions:
+        - key: '{{request.object.spec.sourceRef.namespace}}'
+          operator: NotEquals
+          value: '{{request.object.metadata.namespace}}'
+      message: spec.sourceRef.namespace must be the same as metadata.namespace
+  validationFailureAction: enforce
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy

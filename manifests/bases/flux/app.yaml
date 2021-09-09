@@ -1,0 +1,16 @@
+apiVersion: application.giantswarm.io/v1alpha1
+kind: App
+metadata:
+  name: flux
+  namespace: giantswarm
+spec:
+  kubeConfig:
+    inCluster: true
+  catalog: giantswarm
+  name: flux-app
+  namespace: flux-system
+  version: 0.3.0
+  config:
+    configMap:
+      name: flux-values
+      namespace: giantswarm
