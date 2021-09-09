@@ -20,6 +20,9 @@ spec:
   namespaceResourceBlacklist:
     - group: 'application.giantswarm.io'
       kind: Chart
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
