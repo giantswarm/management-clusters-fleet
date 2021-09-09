@@ -8,3 +8,4 @@ resources:
   - namespace.yaml
   - configmap.yaml
   - app.yaml
+  - kyverno_cluster_policy.yaml
