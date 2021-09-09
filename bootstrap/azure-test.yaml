@@ -3883,6 +3883,57 @@ spec:
       prune: true
       selfHeal: false
 ---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  labels:
+    app.kubernetes.io/name: flux
+  name: flux-multi-tenancy
+spec:
+  rules:
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - Kustomization
+        - HelmRelease
+    name: serviceAccountName
+    validate:
+      message: .spec.serviceAccountName is required
+      pattern:
+        spec:
+          serviceAccountName: ?*
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - Kustomization
+        - HelmRelease
+    name: sourceRefNamespace
+    preconditions:
+      any:
+      - key: '{{request.object.spec.sourceRef.namespace}}'
+        operator: NotEquals
+        value: ""
+    validate:
+      deny:
+        conditions:
+        - key: '{{request.object.spec.sourceRef.namespace}}'
+          operator: NotEquals
+          value: '{{request.object.metadata.namespace}}'
+      message: spec.sourceRef.namespace must be the same as metadata.namespace
+  validationFailureAction: enforce
+---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
