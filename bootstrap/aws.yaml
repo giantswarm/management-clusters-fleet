@@ -3862,7 +3862,7 @@ spec:
   source:
     path: manifests/provider/aws
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: main
+    targetRevision: fix-flux2
   syncPolicy:
     automated:
       allowEmpty: false
