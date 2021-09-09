@@ -11,6 +11,10 @@ spec:
   destinations:
     - namespace: argocd
       server: https://kubernetes.default.svc
+    - namespace: flux-system
+      server: https://kubernetes.default.svc
+    - namespace: giantswarm
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
