@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: repository-legacy-app-collection
+  name: repository-rest-api-app-collection
   namespace: argocd
   labels:
     argocd.argoproj.io/secret-type: repository
 stringData:
-  url: https://github.com/giantswarm/legacy-app-collection
+  url: https://github.com/giantswarm/rest-api-app-collection
