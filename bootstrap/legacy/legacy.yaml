@@ -1,0 +1,20 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: legacy
+  namespace: argocd
+spec:
+  source:
+    path: bootstrap/legacy
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: legacy-collection
+  namespace: argocd
+spec:
+  project: collections
+  source:
+    repoURL: https://github.com/giantswarm/legacy-app-collection.git
+    path: manifests
