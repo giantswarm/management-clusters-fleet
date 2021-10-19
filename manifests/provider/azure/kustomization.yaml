@@ -3,5 +3,6 @@ bases:
 - ../../bases/flux
 resources:
 - repository-azure-app-collection.yaml
+- repository-legacy-app-collection.yaml
 patchesStrategicMerge:
 - override.yaml

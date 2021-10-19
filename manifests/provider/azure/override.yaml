@@ -18,6 +18,7 @@ spec:
   sourceRepos:
     - 'https://github.com/giantswarm/config.git'
     - 'https://github.com/giantswarm/azure-app-collection.git'
+    - 'https://github.com/giantswarm/legacy-app-collection.git'
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
