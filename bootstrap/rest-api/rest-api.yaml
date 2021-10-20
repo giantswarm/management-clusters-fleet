@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
     path: bootstrap/rest-api
-    targetRevision: legacy
+    targetRevision: main
   syncPolicy:
     automated:
       allowEmpty: false
