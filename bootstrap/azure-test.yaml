@@ -2990,6 +2990,16 @@ stringData:
   url: https://github.com/giantswarm/config
 ---
 apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    argocd.argoproj.io/secret-type: repository
+  name: repository-rest-api-app-collection
+  namespace: argocd
+stringData:
+  url: https://github.com/giantswarm/rest-api-app-collection
+---
+apiVersion: v1
 kind: Service
 metadata:
   annotations:
@@ -3851,6 +3861,7 @@ spec:
   sourceRepos:
   - https://github.com/giantswarm/config.git
   - https://github.com/giantswarm/azure-app-collection.git
+  - https://github.com/giantswarm/rest-api-app-collection.git
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
