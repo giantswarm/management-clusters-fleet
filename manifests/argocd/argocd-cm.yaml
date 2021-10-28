@@ -22,3 +22,34 @@ data:
           --app-catalog=${KONFIGURE_APP_CATALOG}
           --app-version=${KONFIGURE_APP_VERSION}
           --name=${ARGOCD_APP_NAME}"
+  # Helm status: https://github.com/helm/helm/blob/main/pkg/release/status.go
+  # ArgoCD status: https://github.com/argoproj/gitops-engine/blob/master/pkg/health/health.go
+  resource.customizations.health.application.giantswarm.io_Application: |
+    hs = {}
+    hs.status = "Progressing"
+    hs.message = "Waiting for Chart to be installed"
+    if obj.status ~= nil then
+      if obj.status.release ~= nil then
+        if obj.status.release.status == "Deployed" then
+          hs.status = "Healthy"
+        elseif obj.status.release.status == "Failed" then
+          hs.status = "Degraded"
+        elseif obj.status.release.status == "PendingInstall" then
+          hs.status = "Progressing"
+        elseif obj.status.release.status == "PendingRollback" then
+          hs.status = "Progressing"
+        elseif obj.status.release.status == "PendingUpgrade" then
+          hs.status = "Progressing"
+        elseif obj.status.release.status == "Superseded" then
+          hs.status = "Suspended"
+        elseif obj.status.release.status == "Uninstalled" then
+          hs.status = "Degraded"
+        elseif obj.status.release.status == "Uninstalling" then
+          hs.status = "Progressing"
+        else
+          hs.status = "Unknown"
+        end
+        hs.message = obj.status.release.reason
+      end
+    end
+    return hs
