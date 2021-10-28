@@ -2896,6 +2896,10 @@ data:
           hs.status = "Healthy"
         elseif obj.status.release.status == "failed" then
           hs.status = "Degraded"
+        elseif obj.status.release.status == "invalid-manifest" then
+          hs.status = "Degraded"
+        elseif obj.status.release.status == "not-installed" then
+          hs.status = "Degraded"
         elseif obj.status.release.status == "pending-install" then
           hs.status = "Progressing"
         elseif obj.status.release.status == "pending-rollback" then
@@ -2908,6 +2912,8 @@ data:
           hs.status = "Degraded"
         elseif obj.status.release.status == "uninstalling" then
           hs.status = "Progressing"
+        elseif obj.status.release.status == "validation-failed" then
+          hs.status = "Degraded"
         else
           hs.status = "Unknown"
         end
