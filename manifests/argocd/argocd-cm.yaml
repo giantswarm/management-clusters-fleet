@@ -24,27 +24,29 @@ data:
           --name=${ARGOCD_APP_NAME}"
   # Helm status: https://github.com/helm/helm/blob/main/pkg/release/status.go
   # ArgoCD status: https://github.com/argoproj/gitops-engine/blob/master/pkg/health/health.go
-  resource.customizations.health.application.giantswarm.io_Application: |
+  resource.customizations.health.application.giantswarm.io_App: |
     hs = {}
     hs.status = "Progressing"
     hs.message = "Waiting for Chart to be installed"
     if obj.status ~= nil then
       if obj.status.release ~= nil then
-        if obj.status.release.status == "Deployed" then
+        if obj.status.release.status == "already-exists" then
+          hs.status = "Degraded"
+        elseif obj.status.release.status == "deployed" then
           hs.status = "Healthy"
-        elseif obj.status.release.status == "Failed" then
+        elseif obj.status.release.status == "failed" then
           hs.status = "Degraded"
-        elseif obj.status.release.status == "PendingInstall" then
+        elseif obj.status.release.status == "pending-install" then
           hs.status = "Progressing"
-        elseif obj.status.release.status == "PendingRollback" then
+        elseif obj.status.release.status == "pending-rollback" then
           hs.status = "Progressing"
-        elseif obj.status.release.status == "PendingUpgrade" then
+        elseif obj.status.release.status == "pending-upgrade" then
           hs.status = "Progressing"
-        elseif obj.status.release.status == "Superseded" then
+        elseif obj.status.release.status == "superseded" then
           hs.status = "Suspended"
-        elseif obj.status.release.status == "Uninstalled" then
+        elseif obj.status.release.status == "uninstalled" then
           hs.status = "Degraded"
-        elseif obj.status.release.status == "Uninstalling" then
+        elseif obj.status.release.status == "uninstalling" then
           hs.status = "Progressing"
         else
           hs.status = "Unknown"
