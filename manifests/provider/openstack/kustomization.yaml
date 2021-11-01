@@ -1,0 +1,8 @@
+bases:
+- ../../argocd
+- ../../bases/flux
+resources:
+- repository-openstack-app-collection.yaml
+- repository-rest-api-app-collection.yaml
+patchesStrategicMerge:
+- override.yaml
