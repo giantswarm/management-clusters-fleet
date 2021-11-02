@@ -18,7 +18,6 @@ spec:
   sourceRepos:
     - 'https://github.com/giantswarm/config.git'
     - 'https://github.com/giantswarm/openstack-app-collection.git'
-    - 'https://github.com/giantswarm/rest-api-app-collection.git'
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
