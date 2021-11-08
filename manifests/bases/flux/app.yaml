@@ -3,6 +3,8 @@ kind: App
 metadata:
   name: flux
   namespace: giantswarm
+  labels:
+    app-operator.giantswarm.io/version: 0.0.0
 spec:
   kubeConfig:
     inCluster: true
