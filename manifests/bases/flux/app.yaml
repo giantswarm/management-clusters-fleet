@@ -9,7 +9,7 @@ spec:
   catalog: giantswarm
   name: flux-app
   namespace: flux-system
-  version: 0.3.0
+  version: 0.7.0
   config:
     configMap:
       name: flux-values
