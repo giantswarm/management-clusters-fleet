@@ -1,0 +1,30 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  source:
+    path: manifests/provider/openstack
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: collections
+  namespace: argocd
+spec:
+  description: Management Cluster openstack Collection
+  sourceRepos:
+    - 'https://github.com/giantswarm/config.git'
+    - 'https://github.com/giantswarm/openstack-app-collection.git'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: provider-collection
+  namespace: argocd
+spec:
+  source:
+    repoURL: https://github.com/giantswarm/openstack-app-collection.git
+    path: manifests
