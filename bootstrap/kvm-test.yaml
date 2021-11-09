@@ -3835,6 +3835,7 @@ apiVersion: application.giantswarm.io/v1alpha1
 kind: App
 metadata:
   labels:
+    app-operator.giantswarm.io/version: 0.0.0
     app.kubernetes.io/name: flux
   name: flux
   namespace: giantswarm
