@@ -3,13 +3,15 @@ kind: App
 metadata:
   name: flux
   namespace: giantswarm
+  labels:
+    app-operator.giantswarm.io/version: 0.0.0
 spec:
   kubeConfig:
     inCluster: true
   catalog: giantswarm
   name: flux-app
   namespace: flux-system
-  version: 0.3.0
+  version: 0.7.0
   config:
     configMap:
       name: flux-values
