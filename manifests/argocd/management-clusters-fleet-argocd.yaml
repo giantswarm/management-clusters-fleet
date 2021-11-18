@@ -3,6 +3,8 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   description: Management Clusters Fleet Argo CD
   # Allow manifests to deploy from any Git repos
@@ -27,6 +29,8 @@ kind: Application
 metadata:
   name: argocd
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   project: argocd
   source:

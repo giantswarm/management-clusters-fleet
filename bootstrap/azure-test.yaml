@@ -3939,6 +3939,8 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
   name: argocd
   namespace: argocd
 spec:
@@ -3962,6 +3964,8 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
   name: collections
   namespace: argocd
 spec:
@@ -3989,6 +3993,8 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
   name: argocd
   namespace: argocd
 spec:
@@ -4009,6 +4015,8 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
   name: provider-collection
   namespace: argocd
 spec:
