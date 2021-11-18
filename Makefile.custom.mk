@@ -8,7 +8,7 @@ KUSTOMIZE := bin/kustomize
 all: manifests/bases/upstream-argocd bootstrap
 
 .PHONY: manifests/bases/upstream-argocd
-manifests/bases/upstream-argocd: ARGOCD_VERSION := v2.1.0
+manifests/bases/upstream-argocd: ARGOCD_VERSION := v2.1.7
 manifests/bases/upstream-argocd: ARGOCD_REPOSITORY := https://github.com/argoproj/argo-cd.git
 manifests/bases/upstream-argocd: WORK_DIR := $(shell mktemp -d -t ci-XXXXXXXXXX)
 manifests/bases/upstream-argocd: $(KUSTOMIZE)
