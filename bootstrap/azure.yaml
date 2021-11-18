@@ -2,6 +2,8 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
   labels:
     app.kubernetes.io/name: flux
   name: flux-system
@@ -3033,6 +3035,8 @@ data:
       registry: docker.io
 kind: ConfigMap
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
   labels:
     app.kubernetes.io/name: flux
   name: flux-values
@@ -3919,6 +3923,8 @@ spec:
 apiVersion: application.giantswarm.io/v1alpha1
 kind: App
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
   labels:
     app-operator.giantswarm.io/version: 0.0.0
     app.kubernetes.io/name: flux
@@ -4037,6 +4043,8 @@ spec:
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
   labels:
     app.kubernetes.io/name: flux
   name: flux-multi-tenancy
