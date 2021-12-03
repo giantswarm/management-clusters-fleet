@@ -12,25 +12,22 @@ all: manifests/bases/flux-app bootstrap
 .PHONY: manifests/bases/flux-app
 manifests/bases/flux-app: FLUXAPP_VERSION := v0.7.1
 manifests/bases/flux-app: FLUXAPP_REPOSITORY := https://github.com/giantswarm/flux-app.git
-manifests/bases/flux-app: WORK_DIR := $(shell mktemp -d -t ci-XXXXXXXXXX)
-manifests/bases/flux-app: $(HELM)
+manifests/bases/flux-app:
 	@echo "====> $@"
-	git -c advice.detachedHead=false clone --quiet --depth 1 --branch ${FLUXAPP_VERSION} ${FLUXAPP_REPOSITORY} ${WORK_DIR}
-	mkdir -p manifests/bases/flux-app
-	echo "$(AUTOGENMSG)" > manifests/bases/flux-app/install.yaml
-	sed -i "s/version: 0.0.0/version: $(FLUXAPP_VERSION)/g" ${WORK_DIR}/helm/flux-app/Chart.yaml
-	$(HELM) template "flux-app-$(FLUXAPP_VERSION)" ${WORK_DIR}/helm/flux-app >> manifests/bases/flux-app/install.yaml
-	rm -rf $(WORK_DIR)
+	rm -rf manifests/bases/flux-app/
+	git -c advice.detachedHead=false clone --quiet --depth 1 --branch ${FLUXAPP_VERSION} ${FLUXAPP_REPOSITORY} manifests/bases/flux-app/
+	sed -i "s/version: 0.0.0/version: $(FLUXAPP_VERSION)/g" manifests/bases/flux-app/helm/flux-app/Chart.yaml
 
 BOOTSRAP_DEPS :=
 BOOTSRAP_DEPS += bootstrap/aws-flux.yaml
 bootstrap: $(BOOTSRAP_DEPS)
 
-bootstrap/%.yaml: $(KUSTOMIZE) $(MANIFESTS)
+bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)
 	@echo "====> $@"
 	mkdir -p bootstrap
 	echo "$(AUTOGENMSG)" > $@
-	$(KUSTOMIZE) build manifests/provider/$* >> $@
+	ln manifests/bases/flux-app/helm/flux-app/values.yaml manifests/provider/$*/values.yaml
+	$(KUSTOMIZE) build --enable-helm --helm-command="$(HELM)" manifests/provider/$* >> $@
 
 $(KUSTOMIZE): ## Download kustomize locally if necessary.
 	@echo "====> $@"

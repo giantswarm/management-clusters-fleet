@@ -1,0 +1,108 @@
+images:
+  registry: quay.io
+  helmController:
+    image: giantswarm/fluxcd-helm-controller
+  sourceController:
+    image: giantswarm/fluxcd-source-controller
+  kustomizeController:
+    image: giantswarm/fluxcd-kustomize-controller
+  notificationController:
+    image: giantswarm/fluxcd-notification-controller
+  imageAutomationController:
+    image: giantswarm/fluxcd-image-automation-controller
+  imageReflectorController:
+    image: giantswarm/fluxcd-image-reflector-controller
+
+# only GitRepository for now
+sources: []
+kustomizations: []
+
+sopsEncryption:
+  enabled: false
+  encryptionKeys: []
+
+crds:
+  install: true
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "250m"
+    limits:
+      memory: "128Mi"
+      cpu: "500m"
+
+resources:
+  helmController:
+    limits:
+      cpu: 1000m
+      # Set max allowed memory limit for VPA due to high memory usage.
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+  imageAutomationController:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+  imageReflectorController:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+  kustomizeController:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+  notificationController:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+  sourceController:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+upstreamMetricsPort: http-prom
+
+# allows VPA to be used if its installed in the cluster
+verticalPodAutoscaler:
+  enabled: false
+
+# allows to change the persistentVolumeClaim request sizes
+volumes:
+  helmController:
+    temp:
+      size: 100Mi
+  imageAutomationController:
+    temp:
+      size: 100Mi
+  imageReflectorController:
+    temp:
+      size: 100Mi
+    data:
+      size: 100Mi
+  kustomizeController:
+    temp:
+      size: 100Mi
+  notificationController:
+    temp:
+      size: 100Mi
+  sourceController:
+    temp:
+      size: 100Mi
+    data:
+      size: 100Mi

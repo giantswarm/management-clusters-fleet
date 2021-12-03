@@ -1,4 +1,14 @@
+namespace: "flux-system"
 bases:
-- ../../bases/flux-app
+- ../../bases/additional-resources
+helmGlobals:
+  chartHome: ../../bases/flux-app/helm/
+helmCharts:
+  - name: flux-app
+    includeCRDs: true
+    valuesFile: values.yaml
+    valuesInline:
+      images:
+        registry: docker.io
 resources:
 - flux-kustomization.yaml
