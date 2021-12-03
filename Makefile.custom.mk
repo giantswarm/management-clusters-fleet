@@ -4,32 +4,26 @@ MANIFESTS := $(shell find manifests)
 
 KUSTOMIZE := bin/kustomize
 
-.PHONY: all
-all: manifests/bases/upstream-argocd bootstrap
+HELM := bin/helm
 
-.PHONY: manifests/bases/upstream-argocd
-manifests/bases/upstream-argocd: ARGOCD_VERSION := v2.1.0
-manifests/bases/upstream-argocd: ARGOCD_REPOSITORY := https://github.com/argoproj/argo-cd.git
-manifests/bases/upstream-argocd: WORK_DIR := $(shell mktemp -d -t ci-XXXXXXXXXX)
-manifests/bases/upstream-argocd: $(KUSTOMIZE)
+.PHONY: all
+all: manifests/bases/flux-app bootstrap
+
+.PHONY: manifests/bases/flux-app
+manifests/bases/flux-app: FLUXAPP_VERSION := v0.7.1
+manifests/bases/flux-app: FLUXAPP_REPOSITORY := https://github.com/giantswarm/flux-app.git
+manifests/bases/flux-app: WORK_DIR := $(shell mktemp -d -t ci-XXXXXXXXXX)
+manifests/bases/flux-app: $(HELM)
 	@echo "====> $@"
-	git -c advice.detachedHead=false clone --quiet --depth 1 --branch ${ARGOCD_VERSION} ${ARGOCD_REPOSITORY} ${WORK_DIR}
-	mkdir -p manifests/bases/upstream-argocd
-	echo "$(AUTOGENMSG)" > manifests/bases/upstream-argocd/install.yaml
-	$(KUSTOMIZE) build "$(WORK_DIR)/manifests/cluster-install" >> manifests/bases/upstream-argocd/install.yaml
+	git -c advice.detachedHead=false clone --quiet --depth 1 --branch ${FLUXAPP_VERSION} ${FLUXAPP_REPOSITORY} ${WORK_DIR}
+	mkdir -p manifests/bases/flux-app
+	echo "$(AUTOGENMSG)" > manifests/bases/flux-app/install.yaml
+	sed -i "s/version: 0.0.0/version: $(FLUXAPP_VERSION)/g" ${WORK_DIR}/helm/flux-app/Chart.yaml
+	$(HELM) template "flux-app-$(FLUXAPP_VERSION)" ${WORK_DIR}/helm/flux-app >> manifests/bases/flux-app/install.yaml
 	rm -rf $(WORK_DIR)
 
 BOOTSRAP_DEPS :=
-BOOTSRAP_DEPS += bootstrap/aws.yaml
-BOOTSRAP_DEPS += bootstrap/aws-test.yaml
-BOOTSRAP_DEPS += bootstrap/aws-china.yaml
-BOOTSRAP_DEPS += bootstrap/aws-china-test.yaml
-BOOTSRAP_DEPS += bootstrap/azure.yaml
-BOOTSRAP_DEPS += bootstrap/azure-test.yaml
-BOOTSRAP_DEPS += bootstrap/kvm.yaml
-BOOTSRAP_DEPS += bootstrap/kvm-test.yaml
-BOOTSRAP_DEPS += bootstrap/vmware.yaml
-BOOTSRAP_DEPS += bootstrap/vmware-test.yaml
+BOOTSRAP_DEPS += bootstrap/aws-flux.yaml
 bootstrap: $(BOOTSRAP_DEPS)
 
 bootstrap/%.yaml: $(KUSTOMIZE) $(MANIFESTS)
@@ -41,6 +35,10 @@ bootstrap/%.yaml: $(KUSTOMIZE) $(MANIFESTS)
 $(KUSTOMIZE): ## Download kustomize locally if necessary.
 	@echo "====> $@"
 	$(call go-get-tool,$(KUSTOMIZE),sigs.k8s.io/kustomize/kustomize/v4@v4.4.1)
+
+$(HELM): ## Download helm locally if necessary.
+	@echo "====> $@"
+	$(call go-get-tool,$(HELM),helm.sh/helm/v3@v3.7.1)
 
 # go-get-tool will 'go get' any package $2 and install it to $1.
 PROJECT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
