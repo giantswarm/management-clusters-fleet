@@ -40,7 +40,7 @@ bootstrap/%.yaml: $(KUSTOMIZE) $(MANIFESTS)
 
 $(KUSTOMIZE): ## Download kustomize locally if necessary.
 	@echo "====> $@"
-	$(call go-get-tool,$(KUSTOMIZE),sigs.k8s.io/kustomize/kustomize/v4@v4.1.2)
+	$(call go-get-tool,$(KUSTOMIZE),sigs.k8s.io/kustomize/kustomize/v4@v4.4.1)
 
 # go-get-tool will 'go get' any package $2 and install it to $1.
 PROJECT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
