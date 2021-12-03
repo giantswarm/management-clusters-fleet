@@ -1,3 +1,8 @@
 resources:
+- namespace.yaml
 - install.yaml
 - gitrepository.yaml
+- kyverno-policies.yaml
+
+#TODO: image repositories for China
+#TODO: github proxy for china
