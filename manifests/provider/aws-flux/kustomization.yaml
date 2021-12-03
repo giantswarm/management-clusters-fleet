@@ -1,2 +1,4 @@
 bases:
 - ../../bases/flux-app
+resources:
+- flux-kustomization.yaml
