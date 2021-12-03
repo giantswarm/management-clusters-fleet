@@ -1,6 +1,7 @@
 namespace: "flux-system"
 bases:
-- ../../bases/additional-resources
+- ../../additional-resources
+- ../../patches
 helmCharts:
   - name: flux-app
     includeCRDs: true

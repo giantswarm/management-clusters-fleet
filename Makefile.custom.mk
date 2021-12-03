@@ -7,11 +7,11 @@ KUSTOMIZE := ./bin/kustomize
 HELM := ./bin/helm
 
 .PHONY: all
-all: manifests/bases/flux-app bootstrap
+all: manifests/flux-app bootstrap
 
-.PHONY: manifests/bases/flux-app
-manifests/bases/flux-app: FLUXAPP_VERSION := v0.7.1
-manifests/bases/flux-app:
+.PHONY: manifests/flux-app
+manifests/flux-app: FLUXAPP_VERSION := v0.7.1
+manifests/flux-app:
 	@echo "====> $@"
 	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "s/version: .*/version: $(FLUXAPP_VERSION)/g" {}
 
