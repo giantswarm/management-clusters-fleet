@@ -13,6 +13,7 @@ all: manifests/flux-app bootstrap
 manifests/flux-app: FLUXAPP_VERSION := v0.7.1
 manifests/flux-app:
 	@echo "====> $@"
+	git clean -fxd manifests/provider/
 	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "s/version: .*/version: $(FLUXAPP_VERSION)/g" {}
 
 BOOTSRAP_DEPS :=
