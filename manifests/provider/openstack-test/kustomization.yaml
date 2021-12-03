@@ -1,4 +1,0 @@
-resources:
-- ../openstack
-patchesStrategicMerge:
-- override.yaml
