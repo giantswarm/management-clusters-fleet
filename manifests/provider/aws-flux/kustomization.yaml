@@ -1,12 +1,11 @@
 namespace: "flux-system"
 bases:
 - ../../bases/additional-resources
-helmGlobals:
-  chartHome: ../../bases/flux-app/helm/
 helmCharts:
   - name: flux-app
     includeCRDs: true
-    valuesFile: values.yaml
+    repo: https://giantswarm.github.io/giantswarm-catalog/
+    version: v0.7.1
     valuesInline:
       images:
         registry: docker.io

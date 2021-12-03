@@ -1,2 +1,2 @@
 bin
-manifests/provider/**/values.yaml
+manifests/provider/**/charts/

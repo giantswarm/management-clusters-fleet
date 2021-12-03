@@ -5467,7 +5467,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: helm-controller
   namespace: flux-system
 ---
@@ -5481,7 +5481,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: image-automation-controller
   namespace: flux-system
 ---
@@ -5495,7 +5495,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: image-reflector-controller
   namespace: flux-system
 ---
@@ -5509,7 +5509,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: kustomize-controller
   namespace: flux-system
 ---
@@ -5523,7 +5523,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: notification-controller
   namespace: flux-system
 ---
@@ -5537,7 +5537,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: source-controller
   namespace: flux-system
 ---
@@ -5586,7 +5586,7 @@ metadata:
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: flux-app-pvc-psp
 spec:
   allowPrivilegeEscalation: false
@@ -5659,7 +5659,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: crd-controller
 rules:
 - apiGroups:
@@ -5754,7 +5754,7 @@ metadata:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
     role: crd-install-hook
   name: flux-app-crd-install
   namespace: default
@@ -5777,7 +5777,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: cluster-reconciler
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -5801,7 +5801,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: crd-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -10252,7 +10252,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/monitoring: "true"
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: RELEASE-NAME-monitoring
   namespace: flux-system
 spec:
@@ -10277,7 +10277,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: notification-controller
   namespace: flux-system
 spec:
@@ -10304,7 +10304,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: source-controller
   namespace: flux-system
 spec:
@@ -10331,7 +10331,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: webhook-receiver
   namespace: flux-system
 spec:
@@ -10359,7 +10359,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: helm-controller
   namespace: flux-system
 spec:
@@ -10382,7 +10382,7 @@ spec:
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-v0.7.1
+        helm.sh/chart: flux-app-0.7.1
     spec:
       containers:
       - args:
@@ -10445,7 +10445,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: image-automation-controller
   namespace: flux-system
 spec:
@@ -10468,7 +10468,7 @@ spec:
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-v0.7.1
+        helm.sh/chart: flux-app-0.7.1
     spec:
       containers:
       - args:
@@ -10533,7 +10533,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: image-reflector-controller
   namespace: flux-system
 spec:
@@ -10556,7 +10556,7 @@ spec:
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-v0.7.1
+        helm.sh/chart: flux-app-0.7.1
     spec:
       containers:
       - args:
@@ -10625,7 +10625,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: kustomize-controller
   namespace: flux-system
 spec:
@@ -10648,7 +10648,7 @@ spec:
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-v0.7.1
+        helm.sh/chart: flux-app-0.7.1
     spec:
       containers:
       - args:
@@ -10713,7 +10713,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: notification-controller
   namespace: flux-system
 spec:
@@ -10736,7 +10736,7 @@ spec:
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-v0.7.1
+        helm.sh/chart: flux-app-0.7.1
     spec:
       containers:
       - args:
@@ -10802,7 +10802,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: source-controller
   namespace: flux-system
 spec:
@@ -10827,7 +10827,7 @@ spec:
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-v0.7.1
+        helm.sh/chart: flux-app-0.7.1
     spec:
       containers:
       - args:
@@ -11125,7 +11125,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: allow-egress
   namespace: flux-system
 spec:
@@ -11149,7 +11149,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: allow-scraping
   namespace: flux-system
 spec:
@@ -11178,7 +11178,7 @@ metadata:
     app.kubernetes.io/part-of: flux
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-v0.7.1
+    helm.sh/chart: flux-app-0.7.1
   name: allow-webhooks
   namespace: flux-system
 spec:

@@ -2,21 +2,18 @@ AUTOGENMSG := \# This is an auto-generated file. DO NOT EDIT
 
 MANIFESTS := $(shell find manifests)
 
-KUSTOMIZE := bin/kustomize
+KUSTOMIZE := ./bin/kustomize
 
-HELM := bin/helm
+HELM := ./bin/helm
 
 .PHONY: all
 all: manifests/bases/flux-app bootstrap
 
 .PHONY: manifests/bases/flux-app
 manifests/bases/flux-app: FLUXAPP_VERSION := v0.7.1
-manifests/bases/flux-app: FLUXAPP_REPOSITORY := https://github.com/giantswarm/flux-app.git
 manifests/bases/flux-app:
 	@echo "====> $@"
-	rm -rf manifests/bases/flux-app/
-	git -c advice.detachedHead=false clone --quiet --depth 1 --branch ${FLUXAPP_VERSION} ${FLUXAPP_REPOSITORY} manifests/bases/flux-app/
-	sed -i "s/version: 0.0.0/version: $(FLUXAPP_VERSION)/g" manifests/bases/flux-app/helm/flux-app/Chart.yaml
+	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "s/version: .*/version: $(FLUXAPP_VERSION)/g" {}
 
 BOOTSRAP_DEPS :=
 BOOTSRAP_DEPS += bootstrap/aws-flux.yaml
@@ -26,7 +23,6 @@ bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)
 	@echo "====> $@"
 	mkdir -p bootstrap
 	echo "$(AUTOGENMSG)" > $@
-	ln manifests/bases/flux-app/helm/flux-app/values.yaml manifests/provider/$*/values.yaml
 	$(KUSTOMIZE) build --enable-helm --helm-command="$(HELM)" manifests/provider/$* >> $@
 
 $(KUSTOMIZE): ## Download kustomize locally if necessary.
