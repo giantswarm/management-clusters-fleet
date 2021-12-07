@@ -31,7 +31,7 @@ metadata:
 spec:
   project: collections
   source:
-    targetRevision: master
+    targetRevision: hubble_auto_branch
   destination:
     server: https://kubernetes.default.svc
     namespace: giantswarm

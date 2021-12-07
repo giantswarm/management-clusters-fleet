@@ -3011,16 +3011,6 @@ kind: Secret
 metadata:
   labels:
     argocd.argoproj.io/secret-type: repository
-  name: repository-openstack-app-collection
-  namespace: argocd
-stringData:
-  url: https://github.com/giantswarm/openstack-app-collection
----
-apiVersion: v1
-kind: Secret
-metadata:
-  labels:
-    argocd.argoproj.io/secret-type: repository
   name: repository-config
   namespace: argocd
 stringData:
@@ -3031,10 +3021,10 @@ kind: Secret
 metadata:
   labels:
     argocd.argoproj.io/secret-type: repository
-  name: repository-rest-api-app-collection
+  name: repository-giantswarm-openstack-app-collection
   namespace: argocd
 stringData:
-  url: https://github.com/giantswarm/rest-api-app-collection
+  url: https://github.com/giantswarm/openstack-app-collection
 ---
 apiVersion: v1
 kind: Service
@@ -3880,7 +3870,7 @@ metadata:
   name: collections
   namespace: argocd
 spec:
-  description: Management Cluster OpenStack collection
+  description: Management Cluster openstack Collection
   destinations:
   - namespace: argocd
     server: https://kubernetes.default.svc
@@ -3913,7 +3903,7 @@ spec:
   source:
     path: manifests/provider/openstack-test
     repoURL: https://github.com/giantswarm/management-clusters-fleet.git
-    targetRevision: main
+    targetRevision: hubble_auto_branch
   syncPolicy:
     automated:
       allowEmpty: false
@@ -3933,7 +3923,7 @@ spec:
   source:
     path: manifests
     repoURL: https://github.com/giantswarm/openstack-app-collection.git
-    targetRevision: master
+    targetRevision: hubble_auto_branch
   syncPolicy:
     automated:
       allowEmpty: false
