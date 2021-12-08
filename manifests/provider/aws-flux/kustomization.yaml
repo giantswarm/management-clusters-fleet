@@ -6,6 +6,7 @@ helmCharts:
   - name: flux-app
     includeCRDs: true
     repo: https://giantswarm.github.io/giantswarm-catalog/
+    releaseName: giantswarm-flux
     version: v0.7.1
     valuesInline:
       images:
