@@ -10731,9 +10731,24 @@ spec:
         - sh
         - -c
         image: giantswarm/konfigure:0.3.8-a1f4aa86c884e60f457f8f3e7ee3ffa2aeae36cc
+        name: ensure-konfigure
         volumeMounts:
         - mountPath: /giantswarm-bin
           name: giantswarm-bin
+      - args:
+        - --vault-address=$(VAULT_ADDR)
+        - --vault-role=konfigure
+        - --vault-token-secret-name=flux-vault-token
+        - --vault-token-secret-namespace=flux-system
+        env:
+        - name: VAULT_ADDR
+          valueFrom:
+            configMapKeyRef:
+              key: VAULT_ADDR
+              name: management-cluster-metadata
+        image: docker.io/giantswarm/k8s-jwt-to-vault-token:0.1.0
+        imagePullPolicy: Always
+        name: ensure-vault-token
       securityContext:
         fsGroup: 1337
       serviceAccountName: kustomize-controller
@@ -11294,6 +11309,8 @@ spec:
   interval: 30s
   ref:
     branch: main
+  secretRef:
+    name: github-giantswarm-https-credentials
   url: https://github.com/giantswarm/config
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta1
