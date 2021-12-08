@@ -27,7 +27,7 @@ spec:
         - cp konfigure /giantswarm-bin && chmod +x /giantswarm-bin/konfigure
         command: ["sh", "-c"]
         # TODO: can we swap out the image in MAKEFILE please?
-        image: giantswarm/konfigure:0.3.8-a1f4aa86c884e60f457f8f3e7ee3ffa2aeae36cc
+        image: giantswarm/konfigure:0.3.8-80b493ce873a96e56f1c45288629e42e3bff3c10
         name: ensure-konfigure
         volumeMounts:
         - mountPath: /giantswarm-bin
@@ -70,7 +70,7 @@ spec:
                 # TODO: has to exist in flux-system - change provisioning doc
                 name: management-cluster-metadata
           - name: VAULT_CAPATH
-            value: /etc/ssl/certs/
+            value: /etc/ssl/certs/ca-certificates.crt
           - name: VAULT_TOKEN
             valueFrom:
               secretKeyRef:
@@ -80,6 +80,8 @@ spec:
         - mountPath: /plugins/konfigure
           name: giantswarm-bin
           subPath: konfigure
+        - mountPath: /home/controller/cache
+          name: cache
         - mountPath: /etc/ssl/certs/ca-certificates.crt
           name: ca-certs
         - mountPath: /etc/ssl/certs/
@@ -94,4 +96,6 @@ spec:
           type: ""
         name: ssl-certs
       - name: giantswarm-bin
+        emptyDir: {}
+      - name: cache
         emptyDir: {}
