@@ -28,6 +28,7 @@ spec:
         command: ["sh", "-c"]
         # TODO: can we swap out the image in MAKEFILE please?
         image: giantswarm/konfigure:0.3.8-a1f4aa86c884e60f457f8f3e7ee3ffa2aeae36cc
+        name: ensure-konfigure
         volumeMounts:
         - mountPath: /giantswarm-bin
           name: giantswarm-bin
