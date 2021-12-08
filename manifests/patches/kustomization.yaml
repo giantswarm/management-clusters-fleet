@@ -1,3 +1,0 @@
-namespace: "flux-system"
-patchesStrategicMerge:
-- kustomize-controller.yaml

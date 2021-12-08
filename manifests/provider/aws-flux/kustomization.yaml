@@ -1,7 +1,6 @@
 namespace: "flux-system"
 bases:
 - ../../additional-resources
-- ../../patches
 helmCharts:
   - name: flux-app
     includeCRDs: true
@@ -11,5 +10,8 @@ helmCharts:
     valuesInline:
       images:
         registry: docker.io
+patchesStrategicMerge:
+- ../../patches/flux-app-pvc-psp.yaml
+- ../../patches/kustomize-controller.yaml
 resources:
 - flux-kustomization.yaml

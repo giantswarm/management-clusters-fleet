@@ -19,7 +19,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kustomize-controller
-  namespace: flux-system
 spec:
   template:
     spec:
