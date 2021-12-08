@@ -2,9 +2,90 @@
 #TODO: vault access for kustomize-controller
 #TODO: github proxy for china
 #TODO: PVC mount
+
+# TODO: change provisioning process
+# ginger:thinkbook:~ k get cm -n argocd management-cluster-metadata -o yaml
+# apiVersion: v1
+# data:
+#   NAME: ginger
+#   VAULT_ADDR: https://vault.ginger.eu-west-1.aws.gigantic.io:443
+# kind: ConfigMap
+# metadata:
+#   name: management-cluster-metadata
+#   namespace: argocd
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kustomize-controller
   namespace: flux-system
-
+spec:
+  template:
+    spec:
+      initContainers:
+      - args:
+        - cp konfigure /giantswarm-bin && chmod +x /giantswarm-bin/konfigure
+        command: ["sh", "-c"]
+        # TODO: can we swap out the image in MAKEFILE please?
+        image: giantswarm/konfigure:0.3.8-a1f4aa86c884e60f457f8f3e7ee3ffa2aeae36cc
+        volumeMounts:
+        - mountPath: /giantswarm-bin
+          name: giantswarm-bin
+      - args:
+        - --vault-address=$(VAULT_ADDR)
+        - --vault-role=konfigure
+        - --vault-token-secret-name=flux-vault-token
+        - --vault-token-secret-namespace=flux-system
+        image: docker.io/giantswarm/k8s-jwt-to-vault-token:0.1.0
+        imagePullPolicy: Always
+        name: ensure-vault-token
+      containers:
+      - name: manager
+        # TODO: this is a forked kustomize-controller. Make it a part of our
+        # builds.
+        image: ghcr.io/kubasobon/kustomize-controller:latest
+        env:
+          - name: KONFIGURE_MODE
+            value: "kustomizepatch"
+          - name: KONFIGURE_INSTALLATION
+            valueFrom:
+              configMapKeyRef:
+                key: NAME
+                name: management-cluster-metadata
+          - name: KONFIGURE_GITREPO
+            value: "flux-system/giantswarm-config"
+          - name: KONFIGURE_SOURCE_SERVICE
+            value: "source-controller.flux-system.svc"
+          - name: VAULT_ADDR
+            valueFrom:
+              configMapKeyRef:
+                key: VAULT_ADDR
+                # TODO: has to exist in flux-system - change provisioning doc
+                name: management-cluster-metadata
+          - name: VAULT_CAPATH
+            value: /etc/ssl/certs/
+          - name: VAULT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: token
+                name: flux-vault-token
+        volumeMounts:
+        - mountPath: /plugins/konfigure
+          name: giantswarm-bin
+          subPath: konfigure
+        - mountPath: /etc/ssl/certs/ca-certificates.crt
+          name: ca-certs
+        - mountPath: /etc/ssl/certs/
+          name: ssl-certs
+      volumes:
+      - hostPath:
+          path: /etc/ssl/certs/ca-certificates.crt
+          type: ""
+        name: ca-certs
+      - hostPath:
+          path: /etc/ssl/certs/
+          type: ""
+        name: ssl-certs
+      - name: giantswarm-bin
+        emptyDir: {}

@@ -1,7 +1,8 @@
 namespace: "flux-system"   # where do we deploy "our" flux vs. customer's flux
 resources:
 - namespace.yaml
-- gitrepository.yaml
+- gitrepository-giantswarm-config.yaml
+- gitrepository-management-clusters-fleet.yaml
 - kyverno-policies.yaml
 
 #TODO: image repositories for China
