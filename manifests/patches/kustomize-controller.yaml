@@ -80,7 +80,7 @@ spec:
         - mountPath: /plugins/konfigure
           name: giantswarm-bin
           subPath: konfigure
-        - mountPath: /home/controller/cache
+        - mountPath: /tmp/konfigure-cache
           name: cache
         - mountPath: /etc/ssl/certs/ca-certificates.crt
           name: ca-certs
