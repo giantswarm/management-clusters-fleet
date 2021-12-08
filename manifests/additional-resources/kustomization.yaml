@@ -6,8 +6,6 @@ resources:
 
 #TODO: image repositories for China
 #TODO: github proxy for china
-#TODO: konfigure plugin
-#TODO: vault access for kustomize-controller
 # Docs:
 # https://github.com/kubernetes-sigs/kustomize/blob/master/examples/chart.md
 # https://cloud.google.com/anthos-config-management/docs/how-to/use-repo-kustomize-helm#helm_chart_fields

@@ -1,0 +1,10 @@
+#TODO: konfigure plugin
+#TODO: vault access for kustomize-controller
+#TODO: github proxy for china
+#TODO: PVC mount
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kustomize-controller
+  namespace: flux-system
+
