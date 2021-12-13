@@ -1,9 +1,9 @@
-namespace: "flux-system"
 bases:
-- ../../additional-resources
+- ../../giantswarm/additional-resources
 helmCharts:
   - name: flux-app
     includeCRDs: true
+    namespace: giantswarm-flux
     repo: https://giantswarm.github.io/giantswarm-catalog/
     releaseName: giantswarm-flux
     version: v0.7.1
@@ -11,7 +11,7 @@ helmCharts:
       images:
         registry: docker.io
 patchesStrategicMerge:
-- ../../patches/flux-app-pvc-psp.yaml
-- ../../patches/kustomize-controller.yaml
+- ../../giantswarm/patches/flux-app-pvc-psp.yaml
+- ../../giantswarm/patches/kustomize-controller.yaml
 resources:
 - flux-kustomization.yaml

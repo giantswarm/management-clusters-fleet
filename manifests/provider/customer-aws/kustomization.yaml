@@ -1,0 +1,15 @@
+bases:
+- ../../customer/additional-resources
+helmCharts:
+  - name: flux-app
+    includeCRDs: false
+    namespace: flux-system
+    repo: https://giantswarm.github.io/giantswarm-catalog/
+    releaseName: customer-flux
+    version: v0.7.1
+    valuesInline:
+      images:
+        registry: docker.io
+patchesStrategicMerge: []
+resources:
+- flux-kustomization.yaml

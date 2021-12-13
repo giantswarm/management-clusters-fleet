@@ -17,7 +17,8 @@ manifests/flux-app:
 	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "s/version: .*/version: $(FLUXAPP_VERSION)/g" {}
 
 BOOTSRAP_DEPS :=
-BOOTSRAP_DEPS += bootstrap/aws-flux.yaml
+BOOTSRAP_DEPS += bootstrap/gs-aws.yaml
+BOOTSRAP_DEPS += bootstrap/customer-aws.yaml
 bootstrap: $(BOOTSRAP_DEPS)
 
 bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)

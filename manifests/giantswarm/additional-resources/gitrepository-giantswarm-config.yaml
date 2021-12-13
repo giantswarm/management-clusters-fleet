@@ -3,7 +3,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: giantswarm-config
-  namespace: flux-system
+  namespace: giantswarm-flux
 spec:
   interval: 30s
   ref:
