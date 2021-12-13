@@ -8,6 +8,8 @@ helmCharts:
     releaseName: customer-flux
     version: v0.7.1
     valuesInline:
+      crds:
+        install: false
       images:
         registry: docker.io
 patchesStrategicMerge: []

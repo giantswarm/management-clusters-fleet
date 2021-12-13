@@ -8,6 +8,8 @@ helmCharts:
     releaseName: giantswarm-flux
     version: v0.7.1
     valuesInline:
+      crds:
+        install: true
       images:
         registry: docker.io
 patchesStrategicMerge:
