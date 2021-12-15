@@ -1,3 +1,4 @@
+namespace: "giantswarm-flux"
 bases:
 - ../../giantswarm/additional-resources
 helmCharts:
