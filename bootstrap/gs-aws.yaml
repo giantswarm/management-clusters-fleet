@@ -10667,9 +10667,9 @@ spec:
               key: NAME
               name: management-cluster-metadata
         - name: KONFIGURE_GITREPO
-          value: flux-system/giantswarm-config
+          value: giantswarm-flux/giantswarm-config
         - name: KONFIGURE_SOURCE_SERVICE
-          value: source-controller.flux-system.svc
+          value: source-controller.giantswarm-flux.svc
         - name: VAULT_ADDR
           valueFrom:
             configMapKeyRef:
@@ -10741,7 +10741,7 @@ spec:
         - --vault-address=$(VAULT_ADDR)
         - --vault-role=konfigure
         - --vault-token-secret-name=flux-vault-token
-        - --vault-token-secret-namespace=flux-system
+        - --vault-token-secret-namespace=giantswarm-flux
         env:
         - name: VAULT_ADDR
           valueFrom:
