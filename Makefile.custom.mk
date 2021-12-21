@@ -18,6 +18,7 @@ manifests/flux-app:
 
 BOOTSRAP_DEPS :=
 BOOTSRAP_DEPS += bootstrap/gs-aws.yaml
+BOOTSRAP_DEPS += bootstrap/gs-aws-china.yaml
 BOOTSRAP_DEPS += bootstrap/customer-aws.yaml
 bootstrap: $(BOOTSRAP_DEPS)
 
