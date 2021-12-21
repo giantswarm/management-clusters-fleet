@@ -11132,7 +11132,7 @@ metadata:
   namespace: giantswarm-flux
 spec:
   interval: 30s
-  path: ./manifests/provider/gs-aws
+  path: ./manifests/provider/gs-aws-china
   prune: true
   sourceRef:
     kind: GitRepository
