@@ -5779,7 +5779,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
-  name: cluster-reconciler
+  name: cluster-reconciler-giantswarm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -5803,7 +5803,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
-  name: crd-controller
+  name: crd-controller-giantswarm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

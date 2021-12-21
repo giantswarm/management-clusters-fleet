@@ -13,6 +13,21 @@ helmCharts:
         install: true
       images:
         registry: registry-intl.cn-shanghai.aliyuncs.com
+patches:
+- target:
+    kind: ClusterRoleBinding
+    name: cluster-reconciler
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cluster-reconciler-giantswarm
+- target:
+    kind: ClusterRoleBinding
+    name: crd-controller
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: crd-controller-giantswarm
 patchesJson6902:
   - target:
       group: apps
