@@ -13,6 +13,28 @@ helmCharts:
         install: false
       images:
         registry: docker.io
-patchesStrategicMerge: []
+patches:
+- target:
+    kind: ClusterRoleBinding
+    name: crd-controller
+  patch: |-
+    - op: replace
+      path: /kind
+      value: RoleBinding
+    - op: add
+      path: /metadata/namespace
+      value: flux-system
+- target:
+    kind: ClusterRoleBinding
+    name: cluster-reconciler
+  patch: |-
+    - op: replace
+      path: /kind
+      value: RoleBinding
+    - op: add
+      path: /metadata/namespace
+      value: flux-system
+patchesStrategicMerge:
+- ../../customer/patches/cluster-reconciler.yaml
 resources:
 - flux-kustomization.yaml
