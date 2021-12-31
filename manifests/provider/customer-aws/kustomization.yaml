@@ -34,7 +34,5 @@ patches:
     - op: add
       path: /metadata/namespace
       value: flux-system
-patchesStrategicMerge:
-- ../../customer/patches/rolebinding-cluster-reconciler.yaml
 resources:
 - flux-kustomization.yaml
