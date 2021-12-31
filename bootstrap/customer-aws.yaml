@@ -121,6 +121,23 @@ spec:
   - secret
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: flux-namespace-admin
+  namespace: flux-system
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+- nonResourceURLs:
+  - '*'
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
@@ -214,7 +231,7 @@ rules:
   - use
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/instance: customer-flux
@@ -225,10 +242,11 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: cluster-reconciler
+  namespace: flux-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
+  kind: Role
+  name: flux-namespace-admin
 subjects:
 - kind: ServiceAccount
   name: kustomize-controller
@@ -238,7 +256,7 @@ subjects:
   namespace: flux-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/instance: customer-flux
@@ -249,6 +267,7 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: crd-controller
+  namespace: flux-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
