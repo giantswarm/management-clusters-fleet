@@ -3,6 +3,7 @@ resources:
 - namespace.yaml
 - gitrepository-giantswarm-config.yaml
 - gitrepository-management-clusters-fleet.yaml
+- kustomization-collection.yaml
 
 #TODO: image repositories for China
 #TODO: github proxy for china
