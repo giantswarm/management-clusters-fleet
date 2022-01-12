@@ -10,5 +10,4 @@ spec:
     kind: GitRepository
     name: collection
     namespace: giantswarm-flux
-
-
+  targetNamespace: giantswarm
