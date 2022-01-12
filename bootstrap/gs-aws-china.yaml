@@ -11283,6 +11283,7 @@ spec:
     branch: master
   secretRef:
     name: github-giantswarm-https-credentials
+  targetNamespace: giantswarm
   timeout: 5m
   url: https://github.com/giantswarm/aws-app-collection
 ---
