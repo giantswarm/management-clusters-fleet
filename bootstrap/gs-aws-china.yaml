@@ -5587,7 +5587,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
-  name: flux-app-pvc-psp
+  name: flux-app-pvc-psp-giantswarm
 spec:
   allowPrivilegeEscalation: false
   fsGroup:
@@ -5661,7 +5661,7 @@ metadata:
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
-  name: crd-controller
+  name: crd-controller-giantswarm
 rules:
 - apiGroups:
   - source.toolkit.fluxcd.io
@@ -5737,7 +5737,7 @@ rules:
 - apiGroups:
   - policy
   resourceNames:
-  - flux-app-pvc-psp
+  - flux-app-pvc-psp-giantswarm
   resources:
   - podsecuritypolicies
   verbs:
@@ -5807,7 +5807,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: crd-controller
+  name: crd-controller-giantswarm
 subjects:
 - kind: ServiceAccount
   name: kustomize-controller
