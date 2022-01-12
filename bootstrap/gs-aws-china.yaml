@@ -10718,6 +10718,9 @@ spec:
         - mountPath: /plugins/konfigure
           name: giantswarm-bin
           subPath: konfigure
+        - mountPath: /usr/bin/helmV3
+          name: helm-bin
+          subPath: helmV3
         - mountPath: /tmp/konfigure-cache
           name: cache
         - mountPath: /etc/ssl/certs/ca-certificates.crt
@@ -10727,6 +10730,20 @@ spec:
         - mountPath: /tmp
           name: temp
       initContainers:
+      - args:
+        - cp $(which helm) /helm-bin/helmV3 && chmod +x /helm-bin/helmV3
+        command:
+        - sh
+        - -c
+        image: alpine/helm:3.6.3
+        imagePullPolicy: IfNotPresent
+        name: ensure-helm
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /helm-bin
+          name: helm-bin
       - args:
         - cp konfigure /giantswarm-bin && chmod +x /giantswarm-bin/konfigure
         command:
@@ -10764,6 +10781,8 @@ spec:
           path: /etc/ssl/certs/
           type: ""
         name: ssl-certs
+      - emptyDir: {}
+        name: helm-bin
       - emptyDir: {}
         name: giantswarm-bin
       - emptyDir: {}
