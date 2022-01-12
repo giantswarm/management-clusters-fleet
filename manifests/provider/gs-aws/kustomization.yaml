@@ -76,3 +76,4 @@ patchesStrategicMerge:
 - ../../giantswarm/patches/kustomize-controller.yaml
 resources:
 - flux-kustomization.yaml
+- gitrepository-collection.yaml

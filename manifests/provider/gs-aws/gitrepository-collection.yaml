@@ -1,0 +1,10 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: collection
+spec:
+  interval: 30s
+  ref:
+    branch: master
+  url: https://github.com/giantswarm/aws-app-collection
+
