@@ -77,3 +77,4 @@ patchesStrategicMerge:
 - ./source-controller-github-proxy.yaml
 resources:
 - flux-kustomization.yaml
+- gitrepository-collection.yaml
