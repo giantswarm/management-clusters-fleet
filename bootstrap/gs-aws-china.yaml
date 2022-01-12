@@ -11138,6 +11138,7 @@ spec:
     kind: GitRepository
     name: collection
     namespace: giantswarm-flux
+  targetNamespace: giantswarm
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -11283,7 +11284,6 @@ spec:
     branch: master
   secretRef:
     name: github-giantswarm-https-credentials
-  targetNamespace: giantswarm
   timeout: 5m
   url: https://github.com/giantswarm/aws-app-collection
 ---
