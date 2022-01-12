@@ -7,4 +7,6 @@ spec:
   ref:
     branch: master
   url: https://github.com/giantswarm/aws-app-collection
+  secretRef:
+    name: github-giantswarm-https-credentials
 
