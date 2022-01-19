@@ -2,6 +2,7 @@ namespace: "flux-system"
 resources:
 - namespace.yaml
 - kyverno-policies.yaml
+- rbac.yaml
 
 #TODO: image repositories for China
 #TODO: github proxy for china
