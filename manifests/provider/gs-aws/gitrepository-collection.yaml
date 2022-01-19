@@ -2,6 +2,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: collection
+  namespace: giantswarm-flux
 spec:
   interval: 30s
   ref:
