@@ -1,0 +1,19 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  source:
+    path: manifests/provider/gcp-test
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: provider-collection
+  namespace: argocd
+spec:
+  syncPolicy:
+    automated:
+      selfHeal: false

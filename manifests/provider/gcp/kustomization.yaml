@@ -1,0 +1,7 @@
+bases:
+- ../../argocd
+- ../../bases/flux
+resources:
+- repository-gcp-app-collection.yaml
+patchesStrategicMerge:
+- override.yaml
