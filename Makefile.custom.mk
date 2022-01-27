@@ -17,16 +17,16 @@ manifests/flux-app:
 	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "0,/version:/{s/version: .*/version: $(FLUXAPP_VERSION)/g}" {}
 
 BOOTSRAP_DEPS :=
-BOOTSRAP_DEPS += bootstrap/gs-aws.yaml
-BOOTSRAP_DEPS += bootstrap/gs-aws-china.yaml
-BOOTSRAP_DEPS += bootstrap/customer-aws.yaml
+BOOTSRAP_DEPS += bootstrap/gs-aws/gs-aws.yaml
+BOOTSRAP_DEPS += bootstrap/gs-aws-china/gs-aws-china.yaml
+BOOTSRAP_DEPS += bootstrap/customer-aws/customer-aws.yaml
 bootstrap: $(BOOTSRAP_DEPS)
 
 bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)
 	@echo "====> $@"
-	mkdir -p bootstrap
+	mkdir -p $(@D)
 	echo "$(AUTOGENMSG)" > $@
-	$(KUSTOMIZE) build --load-restrictor LoadRestrictionsNone --enable-helm --helm-command="$(HELM)" manifests/provider/$* >> $@
+	$(KUSTOMIZE) build --load-restrictor LoadRestrictionsNone --enable-helm --helm-command="$(HELM)" manifests/provider/$(@F) >> $@
 
 $(KUSTOMIZE): ## Download kustomize locally if necessary.
 	@echo "====> $@"
