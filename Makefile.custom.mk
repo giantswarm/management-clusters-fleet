@@ -26,7 +26,7 @@ bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)
 	@echo "====> $@"
 	mkdir -p $(@D)
 	echo "$(AUTOGENMSG)" > $@
-	$(KUSTOMIZE) build --load-restrictor LoadRestrictionsNone --enable-helm --helm-command="$(HELM)" manifests/provider/$(@F) >> $@
+	$(KUSTOMIZE) build --load-restrictor LoadRestrictionsNone --enable-helm --helm-command="$(HELM)" manifests/provider/$(@D) >> $@
 
 $(KUSTOMIZE): ## Download kustomize locally if necessary.
 	@echo "====> $@"
