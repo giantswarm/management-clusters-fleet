@@ -6,7 +6,7 @@ metadata:
   namespace: giantswarm-flux
 spec:
   interval: 30s
-  path: ./flux-manifests/provider/gs-aws
+  path: ./manifests/provider/gs-aws
   prune: true
   sourceRef:
     kind: GitRepository
