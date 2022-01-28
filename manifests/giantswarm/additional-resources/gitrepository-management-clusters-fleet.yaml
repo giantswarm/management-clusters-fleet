@@ -7,5 +7,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: migrate-to-flux-test
   url: https://github.com/giantswarm/management-clusters-fleet
