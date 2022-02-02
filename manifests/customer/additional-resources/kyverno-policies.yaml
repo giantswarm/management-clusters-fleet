@@ -48,3 +48,52 @@ spec:
             - key: "{{request.object.spec.sourceRef.namespace}}"
               operator: NotEquals
               value:  "{{request.object.metadata.namespace}}"
+    - name: targetNamespace
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "giantswarm-flux"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - Kustomization
+            - HelmRelease
+      preconditions:
+        any:
+          - key: "{{request.object.spec.targetNamespace}}"
+            operator: NotEquals
+            value: ""
+      validate:
+        message: "spec.targetNamespace must be the same as metadata.namespace"
+        deny:
+          conditions:
+            - key: "{{request.object.spec.targetNamespace}}"
+              operator: NotEquals
+              value:  "{{request.object.metadata.namespace}}"
+    - name: storageNamespace
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "giantswarm-flux"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - HelmRelease
+      preconditions:
+        any:
+          - key: "{{request.object.spec.storageNamespace}}"
+            operator: NotEquals
+            value: ""
+      validate:
+        message: "spec.storageNamespace must be the same as metadata.namespace"
+        deny:
+          conditions:
+            - key: "{{request.object.spec.storageNamespace}}"
+              operator: NotEquals
+              value:  "{{request.object.metadata.namespace}}"
