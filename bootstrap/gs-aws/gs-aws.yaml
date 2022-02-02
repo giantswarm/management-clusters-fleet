@@ -11147,7 +11147,7 @@ metadata:
   namespace: giantswarm-flux
 spec:
   interval: 10s
-  path: ./manifests
+  path: ./flux-manifests
   prune: true
   sourceRef:
     kind: GitRepository
@@ -11310,7 +11310,7 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: master
+    branch: flux-migration
   secretRef:
     name: github-giantswarm-https-credentials
   timeout: 5m
@@ -11337,5 +11337,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: migrate-to-flux-test
   url: https://github.com/giantswarm/management-clusters-fleet
