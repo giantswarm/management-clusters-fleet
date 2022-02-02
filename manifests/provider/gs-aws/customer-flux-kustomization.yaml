@@ -6,7 +6,7 @@ metadata:
   namespace: giantswarm-flux
 spec:
   interval: 30s
-  path: ./manifests/provider/customer-aws
+  path: ./bootstrap/customer-aws
   prune: true
   sourceRef:
     kind: GitRepository
