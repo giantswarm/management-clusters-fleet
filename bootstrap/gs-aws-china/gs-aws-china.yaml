@@ -11166,7 +11166,7 @@ metadata:
   namespace: giantswarm-flux
 spec:
   interval: 30s
-  path: ./manifests/provider/customer-aws
+  path: ./bootstrap/customer-aws
   prune: true
   sourceRef:
     kind: GitRepository
@@ -11180,7 +11180,7 @@ metadata:
   namespace: giantswarm-flux
 spec:
   interval: 30s
-  path: ./manifests/provider/gs-aws-china
+  path: ./bootstrap/gs-aws-china
   prune: true
   sourceRef:
     kind: GitRepository
