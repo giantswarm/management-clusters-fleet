@@ -47,6 +47,14 @@ metadata:
   name: flux-crd-watcher
 rules:
 - apiGroups:
+  - ''
+  resources:
+  - serviceaccounts
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - source.toolkit.fluxcd.io
   resources:
   - '*'
