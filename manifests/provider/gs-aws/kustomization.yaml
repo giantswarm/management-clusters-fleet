@@ -94,5 +94,6 @@ patchesStrategicMerge:
 - ../../giantswarm/patches/flux-app-pvc-psp.yaml
 - ../../giantswarm/patches/kustomize-controller.yaml
 resources:
+- customer-flux-kustomization.yaml
 - flux-kustomization.yaml
 - gitrepository-collection.yaml
