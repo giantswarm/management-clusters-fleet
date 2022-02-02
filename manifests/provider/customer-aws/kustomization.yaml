@@ -33,5 +33,4 @@ patches:
     - op: add
       path: /metadata/namespace
       value: flux-system
-resources:
-- flux-kustomization.yaml
+resources: []
