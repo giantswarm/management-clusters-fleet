@@ -1,0 +1,13 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: collection
+  namespace: giantswarm-flux
+spec:
+  interval: 30s
+  ref:
+    branch: flux-migration
+  secretRef:
+    name: github-giantswarm-https-credentials
+  timeout: 5m
+  url: https://github.com/giantswarm/azure-app-collection
