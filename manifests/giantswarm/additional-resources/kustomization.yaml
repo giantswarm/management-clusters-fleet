@@ -4,6 +4,7 @@ resources:
 - gitrepository-giantswarm-config.yaml
 - gitrepository-management-clusters-fleet.yaml
 - kustomization-collection.yaml
+- vault-token-refresh.yaml
 
 #TODO: image repositories for China
 #TODO: github proxy for china
