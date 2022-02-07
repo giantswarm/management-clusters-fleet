@@ -9,6 +9,5 @@ spec:
   ref:
     branch: main
   url: https://github.com/giantswarm/config
-  # TODO: secret from provisioning docs (argocd/github-giantswarm-https-credentials)
   secretRef:
     name: github-giantswarm-https-credentials
