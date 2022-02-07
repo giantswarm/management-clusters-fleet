@@ -1,4 +1,4 @@
-namespace: "giantswarm-flux"
+namespace: "flux-giantswarm"
 resources:
 - namespace.yaml
 - gitrepository-giantswarm-config.yaml

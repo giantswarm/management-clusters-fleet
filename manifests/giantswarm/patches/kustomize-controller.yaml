@@ -19,7 +19,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kustomize-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   template:
     spec:
@@ -51,7 +51,7 @@ spec:
         - --vault-address=$(VAULT_ADDR)
         - --vault-role=konfigure
         - --vault-token-secret-name=flux-vault-token
-        - --vault-token-secret-namespace=giantswarm-flux
+        - --vault-token-secret-namespace=flux-giantswarm
         env:
         - name: VAULT_ADDR
           valueFrom:
@@ -75,14 +75,14 @@ spec:
                 key: NAME
                 name: management-cluster-metadata
           - name: KONFIGURE_GITREPO
-            value: "giantswarm-flux/giantswarm-config"
+            value: "flux-giantswarm/giantswarm-config"
           - name: KONFIGURE_SOURCE_SERVICE
-            value: "source-controller.giantswarm-flux.svc"
+            value: "source-controller.flux-giantswarm.svc"
           - name: VAULT_ADDR
             valueFrom:
               configMapKeyRef:
                 key: VAULT_ADDR
-                # TODO: has to exist in giantswarm-flux - change provisioning doc
+                # TODO: has to exist in flux-giantswarm - change provisioning doc
                 name: management-cluster-metadata
           - name: VAULT_CAPATH
             value: /etc/ssl/certs/ca-certificates.crt

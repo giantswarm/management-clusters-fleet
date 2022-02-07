@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: refresh-vault-token
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   # every 5 months; token TTL is 180 days
   schedule: "0 0 1 */5 *"
@@ -16,7 +16,7 @@ spec:
               - --vault-address=$(VAULT_ADDR)
               - --vault-role=konfigure
               - --vault-token-secret-name=flux-vault-token
-              - --vault-token-secret-namespace=giantswarm-flux
+              - --vault-token-secret-namespace=flux-giantswarm
               env:
               - name: VAULT_ADDR
                 valueFrom:
@@ -30,7 +30,7 @@ spec:
             - args:
                 - delete
                 - pods
-                - --namespace=giantswarm-flux
+                - --namespace=flux-giantswarm
                 - -lapp=kustomize-controller
               image: docker.io/giantswarm/docker-kubectl:1.18.8
               name: restart-kustomize-controller
@@ -41,7 +41,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: refresh-vault-token
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 rules:
   - apiGroups: [""]
     resources: ["pods"]
@@ -51,11 +51,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: refresh-vault-token
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 subjects:
   - kind: ServiceAccount
     name: refresh-vault-token
-    namespace: giantswarm-flux
+    namespace: flux-giantswarm
 roleRef:
   kind: Role
   name: refresh-vault-token
@@ -65,4 +65,4 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: refresh-vault-token
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm

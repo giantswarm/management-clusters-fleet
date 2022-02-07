@@ -3,7 +3,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: flux
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   interval: 30s
   path: ./bootstrap/gs-aws-china
@@ -11,4 +11,4 @@ spec:
   sourceRef:
     kind: GitRepository
     name: management-clusters-fleet
-    namespace: giantswarm-flux
+    namespace: flux-giantswarm

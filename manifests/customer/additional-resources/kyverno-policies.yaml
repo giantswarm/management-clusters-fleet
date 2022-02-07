@@ -10,7 +10,7 @@ spec:
         resources:
           namespaces:
             - "flux-system"
-            - "giantswarm-flux"
+            - "flux-giantswarm"
             - "giantswarm"
             - "monitoring"
       match:
@@ -28,7 +28,7 @@ spec:
         resources:
           namespaces:
             - "flux-system"
-            - "giantswarm-flux"
+            - "flux-giantswarm"
             - "giantswarm"
             - "monitoring"
       match:
@@ -53,7 +53,7 @@ spec:
         resources:
           namespaces:
             - "flux-system"
-            - "giantswarm-flux"
+            - "flux-giantswarm"
             - "giantswarm"
             - "monitoring"
       match:
@@ -78,7 +78,7 @@ spec:
         resources:
           namespaces:
             - "flux-system"
-            - "giantswarm-flux"
+            - "flux-giantswarm"
             - "giantswarm"
             - "monitoring"
       match:
