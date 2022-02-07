@@ -11226,7 +11226,7 @@ metadata:
   namespace: flux-giantswarm
 spec:
   interval: 10s
-  path: ./manifests
+  path: ./flux-manifests
   prune: true
   sourceRef:
     kind: GitRepository
