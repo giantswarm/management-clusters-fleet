@@ -5530,6 +5530,12 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  name: refresh-vault-token
+  namespace: giantswarm-flux
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
   labels:
     app.kubernetes.io/instance: giantswarm-flux
     app.kubernetes.io/managed-by: Helm
@@ -5609,6 +5615,19 @@ spec:
   - emptyDir
   - hostPath
   - secret
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: refresh-vault-token
+  namespace: giantswarm-flux
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - '*'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -5742,6 +5761,20 @@ rules:
   - podsecuritypolicies
   verbs:
   - use
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: refresh-vault-token
+  namespace: giantswarm-flux
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: refresh-vault-token
+subjects:
+- kind: ServiceAccount
+  name: refresh-vault-token
+  namespace: giantswarm-flux
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -10979,6 +11012,43 @@ spec:
         name: data
       - emptyDir: {}
         name: tmp
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: refresh-vault-token
+  namespace: giantswarm-flux
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - args:
+            - delete
+            - pods
+            - --namespace=giantswarm-flux
+            - -lapp=kustomize-controller
+            image: docker.io/giantswarm/docker-kubectl:1.18.8
+            name: restart-kustomize-controller
+          initContainers:
+          - args:
+            - --vault-address=$(VAULT_ADDR)
+            - --vault-role=konfigure
+            - --vault-token-secret-name=flux-vault-token
+            - --vault-token-secret-namespace=giantswarm-flux
+            env:
+            - name: VAULT_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  key: VAULT_ADDR
+                  name: management-cluster-metadata
+            image: docker.io/giantswarm/k8s-jwt-to-vault-token:0.1.0
+            imagePullPolicy: Always
+            name: ensure-vault-token
+          restartPolicy: OnFailure
+          serviceAccountName: refresh-vault-token
+  schedule: 0 0 1 */5 *
 ---
 apiVersion: batch/v1
 kind: Job
