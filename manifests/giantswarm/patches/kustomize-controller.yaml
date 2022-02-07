@@ -45,9 +45,7 @@ spec:
         name: ensure-vault-token
       containers:
       - name: manager
-        # TODO: this is a forked kustomize-controller. Make it a part of our
-        # builds.
-        image: ghcr.io/kubasobon/kustomize-controller:latest
+        image: docker.io/giantswarm/kustomize-controller:v0.18.0
         env:
           - name: KONFIGURE_MODE
             value: "kustomizepatch"
