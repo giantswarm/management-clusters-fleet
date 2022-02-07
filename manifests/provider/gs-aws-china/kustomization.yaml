@@ -89,7 +89,7 @@ patchesJson6902:
       kind: Deployment
       name: source-controller
       namespace: flux-giantswarm
-    path: ../../giantswarm/patches/flags.yaml
+    path: ../../giantswarm/patches/flags-source.yaml
 patchesStrategicMerge:
 - ../../giantswarm/patches/flux-app-pvc-psp.yaml
 - ../../giantswarm/patches/kustomize-controller.yaml
