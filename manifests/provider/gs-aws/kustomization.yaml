@@ -3,9 +3,9 @@ bases:
 helmCharts:
   - name: flux-app
     includeCRDs: true
-    namespace: giantswarm-flux
+    namespace: flux-giantswarm
     repo: https://giantswarm.github.io/giantswarm-catalog/
-    releaseName: giantswarm-flux
+    releaseName: flux-giantswarm
     version: v0.7.1
     valuesInline:
       crds:
@@ -53,43 +53,43 @@ patchesJson6902:
       version: v1
       kind: Deployment
       name: helm-controller
-      namespace: giantswarm-flux
+      namespace: flux-giantswarm
     path: ../../giantswarm/patches/flags.yaml
   - target:
       group: apps
       version: v1
       kind: Deployment
       name: image-automation-controller
-      namespace: giantswarm-flux
+      namespace: flux-giantswarm
     path: ../../giantswarm/patches/flags.yaml
   - target:
       group: apps
       version: v1
       kind: Deployment
       name: image-reflector-controller
-      namespace: giantswarm-flux
+      namespace: flux-giantswarm
     path: ../../giantswarm/patches/flags.yaml
   - target:
       group: apps
       version: v1
       kind: Deployment
       name: kustomize-controller
-      namespace: giantswarm-flux
+      namespace: flux-giantswarm
     path: ../../giantswarm/patches/flags.yaml
   - target:
       group: apps
       version: v1
       kind: Deployment
       name: notification-controller
-      namespace: giantswarm-flux
+      namespace: flux-giantswarm
     path: ../../giantswarm/patches/flags-notification.yaml
   - target:
       group: apps
       version: v1
       kind: Deployment
       name: source-controller
-      namespace: giantswarm-flux
-    path: ../../giantswarm/patches/flags.yaml
+      namespace: flux-giantswarm
+    path: ../../giantswarm/patches/flags-source.yaml
 patchesStrategicMerge:
 - ../../giantswarm/patches/flux-app-pvc-psp.yaml
 - ../../giantswarm/patches/kustomize-controller.yaml

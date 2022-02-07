@@ -1,25 +1,8 @@
-#TODO: konfigure plugin
-#TODO: vault access for kustomize-controller
-#TODO: github proxy for china
-#TODO: PVC mount
-
-# TODO: change provisioning process
-# ginger:thinkbook:~ k get cm -n argocd management-cluster-metadata -o yaml
-# apiVersion: v1
-# data:
-#   NAME: ginger
-#   VAULT_ADDR: https://vault.ginger.eu-west-1.aws.gigantic.io:443
-# kind: ConfigMap
-# metadata:
-#   name: management-cluster-metadata
-#   namespace: argocd
-
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kustomize-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   template:
     spec:
@@ -41,8 +24,7 @@ spec:
       - args:
         - cp konfigure /giantswarm-bin && chmod +x /giantswarm-bin/konfigure
         command: ["sh", "-c"]
-        # TODO: can we swap out the image in MAKEFILE please?
-        image: giantswarm/konfigure:0.3.8-7d9adfbfa60c67bf68487bdb5166f172b8970a59
+        image: giantswarm/konfigure:0.5.0
         name: ensure-konfigure
         volumeMounts:
         - mountPath: /giantswarm-bin
@@ -51,7 +33,7 @@ spec:
         - --vault-address=$(VAULT_ADDR)
         - --vault-role=konfigure
         - --vault-token-secret-name=flux-vault-token
-        - --vault-token-secret-namespace=giantswarm-flux
+        - --vault-token-secret-namespace=flux-giantswarm
         env:
         - name: VAULT_ADDR
           valueFrom:
@@ -63,9 +45,7 @@ spec:
         name: ensure-vault-token
       containers:
       - name: manager
-        # TODO: this is a forked kustomize-controller. Make it a part of our
-        # builds.
-        image: ghcr.io/kubasobon/kustomize-controller:latest
+        image: docker.io/giantswarm/kustomize-controller:v0.18.0
         env:
           - name: KONFIGURE_MODE
             value: "kustomizepatch"
@@ -75,14 +55,13 @@ spec:
                 key: NAME
                 name: management-cluster-metadata
           - name: KONFIGURE_GITREPO
-            value: "giantswarm-flux/giantswarm-config"
+            value: "flux-giantswarm/giantswarm-config"
           - name: KONFIGURE_SOURCE_SERVICE
-            value: "source-controller.giantswarm-flux.svc"
+            value: "source-controller.flux-giantswarm.svc"
           - name: VAULT_ADDR
             valueFrom:
               configMapKeyRef:
                 key: VAULT_ADDR
-                # TODO: has to exist in giantswarm-flux - change provisioning doc
                 name: management-cluster-metadata
           - name: VAULT_CAPATH
             value: /etc/ssl/certs/ca-certificates.crt

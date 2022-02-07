@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: source-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   template:
     spec:

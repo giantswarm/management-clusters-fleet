@@ -3,12 +3,11 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: giantswarm-config
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   interval: 30s
   ref:
     branch: main
   url: https://github.com/giantswarm/config
-  # TODO: secret from provisioning docs (argocd/github-giantswarm-https-credentials)
   secretRef:
     name: github-giantswarm-https-credentials
