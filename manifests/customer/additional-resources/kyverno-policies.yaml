@@ -5,7 +5,7 @@ metadata:
 spec:
   validationFailureAction: enforce
   rules:
-    - name: serviceAccountName
+    - name: serviceAccountNameMustBeSet
       exclude:
         resources:
           namespaces:
@@ -23,7 +23,7 @@ spec:
         pattern:
           spec:
             serviceAccountName: "?*"
-    - name: sourceRefNamespace
+    - name: sourceRefNamespaceIsSafe
       exclude:
         resources:
           namespaces:
@@ -42,13 +42,17 @@ spec:
             operator: NotEquals
             value: ""
       validate:
-        message: "spec.sourceRef.namespace must be the same as metadata.namespace"
+        message: "spec.sourceRef.namespace must be the same as metadata.namespace or 'default'"
         deny:
           conditions:
-            - key: "{{request.object.spec.sourceRef.namespace}}"
-              operator: NotEquals
-              value:  "{{request.object.metadata.namespace}}"
-    - name: targetNamespace
+            all:
+              - key: "{{request.object.spec.sourceRef.namespace}}"
+                operator: NotEquals
+                value:  "{{request.object.metadata.namespace}}"
+              - key: "{{request.object.spec.sourceRef.namespace}}"
+                operator: NotEquals
+                value:  "default"
+    - name: targetNamespaceMustBeLocal
       exclude:
         resources:
           namespaces:
@@ -73,7 +77,7 @@ spec:
             - key: "{{request.object.spec.targetNamespace}}"
               operator: NotEquals
               value:  "{{request.object.metadata.namespace}}"
-    - name: storageNamespace
+    - name: storageNamespaceMustBeLocal
       exclude:
         resources:
           namespaces:
