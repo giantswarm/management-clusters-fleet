@@ -69,7 +69,7 @@ spec:
             operator: NotEquals
             value: ""
       validate:
-        message: "spec.sourceRef.namespace must be the same as metadata.namespace or 'default'"
+        message: "spec.chart.spec.sourceRef.namespace must be the same as metadata.namespace or 'default'"
         deny:
           conditions:
             all:
@@ -128,3 +128,31 @@ spec:
             - key: "{{request.object.spec.storageNamespace}}"
               operator: NotEquals
               value:  "{{request.object.metadata.namespace}}"
+    - name: alertEventSourcesMustBeLocal
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - Alert # spec.eventSourcer.[*].namespace
+      preconditions:
+        any:
+          - key: "{{request.object.spec.storageNamespace}}"
+            operator: NotEquals
+            value: ""
+      validate:
+        message: "spec.storageNamespace must be the same as metadata.namespace"
+        deny:
+          conditions:
+            - key: "{{request.object.spec.storageNamespace}}"
+              operator: NotEquals
+              value:  "{{request.object.metadata.namespace}}"
+
+# Event -> spec.InvolvedObject.Namespace
+# Receiver -> spec.Resources.[*].Namespace
+# ImagePolicy -> spec.ImageRepositoryRef.Namespace
