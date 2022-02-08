@@ -23,7 +23,7 @@ spec:
         pattern:
           spec:
             serviceAccountName: "?*"
-    - name: sourceRefNamespaceIsSafe
+    - name: kustomizationSourceRefNamespaceIsSafe
       exclude:
         resources:
           namespaces:
@@ -35,7 +35,6 @@ spec:
         resources:
           kinds:
             - Kustomization
-            - HelmRelease
       preconditions:
         any:
           - key: "{{request.object.spec.sourceRef.namespace}}"
@@ -50,6 +49,34 @@ spec:
                 operator: NotEquals
                 value:  "{{request.object.metadata.namespace}}"
               - key: "{{request.object.spec.sourceRef.namespace}}"
+                operator: NotEquals
+                value:  "default"
+    - name: helmReleaseSourceRefNamespaceIsSafe
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - HelmRelease
+      preconditions:
+        any:
+          - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
+            operator: NotEquals
+            value: ""
+      validate:
+        message: "spec.sourceRef.namespace must be the same as metadata.namespace or 'default'"
+        deny:
+          conditions:
+            all:
+              - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
+                operator: NotEquals
+                value:  "{{request.object.metadata.namespace}}"
+              - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
                 operator: NotEquals
                 value:  "default"
     - name: targetNamespaceMustBeLocal
