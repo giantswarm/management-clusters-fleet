@@ -139,19 +139,13 @@ spec:
       match:
         resources:
           kinds:
-            - Alert # spec.eventSourcer.[*].namespace
-      preconditions:
-        any:
-          - key: "{{request.object.spec.storageNamespace}}"
-            operator: NotEquals
-            value: ""
+            - Alert # spec.eventSources.[*].namespace
       validate:
-        message: "spec.storageNamespace must be the same as metadata.namespace"
-        deny:
-          conditions:
-            - key: "{{request.object.spec.storageNamespace}}"
-              operator: NotEquals
-              value:  "{{request.object.metadata.namespace}}"
+        message: "spec.eventSources namespaces must be the same as metadata.namespace"
+        foreach:
+        - list: "request.object.spec.eventSources"
+          pattern:
+            namespace: "{{request.object.metadata.namespace}}"
 
 # Event -> spec.InvolvedObject.Namespace
 # Receiver -> spec.Resources.[*].Namespace
