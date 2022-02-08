@@ -11,4 +11,5 @@
     valueFrom:
       configMapKeyRef:
         key: CLUSTER_DOMAIN
+        name: management-cluster-metadata
         optional: false
