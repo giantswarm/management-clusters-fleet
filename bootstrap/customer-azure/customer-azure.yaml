@@ -1062,7 +1062,7 @@ spec:
         kinds:
         - Kustomization
         - HelmRelease
-    name: serviceAccountName
+    name: serviceAccountNameMustBeSet
     validate:
       message: .spec.serviceAccountName is required
       pattern:
@@ -1079,8 +1079,7 @@ spec:
       resources:
         kinds:
         - Kustomization
-        - HelmRelease
-    name: sourceRefNamespace
+    name: kustomizationSourceRefNamespaceIsSafe
     preconditions:
       any:
       - key: '{{request.object.spec.sourceRef.namespace}}'
@@ -1089,10 +1088,44 @@ spec:
     validate:
       deny:
         conditions:
-        - key: '{{request.object.spec.sourceRef.namespace}}'
-          operator: NotEquals
-          value: '{{request.object.metadata.namespace}}'
-      message: spec.sourceRef.namespace must be the same as metadata.namespace
+          all:
+          - key: '{{request.object.spec.sourceRef.namespace}}'
+            operator: NotEquals
+            value: '{{request.object.metadata.namespace}}'
+          - key: '{{request.object.spec.sourceRef.namespace}}'
+            operator: NotEquals
+            value: default
+      message: spec.sourceRef.namespace must be the same as metadata.namespace or
+        'default'
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - flux-giantswarm
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - HelmRelease
+    name: helmReleaseSourceRefNamespaceIsSafe
+    preconditions:
+      any:
+      - key: '{{request.object.spec.chart.spec.sourceRef.namespace}}'
+        operator: NotEquals
+        value: ""
+    validate:
+      deny:
+        conditions:
+          all:
+          - key: '{{request.object.spec.chart.spec.sourceRef.namespace}}'
+            operator: NotEquals
+            value: '{{request.object.metadata.namespace}}'
+          - key: '{{request.object.spec.chart.spec.sourceRef.namespace}}'
+            operator: NotEquals
+            value: default
+      message: spec.chart.spec.sourceRef.namespace must be the same as metadata.namespace
+        or 'default'
   - exclude:
       resources:
         namespaces:
@@ -1105,7 +1138,7 @@ spec:
         kinds:
         - Kustomization
         - HelmRelease
-    name: targetNamespace
+    name: targetNamespaceMustBeLocal
     preconditions:
       any:
       - key: '{{request.object.spec.targetNamespace}}'
@@ -1129,7 +1162,7 @@ spec:
       resources:
         kinds:
         - HelmRelease
-    name: storageNamespace
+    name: storageNamespaceMustBeLocal
     preconditions:
       any:
       - key: '{{request.object.spec.storageNamespace}}'
@@ -1142,6 +1175,78 @@ spec:
           operator: NotEquals
           value: '{{request.object.metadata.namespace}}'
       message: spec.storageNamespace must be the same as metadata.namespace
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - flux-giantswarm
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - Alert
+    name: alertEventSourcesMustBeLocal
+    validate:
+      foreach:
+      - list: request.object.spec.eventSources
+        pattern:
+          =(namespace): '{{request.object.metadata.namespace}}'
+      message: spec.eventSources namespaces must be the same as metadata.namespace
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - flux-giantswarm
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - Receiver
+    name: receiverResourcesMustBeLocal
+    validate:
+      foreach:
+      - list: request.object.spec.resources
+        pattern:
+          =(namespace): '{{request.object.metadata.namespace}}'
+      message: spec.resources namespaces must be the same as metadata.namespace
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - flux-giantswarm
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - Event
+    name: eventsObjectMustBeLocal
+    validate:
+      message: spec.involvedObject namespace must be the same as metadata.namespace
+      pattern:
+        spec:
+          involvedObject:
+            =(namespace): '{{request.object.metadata.namespace}}'
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - flux-giantswarm
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - ImagePolicy
+    name: imagePolicyRepositoryMustBeLocal
+    validate:
+      message: spec.imageRepositoryRef namespace must be the same as metadata.namespace
+      pattern:
+        spec:
+          imageRepositoryRef:
+            namespace: '{{request.object.metadata.namespace}}'
   validationFailureAction: enforce
 ---
 apiVersion: networking.k8s.io/v1
