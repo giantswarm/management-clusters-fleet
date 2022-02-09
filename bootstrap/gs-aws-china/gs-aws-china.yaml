@@ -5626,6 +5626,7 @@ rules:
   - ""
   resources:
   - pods
+  - secrets
   verbs:
   - '*'
 ---
@@ -10969,6 +10970,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: CLUSTER_DOMAIN
+              name: management-cluster-metadata
               optional: false
         image: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/fluxcd-source-controller:v0.17.1
         imagePullPolicy: IfNotPresent
