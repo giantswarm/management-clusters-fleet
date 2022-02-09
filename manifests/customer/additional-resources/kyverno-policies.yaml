@@ -145,7 +145,7 @@ spec:
         foreach:
         - list: "request.object.spec.eventSources"
           pattern:
-            namespace: "{{request.object.metadata.namespace}}"
+            =(namespace): "{{request.object.metadata.namespace}}"
     - name: receiverResourcesMustBeLocal
       exclude:
         resources:
@@ -157,13 +157,13 @@ spec:
       match:
         resources:
           kinds:
-            - Alert
+            - Receiver
       validate:
         message: "spec.resources namespaces must be the same as metadata.namespace"
         foreach:
         - list: "request.object.spec.resources"
           pattern:
-            namespace: "{{request.object.metadata.namespace}}"
+            =(namespace): "{{request.object.metadata.namespace}}"
     - name: eventsObjectMustBeLocal
       exclude:
         resources:
@@ -181,7 +181,7 @@ spec:
         pattern:
           spec:
             involvedObject:
-              namespace: "{{request.object.metadata.namespace}}"
+              =(namespace): "{{request.object.metadata.namespace}}"
     - name: imagePolicyRepositoryMustBeLocal
       exclude:
         resources:
