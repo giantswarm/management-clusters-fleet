@@ -22,6 +22,8 @@ BOOTSRAP_DEPS += bootstrap/gs-aws-china/gs-aws-china.yaml
 BOOTSRAP_DEPS += bootstrap/customer-aws/customer-aws.yaml
 BOOTSRAP_DEPS += bootstrap/gs-azure/gs-azure.yaml
 BOOTSRAP_DEPS += bootstrap/customer-azure/customer-azure.yaml
+BOOTSRAP_DEPS += bootstrap/gs-kvm/gs-kvm.yaml
+BOOTSRAP_DEPS += bootstrap/customer-kvm/customer-kvm.yaml
 bootstrap: $(BOOTSRAP_DEPS)
 
 bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)

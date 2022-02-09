@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: customer-flux
+  namespace: flux-giantswarm
+spec:
+  interval: 30s
+  path: ./bootstrap/customer-kvm
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: management-clusters-fleet
+    namespace: flux-giantswarm
