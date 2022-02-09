@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: giantswarm-flux
+  name: flux-giantswarm
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -5451,17 +5451,17 @@ metadata:
     helm.sh/hook-weight: "-4"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -5469,13 +5469,13 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: helm-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -5483,13 +5483,13 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: image-automation-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -5497,13 +5497,13 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: image-reflector-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -5511,13 +5511,13 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: kustomize-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -5525,19 +5525,19 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: notification-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: refresh-vault-token
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -5545,7 +5545,7 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: source-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
@@ -5556,7 +5556,7 @@ metadata:
     helm.sh/hook-weight: "-6"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install
@@ -5587,7 +5587,7 @@ apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/version: 0.21.0
@@ -5620,7 +5620,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: refresh-vault-token
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 rules:
 - apiGroups:
   - ""
@@ -5638,11 +5638,11 @@ metadata:
     helm.sh/hook-weight: "-3"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 rules:
 - apiGroups:
   - ""
@@ -5673,7 +5673,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -5766,7 +5766,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: refresh-vault-token
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -5774,7 +5774,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: refresh-vault-token
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -5785,13 +5785,13 @@ metadata:
     helm.sh/hook-weight: "-2"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     helm.sh/chart: flux-app-0.7.1
     role: crd-install-hook
   name: flux-app-crd-install
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -5799,13 +5799,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: flux-app-crd-install
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -5820,16 +5820,16 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: kustomize-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 - kind: ServiceAccount
   name: helm-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -5844,22 +5844,22 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: kustomize-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 - kind: ServiceAccount
   name: helm-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 - kind: ServiceAccount
   name: source-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 - kind: ServiceAccount
   name: notification-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 - kind: ServiceAccount
   name: image-reflector-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 - kind: ServiceAccount
   name: image-automation-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -6047,11 +6047,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-alert
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -6251,11 +6251,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-bucket
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -6536,11 +6536,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-gitrepository
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -6757,11 +6757,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-helmchart
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -7325,11 +7325,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-helmrelease
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -7513,11 +7513,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-helmrepository
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -7966,11 +7966,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-imagepolicy
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -8402,11 +8402,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-imagerepository
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -9032,11 +9032,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-imageupdateautomation
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -9884,11 +9884,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-kustomization
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -10067,11 +10067,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-provider
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 data:
@@ -10267,11 +10267,11 @@ metadata:
     helm.sh/hook-weight: "-5"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install-receiver
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 ---
 apiVersion: v1
 kind: Service
@@ -10280,15 +10280,15 @@ metadata:
     giantswarm.io/monitoring-path: /metrics
     giantswarm.io/monitoring-port: "8080"
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/version: 0.21.0
     giantswarm.io/monitoring: "true"
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
-  name: giantswarm-flux-monitoring
-  namespace: giantswarm-flux
+  name: flux-giantswarm-monitoring
+  namespace: flux-giantswarm
 spec:
   clusterIP: None
   ports:
@@ -10296,7 +10296,7 @@ spec:
     protocol: TCP
     targetPort: http-prom
   selector:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
 ---
@@ -10304,7 +10304,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -10313,7 +10313,7 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: notification-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   ports:
   - name: http
@@ -10322,7 +10322,7 @@ spec:
     targetPort: http
   selector:
     app: notification-controller
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
   type: ClusterIP
@@ -10331,7 +10331,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -10340,7 +10340,7 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: source-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   ports:
   - name: http
@@ -10349,7 +10349,7 @@ spec:
     targetPort: http
   selector:
     app: source-controller
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
   type: ClusterIP
@@ -10358,7 +10358,7 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -10367,7 +10367,7 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: webhook-receiver
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   ports:
   - name: http
@@ -10376,7 +10376,7 @@ spec:
     targetPort: http-webhook
   selector:
     app: notification-controller
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
   type: ClusterIP
@@ -10386,7 +10386,7 @@ kind: Deployment
 metadata:
   labels:
     app: helm-controller
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -10395,13 +10395,13 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: helm-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: helm-controller
-      app.kubernetes.io/instance: giantswarm-flux
+      app.kubernetes.io/instance: flux-giantswarm
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/name: flux-app
   template:
@@ -10411,7 +10411,7 @@ spec:
         prometheus.io/scrape: "true"
       labels:
         app: helm-controller
-        app.kubernetes.io/instance: giantswarm-flux
+        app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
@@ -10472,7 +10472,7 @@ kind: Deployment
 metadata:
   labels:
     app: image-automation-controlller
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -10481,13 +10481,13 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: image-automation-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: image-automation-controller
-      app.kubernetes.io/instance: giantswarm-flux
+      app.kubernetes.io/instance: flux-giantswarm
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/name: flux-app
   template:
@@ -10497,7 +10497,7 @@ spec:
         prometheus.io/scrape: "true"
       labels:
         app: image-automation-controller
-        app.kubernetes.io/instance: giantswarm-flux
+        app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
@@ -10560,7 +10560,7 @@ kind: Deployment
 metadata:
   labels:
     app: image-reflector-controller
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -10569,13 +10569,13 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: image-reflector-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: image-reflector-controller
-      app.kubernetes.io/instance: giantswarm-flux
+      app.kubernetes.io/instance: flux-giantswarm
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/name: flux-app
   template:
@@ -10585,7 +10585,7 @@ spec:
         prometheus.io/scrape: "true"
       labels:
         app: image-reflector-controller
-        app.kubernetes.io/instance: giantswarm-flux
+        app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
@@ -10652,7 +10652,7 @@ kind: Deployment
 metadata:
   labels:
     app: kustomize-controller
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -10661,13 +10661,13 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: kustomize-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: kustomize-controller
-      app.kubernetes.io/instance: giantswarm-flux
+      app.kubernetes.io/instance: flux-giantswarm
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/name: flux-app
   template:
@@ -10677,7 +10677,7 @@ spec:
         prometheus.io/scrape: "true"
       labels:
         app: kustomize-controller
-        app.kubernetes.io/instance: giantswarm-flux
+        app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
@@ -10700,9 +10700,9 @@ spec:
               key: NAME
               name: management-cluster-metadata
         - name: KONFIGURE_GITREPO
-          value: giantswarm-flux/giantswarm-config
+          value: flux-giantswarm/giantswarm-config
         - name: KONFIGURE_SOURCE_SERVICE
-          value: source-controller.giantswarm-flux.svc
+          value: source-controller.flux-giantswarm.svc
         - name: VAULT_ADDR
           valueFrom:
             configMapKeyRef:
@@ -10791,7 +10791,7 @@ spec:
         - --vault-address=$(VAULT_ADDR)
         - --vault-role=konfigure
         - --vault-token-secret-name=flux-vault-token
-        - --vault-token-secret-namespace=giantswarm-flux
+        - --vault-token-secret-namespace=flux-giantswarm
         env:
         - name: VAULT_ADDR
           valueFrom:
@@ -10828,7 +10828,7 @@ kind: Deployment
 metadata:
   labels:
     app: notification-controller
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -10837,13 +10837,13 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: notification-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: notification-controller
-      app.kubernetes.io/instance: giantswarm-flux
+      app.kubernetes.io/instance: flux-giantswarm
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/name: flux-app
   template:
@@ -10853,7 +10853,7 @@ spec:
         prometheus.io/scrape: "true"
       labels:
         app: notification-controller
-        app.kubernetes.io/instance: giantswarm-flux
+        app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
@@ -10917,7 +10917,7 @@ kind: Deployment
 metadata:
   labels:
     app: source-controller
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -10926,13 +10926,13 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: source-controller
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: source-controller
-      app.kubernetes.io/instance: giantswarm-flux
+      app.kubernetes.io/instance: flux-giantswarm
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/name: flux-app
   strategy:
@@ -10944,7 +10944,7 @@ spec:
         prometheus.io/scrape: "true"
       labels:
         app: source-controller
-        app.kubernetes.io/instance: giantswarm-flux
+        app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
         app.kubernetes.io/version: 0.21.0
@@ -11017,7 +11017,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: refresh-vault-token
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   jobTemplate:
     spec:
@@ -11027,7 +11027,7 @@ spec:
           - args:
             - delete
             - pods
-            - --namespace=giantswarm-flux
+            - --namespace=flux-giantswarm
             - -lapp=kustomize-controller
             image: docker.io/giantswarm/docker-kubectl:1.18.8
             name: restart-kustomize-controller
@@ -11036,7 +11036,7 @@ spec:
             - --vault-address=$(VAULT_ADDR)
             - --vault-role=konfigure
             - --vault-token-secret-name=flux-vault-token
-            - --vault-token-secret-namespace=giantswarm-flux
+            - --vault-token-secret-namespace=flux-giantswarm
             env:
             - name: VAULT_ADDR
               valueFrom:
@@ -11059,18 +11059,18 @@ metadata:
     helm.sh/hook-weight: "-1"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   backoffLimit: 4
   template:
     metadata:
       labels:
         app.kubernetes.io/component: flux-app-crd-install
-        app.kubernetes.io/instance: giantswarm-flux
+        app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/name: flux-app
     spec:
       containers:
@@ -11218,7 +11218,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: collection
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   interval: 10s
   path: ./manifests
@@ -11226,14 +11226,14 @@ spec:
   sourceRef:
     kind: GitRepository
     name: collection
-    namespace: giantswarm-flux
+    namespace: flux-giantswarm
   targetNamespace: giantswarm
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: customer-flux
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   interval: 30s
   path: ./bootstrap/customer-aws
@@ -11241,13 +11241,13 @@ spec:
   sourceRef:
     kind: GitRepository
     name: management-clusters-fleet
-    namespace: giantswarm-flux
+    namespace: flux-giantswarm
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
   name: flux
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   interval: 30s
   path: ./bootstrap/gs-aws-china
@@ -11255,13 +11255,13 @@ spec:
   sourceRef:
     kind: GitRepository
     name: management-clusters-fleet
-    namespace: giantswarm-flux
+    namespace: flux-giantswarm
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -11269,7 +11269,7 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: allow-egress
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   egress:
   - {}
@@ -11285,7 +11285,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -11293,7 +11293,7 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: allow-scraping
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   egress:
   - {}
@@ -11303,7 +11303,7 @@ spec:
       protocol: TCP
   podSelector:
     matchLabels:
-      app.kubernetes.io/instance: giantswarm-flux
+      app.kubernetes.io/instance: flux-giantswarm
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/name: flux-app
   policyTypes:
@@ -11314,7 +11314,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   labels:
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
@@ -11322,7 +11322,7 @@ metadata:
     giantswarm.io/service_type: managed
     helm.sh/chart: flux-app-0.7.1
   name: allow-webhooks
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   ingress:
   - from:
@@ -11330,7 +11330,7 @@ spec:
   podSelector:
     matchLabels:
       app: notification-controller
-      app.kubernetes.io/instance: giantswarm-flux
+      app.kubernetes.io/instance: flux-giantswarm
       app.kubernetes.io/managed-by: Helm
       app.kubernetes.io/name: flux-app
   policyTypes:
@@ -11345,11 +11345,11 @@ metadata:
     helm.sh/hook-weight: "-7"
   labels:
     app.kubernetes.io/component: flux-app-crd-install
-    app.kubernetes.io/instance: giantswarm-flux
+    app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/name: flux-app
     role: crd-install-hook
   name: flux-app-crd-install
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   egress:
   - ports:
@@ -11370,7 +11370,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/component: flux-app-crd-install
-      app.kubernetes.io/instance: giantswarm-flux
+      app.kubernetes.io/instance: flux-giantswarm
       app.kubernetes.io/name: flux-app
   policyTypes:
   - Egress
@@ -11380,7 +11380,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: collection
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   interval: 30s
   ref:
@@ -11394,7 +11394,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: giantswarm-config
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   interval: 30s
   ref:
@@ -11407,7 +11407,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
   name: management-clusters-fleet
-  namespace: giantswarm-flux
+  namespace: flux-giantswarm
 spec:
   interval: 30s
   ref:

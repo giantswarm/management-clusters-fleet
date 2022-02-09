@@ -139,14 +139,65 @@ spec:
       match:
         resources:
           kinds:
-            - Alert # spec.eventSources.[*].namespace
+            - Alert
       validate:
         message: "spec.eventSources namespaces must be the same as metadata.namespace"
         foreach:
         - list: "request.object.spec.eventSources"
           pattern:
             namespace: "{{request.object.metadata.namespace}}"
+    - name: receiverResourcesMustBeLocal
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - Alert
+      validate:
+        message: "spec.resources namespaces must be the same as metadata.namespace"
+        foreach:
+        - list: "request.object.spec.resources"
+          pattern:
+            namespace: "{{request.object.metadata.namespace}}"
+    - name: eventsObjectMustBeLocal
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - Event
+      validate:
+        message: "spec.involvedObject namespace must be the same as metadata.namespace"
+        pattern:
+          spec:
+            involvedObject:
+              namespace: "{{request.object.metadata.namespace}}"
+    - name: imagePolicyRepositoryMustBeLocal
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - ImagePolicy
+      validate:
+        message: "spec.imageRepositoryRef namespace must be the same as metadata.namespace"
+        pattern:
+          spec:
+            imageRepositoryRef:
+              namespace: "{{request.object.metadata.namespace}}"
 
-# Event -> spec.InvolvedObject.Namespace
-# Receiver -> spec.Resources.[*].Namespace
-# ImagePolicy -> spec.ImageRepositoryRef.Namespace
