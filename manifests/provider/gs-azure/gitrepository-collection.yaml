@@ -6,7 +6,7 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: flux-migration
+    branch: master
   secretRef:
     name: github-giantswarm-https-credentials
   timeout: 5m
