@@ -1191,8 +1191,62 @@ spec:
       foreach:
       - list: request.object.spec.eventSources
         pattern:
-          namespace: '{{request.object.metadata.namespace}}'
+          =(namespace): '{{request.object.metadata.namespace}}'
       message: spec.eventSources namespaces must be the same as metadata.namespace
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - flux-giantswarm
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - Receiver
+    name: receiverResourcesMustBeLocal
+    validate:
+      foreach:
+      - list: request.object.spec.resources
+        pattern:
+          =(namespace): '{{request.object.metadata.namespace}}'
+      message: spec.resources namespaces must be the same as metadata.namespace
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - flux-giantswarm
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - Event
+    name: eventsObjectMustBeLocal
+    validate:
+      message: spec.involvedObject namespace must be the same as metadata.namespace
+      pattern:
+        spec:
+          involvedObject:
+            =(namespace): '{{request.object.metadata.namespace}}'
+  - exclude:
+      resources:
+        namespaces:
+        - flux-system
+        - flux-giantswarm
+        - giantswarm
+        - monitoring
+    match:
+      resources:
+        kinds:
+        - ImagePolicy
+    name: imagePolicyRepositoryMustBeLocal
+    validate:
+      message: spec.imageRepositoryRef namespace must be the same as metadata.namespace
+      pattern:
+        spec:
+          imageRepositoryRef:
+            namespace: '{{request.object.metadata.namespace}}'
   validationFailureAction: enforce
 ---
 apiVersion: networking.k8s.io/v1
