@@ -47,6 +47,13 @@ patches:
     - op: replace
       path: /roleRef/name
       value: crd-controller-giantswarm
+- target:
+    kind: GitRepository
+    name: giantswarm-config
+  patch: |-
+    - op: replace
+      path: /spec/ref/branch
+      value: gravity_auto_config
 patchesJson6902:
   - target:
       group: apps
