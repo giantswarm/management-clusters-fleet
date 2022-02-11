@@ -1,0 +1,8 @@
+rules:
+  key-ordering: {}
+yaml-files:
+  - "*.yaml"
+ignore: |
+  .github/**
+  bin/**
+  manifests/**
