@@ -1,0 +1,117 @@
+bases:
+- ../../giantswarm/additional-resources
+helmCharts:
+  - name: flux-app
+    includeCRDs: true
+    namespace: flux-giantswarm
+    repo: https://giantswarm.github.io/giantswarm-catalog/
+    releaseName: flux-giantswarm
+    version: v0.7.1
+    valuesInline:
+      crds:
+        install: true
+      images:
+        registry: docker.io
+patches:
+# patch collection Kustomization
+- target:
+    kind: Kustomization
+    namespace: flux-giantswarm
+    name: collection
+  patch: |-
+    # add "patches" section to the Kustomization
+    - op: add
+      path: /spec/patches
+      value: |-
+        # add a patch that changes app version to the "patches" section
+        - patch: |
+            - op: replace
+              path: app_version
+              value: 0.3.0
+          target:
+            kind: Konfigure
+            name: falco-app
+- target:
+    kind: ClusterRole
+    name: crd-controller
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: crd-controller-giantswarm
+    - op: replace
+      path: /rules/9/resourceNames/0
+      value: flux-app-pvc-psp-giantswarm
+- target:
+    kind: PodSecurityPolicy
+    name: flux-app-pvc-psp
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: flux-app-pvc-psp-giantswarm
+- target:
+    kind: ClusterRoleBinding
+    name: cluster-reconciler
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: cluster-reconciler-giantswarm
+- target:
+    kind: ClusterRoleBinding
+    name: crd-controller
+  patch: |-
+    - op: replace
+      path: /metadata/name
+      value: crd-controller-giantswarm
+    - op: replace
+      path: /roleRef/name
+      value: crd-controller-giantswarm
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: helm-controller
+      namespace: flux-giantswarm
+    path: ../../giantswarm/patches/flags.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: image-automation-controller
+      namespace: flux-giantswarm
+    path: ../../giantswarm/patches/flags.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: image-reflector-controller
+      namespace: flux-giantswarm
+    path: ../../giantswarm/patches/flags.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: kustomize-controller
+      namespace: flux-giantswarm
+    path: ../../giantswarm/patches/flags.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: notification-controller
+      namespace: flux-giantswarm
+    path: ../../giantswarm/patches/flags-notification.yaml
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: source-controller
+      namespace: flux-giantswarm
+    path: ../../giantswarm/patches/flags-source.yaml
+patchesStrategicMerge:
+- ../../giantswarm/patches/flux-app-pvc-psp.yaml
+- ../../giantswarm/patches/kustomize-controller.yaml
+resources:
+- customer-flux-kustomization.yaml
+- flux-kustomization.yaml
+- gitrepository-collection.yaml
