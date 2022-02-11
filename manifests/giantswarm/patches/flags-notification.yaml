@@ -5,4 +5,3 @@
     - --log-level=info
     - --log-encoding=json
     - --enable-leader-election=false
-
