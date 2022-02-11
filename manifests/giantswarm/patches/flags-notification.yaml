@@ -1,3 +1,8 @@
 - op: replace
-  path: /spec/template/spec/containers/0/args/0
-  value: "--watch-all-namespaces=false"
+  path: /spec/template/spec/containers/0/args
+  value:
+    - --watch-all-namespaces=false
+    - --log-level=info
+    - --log-encoding=json
+    - --enable-leader-election=false
+

@@ -1,9 +1,13 @@
 - op: replace
-  path: /spec/template/spec/containers/0/args/1
-  value: "--watch-all-namespaces=false"
-- op: replace
-  path: /spec/template/spec/containers/0/args/6
-  value: "--storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.$(CLUSTER_DOMAIN)"
+  path: /spec/template/spec/containers/0/args
+  value:
+    - --events-addr=http://notification-controller/
+    - --watch-all-namespaces=false
+    - --log-level=info
+    - --log-encoding=json
+    - --enable-leader-election=false
+    - --storage-path=/data
+    - "--storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.$(CLUSTER_DOMAIN)"
 - op: add
   path: /spec/template/spec/containers/0/env/1
   value:
