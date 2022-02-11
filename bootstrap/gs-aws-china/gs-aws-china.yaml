@@ -11243,7 +11243,7 @@ metadata:
   namespace: flux-giantswarm
 spec:
   interval: 30s
-  path: ./bootstrap/customer-aws
+  path: ./bootstrap/customer-aws-china
   prune: true
   sourceRef:
     kind: GitRepository
