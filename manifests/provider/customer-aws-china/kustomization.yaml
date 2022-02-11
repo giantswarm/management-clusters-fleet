@@ -1,0 +1,36 @@
+bases:
+- ../../customer/additional-resources
+helmCharts:
+  - name: flux-app
+    includeCRDs: false
+    namespace: flux-system
+    repo: https://giantswarm.github.io/giantswarm-catalog/
+    releaseName: customer-flux
+    version: v0.7.1
+    valuesInline:
+      crds:
+        install: false
+      images:
+        registry: registry-intl.cn-shanghai.aliyuncs.com
+patches:
+- target:
+    kind: ClusterRoleBinding
+    name: crd-controller
+  patch: |-
+    - op: replace
+      path: /kind
+      value: RoleBinding
+    - op: add
+      path: /metadata/namespace
+      value: flux-system
+- target:
+    kind: ClusterRoleBinding
+    name: cluster-reconciler
+  patch: |-
+    - op: replace
+      path: /kind
+      value: RoleBinding
+    - op: add
+      path: /metadata/namespace
+      value: flux-system
+resources: []
