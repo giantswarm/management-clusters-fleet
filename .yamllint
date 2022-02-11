@@ -8,15 +8,14 @@ rules:
   comments-indentation:
     level: warning
   document-end: disable
-  document-start:
-    level: warning
+  document-start: disable
   empty-lines: enable
   empty-values: disable
   hyphens: enable
-  indentation: enable
+  indentation: disable
   key-duplicates: enable
   key-ordering: disable
-  line-length: enable
+  line-length: disable
   new-line-at-end-of-file: enable
   new-lines: enable
   octal-values: disable
