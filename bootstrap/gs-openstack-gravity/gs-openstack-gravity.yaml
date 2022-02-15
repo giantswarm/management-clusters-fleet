@@ -5445,6 +5445,12 @@ status:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  name: automation
+  namespace: flux-giantswarm
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
   annotations:
     helm.sh/hook: pre-install,pre-upgrade
     helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded,hook-failed
@@ -5860,6 +5866,19 @@ subjects:
   namespace: flux-giantswarm
 - kind: ServiceAccount
   name: image-automation-controller
+  namespace: flux-giantswarm
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: flux-giantswarm-automation
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: automation
   namespace: flux-giantswarm
 ---
 apiVersion: v1
@@ -11226,6 +11245,7 @@ spec:
   interval: 10s
   path: ./flux-manifests
   prune: true
+  serviceAccountName: automation
   sourceRef:
     kind: GitRepository
     name: collection
@@ -11241,6 +11261,7 @@ spec:
   interval: 30s
   path: ./bootstrap/customer-openstack
   prune: true
+  serviceAccountName: automation
   sourceRef:
     kind: GitRepository
     name: management-clusters-fleet
@@ -11255,6 +11276,7 @@ spec:
   interval: 30s
   path: ./bootstrap/gs-openstack-gravity
   prune: true
+  serviceAccountName: automation
   sourceRef:
     kind: GitRepository
     name: management-clusters-fleet
