@@ -8,6 +8,7 @@ spec:
   interval: 30s
   path: ./bootstrap/gs-openstack-gamma
   prune: true
+  serviceAccountName: automation
   sourceRef:
     kind: GitRepository
     name: management-clusters-fleet

@@ -1,7 +1,8 @@
 namespace: "flux-giantswarm"
 resources:
-- namespace.yaml
 - gitrepository-giantswarm-config.yaml
 - gitrepository-management-clusters-fleet.yaml
 - kustomization-collection.yaml
+- namespace.yaml
+- rbac.yaml
 - vault-token-refresh.yaml
