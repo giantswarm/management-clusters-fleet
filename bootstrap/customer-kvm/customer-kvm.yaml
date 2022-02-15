@@ -547,7 +547,7 @@ spec:
         - --watch-all-namespaces
         - --log-level=info
         - --log-encoding=json
-        - --enable-leader-election
+        - --enable-leader-election=false
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:
@@ -633,7 +633,7 @@ spec:
         - --watch-all-namespaces
         - --log-level=info
         - --log-encoding=json
-        - --enable-leader-election
+        - --enable-leader-election=false
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:
@@ -721,7 +721,7 @@ spec:
         - --watch-all-namespaces
         - --log-level=info
         - --log-encoding=json
-        - --enable-leader-election
+        - --enable-leader-election=false
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:
@@ -813,7 +813,7 @@ spec:
         - --watch-all-namespaces
         - --log-level=info
         - --log-encoding=json
-        - --enable-leader-election
+        - --enable-leader-election=false
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:
@@ -900,7 +900,7 @@ spec:
         - --watch-all-namespaces
         - --log-level=info
         - --log-encoding=json
-        - --enable-leader-election
+        - --enable-leader-election=false
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:
@@ -992,9 +992,9 @@ spec:
         - --watch-all-namespaces
         - --log-level=info
         - --log-encoding=json
-        - --enable-leader-election
+        - --enable-leader-election=false
         - --storage-path=/data
-        - --storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.cluster.local.
+        - --storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:
