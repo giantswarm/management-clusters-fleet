@@ -10783,7 +10783,7 @@ spec:
         command:
         - sh
         - -c
-        image: giantswarm/konfigure:0.5.0
+        image: giantswarm/konfigure:0.5.1
         name: ensure-konfigure
         volumeMounts:
         - mountPath: /giantswarm-bin
