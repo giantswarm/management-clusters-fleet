@@ -5,7 +5,7 @@
     - --watch-all-namespaces=false
     - --log-level=info
     - --log-encoding=json
-    - --enable-leader-election=false
+    - --enable-leader-election
     - --storage-path=/data
     - "--storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.$(CLUSTER_DOMAIN)"
 - op: add
