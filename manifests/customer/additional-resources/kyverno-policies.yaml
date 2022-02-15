@@ -101,9 +101,13 @@ spec:
         message: "spec.targetNamespace must be the same as metadata.namespace"
         deny:
           conditions:
-            - key: "{{request.object.spec.targetNamespace}}"
-              operator: NotEquals
-              value:  "{{request.object.metadata.namespace}}"
+            all:
+              - key: "{{request.object.spec.targetNamespace}}"
+                operator: NotEquals
+                value:  "{{request.object.metadata.namespace}}"
+              - key: "{{request.object.spec.targetNamespace}}"
+                operator: NotEquals
+                value:  "org-*"
     - name: storageNamespaceMustBeLocal
       exclude:
         resources:
@@ -176,6 +180,11 @@ spec:
         resources:
           kinds:
             - Event
+      preconditions:
+        any:
+          - key: "{{request.object.spec.involvedObject.namespace}}"
+            operator: NotEquals
+            value: ""
       validate:
         message: "spec.involvedObject namespace must be the same as metadata.namespace"
         pattern:
@@ -194,6 +203,11 @@ spec:
         resources:
           kinds:
             - ImagePolicy
+      preconditions:
+        any:
+          - key: "{{request.object.spec.imageRepositoryRef.namespace}}"
+            operator: NotEquals
+            value: ""
       validate:
         message: "spec.imageRepositoryRef namespace must be the same as metadata.namespace"
         pattern:
