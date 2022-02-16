@@ -11430,5 +11430,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: remove-full-cluster-domain-name
   url: https://github.com/giantswarm/management-clusters-fleet
