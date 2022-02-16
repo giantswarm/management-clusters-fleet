@@ -7,13 +7,4 @@
     - --log-encoding=json
     - --enable-leader-election
     - --storage-path=/data
-    - "--storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.$(CLUSTER_DOMAIN)"
-- op: add
-  path: /spec/template/spec/containers/0/env/1
-  value:
-    name: CLUSTER_DOMAIN
-    valueFrom:
-      configMapKeyRef:
-        key: CLUSTER_DOMAIN
-        name: management-cluster-metadata
-        optional: false
+    - "--storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc"
