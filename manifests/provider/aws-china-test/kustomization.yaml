@@ -1,4 +1,0 @@
-resources:
-- ../aws-china
-patchesStrategicMerge:
-- override.yaml

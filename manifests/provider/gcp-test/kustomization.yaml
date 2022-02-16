@@ -1,4 +1,0 @@
-resources:
-- ../gcp
-patchesStrategicMerge:
-- override.yaml

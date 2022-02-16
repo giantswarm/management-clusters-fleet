@@ -2,45 +2,52 @@ AUTOGENMSG := \# This is an auto-generated file. DO NOT EDIT
 
 MANIFESTS := $(shell find manifests)
 
-KUSTOMIZE := bin/kustomize
+KUSTOMIZE := ./bin/kustomize
+
+HELM := ./bin/helm
 
 .PHONY: all
-all: manifests/bases/upstream-argocd bootstrap
+all: manifests/flux-app bootstrap
 
-.PHONY: manifests/bases/upstream-argocd
-manifests/bases/upstream-argocd: ARGOCD_VERSION := v2.1.0
-manifests/bases/upstream-argocd: ARGOCD_REPOSITORY := https://github.com/argoproj/argo-cd.git
-manifests/bases/upstream-argocd: WORK_DIR := $(shell mktemp -d -t ci-XXXXXXXXXX)
-manifests/bases/upstream-argocd: $(KUSTOMIZE)
+.PHONY: manifests/flux-app
+manifests/flux-app: FLUXAPP_VERSION := v0.7.1
+manifests/flux-app:
 	@echo "====> $@"
-	git -c advice.detachedHead=false clone --quiet --depth 1 --branch ${ARGOCD_VERSION} ${ARGOCD_REPOSITORY} ${WORK_DIR}
-	mkdir -p manifests/bases/upstream-argocd
-	echo "$(AUTOGENMSG)" > manifests/bases/upstream-argocd/install.yaml
-	$(KUSTOMIZE) build "$(WORK_DIR)/manifests/cluster-install" >> manifests/bases/upstream-argocd/install.yaml
-	rm -rf $(WORK_DIR)
+	git clean -fxd manifests/provider/
+	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "0,/version:/{s/version: .*/version: $(FLUXAPP_VERSION)/g}" {}
 
 BOOTSRAP_DEPS :=
-BOOTSRAP_DEPS += bootstrap/aws.yaml
-BOOTSRAP_DEPS += bootstrap/aws-test.yaml
-BOOTSRAP_DEPS += bootstrap/aws-china.yaml
-BOOTSRAP_DEPS += bootstrap/aws-china-test.yaml
-BOOTSRAP_DEPS += bootstrap/azure.yaml
-BOOTSRAP_DEPS += bootstrap/azure-test.yaml
-BOOTSRAP_DEPS += bootstrap/kvm.yaml
-BOOTSRAP_DEPS += bootstrap/kvm-test.yaml
-BOOTSRAP_DEPS += bootstrap/vmware.yaml
-BOOTSRAP_DEPS += bootstrap/vmware-test.yaml
+BOOTSRAP_DEPS += bootstrap/customer-aws/customer-aws.yaml
+BOOTSRAP_DEPS += bootstrap/customer-aws-china/customer-aws-china.yaml
+BOOTSRAP_DEPS += bootstrap/customer-azure/customer-azure.yaml
+BOOTSRAP_DEPS += bootstrap/customer-gcp/customer-gcp.yaml
+BOOTSRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
+BOOTSRAP_DEPS += bootstrap/customer-kvm/customer-kvm.yaml
+BOOTSRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
+BOOTSRAP_DEPS += bootstrap/gs-aws/gs-aws.yaml
+BOOTSRAP_DEPS += bootstrap/gs-aws-china/gs-aws-china.yaml
+BOOTSRAP_DEPS += bootstrap/gs-azure/gs-azure.yaml
+BOOTSRAP_DEPS += bootstrap/gs-gcp/gs-gcp.yaml
+BOOTSRAP_DEPS += bootstrap/gs-kvm/gs-kvm.yaml
+BOOTSRAP_DEPS += bootstrap/gs-openstack/gs-openstack.yaml
+BOOTSRAP_DEPS += bootstrap/gs-openstack-galaxy/gs-openstack-galaxy.yaml
+BOOTSRAP_DEPS += bootstrap/gs-openstack-gamma/gs-openstack-gamma.yaml
+BOOTSRAP_DEPS += bootstrap/gs-openstack-gravity/gs-openstack-gravity.yaml
 bootstrap: $(BOOTSRAP_DEPS)
 
-bootstrap/%.yaml: $(KUSTOMIZE) $(MANIFESTS)
+bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)
 	@echo "====> $@"
-	mkdir -p bootstrap
+	mkdir -p $(@D)
 	echo "$(AUTOGENMSG)" > $@
-	$(KUSTOMIZE) build manifests/provider/$* >> $@
+	$(KUSTOMIZE) build --load-restrictor LoadRestrictionsNone --enable-helm --helm-command="$(HELM)" manifests/provider/$(lastword $(subst /, ,$(@D))) >> $@
 
 $(KUSTOMIZE): ## Download kustomize locally if necessary.
 	@echo "====> $@"
-	$(call go-get-tool,$(KUSTOMIZE),sigs.k8s.io/kustomize/kustomize/v4@v4.1.2)
+	$(call go-get-tool,$(KUSTOMIZE),sigs.k8s.io/kustomize/kustomize/v4@v4.4.1)
+
+$(HELM): ## Download helm locally if necessary.
+	@echo "====> $@"
+	curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | HELM_INSTALL_DIR=bin USE_SUDO=false bash
 
 # go-get-tool will 'go get' any package $2 and install it to $1.
 PROJECT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))

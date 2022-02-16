@@ -1,0 +1,217 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: flux-multi-tenancy
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: serviceAccountNameMustBeSet
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - Kustomization
+            - HelmRelease
+      validate:
+        message: ".spec.serviceAccountName is required"
+        pattern:
+          spec:
+            serviceAccountName: "?*"
+    - name: kustomizationSourceRefNamespaceIsSafe
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - Kustomization
+      preconditions:
+        any:
+          - key: "{{request.object.spec.sourceRef.namespace}}"
+            operator: NotEquals
+            value: ""
+      validate:
+        message: "spec.sourceRef.namespace must be the same as metadata.namespace or 'default'"
+        deny:
+          conditions:
+            all:
+              - key: "{{request.object.spec.sourceRef.namespace}}"
+                operator: NotEquals
+                value:  "{{request.object.metadata.namespace}}"
+              - key: "{{request.object.spec.sourceRef.namespace}}"
+                operator: NotEquals
+                value:  "default"
+    - name: helmReleaseSourceRefNamespaceIsSafe
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - HelmRelease
+      preconditions:
+        any:
+          - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
+            operator: NotEquals
+            value: ""
+      validate:
+        message: "spec.chart.spec.sourceRef.namespace must be the same as metadata.namespace or 'default'"
+        deny:
+          conditions:
+            all:
+              - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
+                operator: NotEquals
+                value:  "{{request.object.metadata.namespace}}"
+              - key: "{{request.object.spec.chart.spec.sourceRef.namespace}}"
+                operator: NotEquals
+                value:  "default"
+    - name: targetNamespaceMustBeLocal
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - Kustomization
+            - HelmRelease
+      preconditions:
+        any:
+          - key: "{{request.object.spec.targetNamespace}}"
+            operator: NotEquals
+            value: ""
+      validate:
+        message: "spec.targetNamespace must be the same as metadata.namespace"
+        deny:
+          conditions:
+            all:
+              - key: "{{request.object.spec.targetNamespace}}"
+                operator: NotEquals
+                value:  "{{request.object.metadata.namespace}}"
+              - key: "{{request.object.spec.targetNamespace}}"
+                operator: NotEquals
+                value:  "org-*"
+    - name: storageNamespaceMustBeLocal
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - HelmRelease
+      preconditions:
+        any:
+          - key: "{{request.object.spec.storageNamespace}}"
+            operator: NotEquals
+            value: ""
+      validate:
+        message: "spec.storageNamespace must be the same as metadata.namespace"
+        deny:
+          conditions:
+            - key: "{{request.object.spec.storageNamespace}}"
+              operator: NotEquals
+              value:  "{{request.object.metadata.namespace}}"
+    - name: alertEventSourcesMustBeLocal
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - Alert
+      validate:
+        message: "spec.eventSources namespaces must be the same as metadata.namespace"
+        foreach:
+        - list: "request.object.spec.eventSources"
+          pattern:
+            =(namespace): "{{request.object.metadata.namespace}}"
+    - name: receiverResourcesMustBeLocal
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - Receiver
+      validate:
+        message: "spec.resources namespaces must be the same as metadata.namespace"
+        foreach:
+        - list: "request.object.spec.resources"
+          pattern:
+            =(namespace): "{{request.object.metadata.namespace}}"
+    - name: eventsObjectMustBeLocal
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - Event
+      preconditions:
+        any:
+          - key: "{{request.object.spec.involvedObject.namespace}}"
+            operator: NotEquals
+            value: ""
+      validate:
+        message: "spec.involvedObject namespace must be the same as metadata.namespace"
+        pattern:
+          spec:
+            involvedObject:
+              =(namespace): "{{request.object.metadata.namespace}}"
+    - name: imagePolicyRepositoryMustBeLocal
+      exclude:
+        resources:
+          namespaces:
+            - "flux-system"
+            - "flux-giantswarm"
+            - "giantswarm"
+            - "monitoring"
+      match:
+        resources:
+          kinds:
+            - ImagePolicy
+      preconditions:
+        any:
+          - key: "{{request.object.spec.imageRepositoryRef.namespace}}"
+            operator: NotEquals
+            value: ""
+      validate:
+        message: "spec.imageRepositoryRef namespace must be the same as metadata.namespace"
+        pattern:
+          spec:
+            imageRepositoryRef:
+              namespace: "{{request.object.metadata.namespace}}"
+

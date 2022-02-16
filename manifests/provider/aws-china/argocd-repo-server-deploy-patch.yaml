@@ -1,6 +1,0 @@
-- op: replace
-  path: /spec/template/spec/hostAliases
-  value:
-  - ip: "192.168.190.100"
-    hostnames:
-    - "github.com"

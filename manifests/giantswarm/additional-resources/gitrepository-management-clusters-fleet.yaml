@@ -1,0 +1,11 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: management-clusters-fleet
+  namespace: flux-giantswarm
+spec:
+  interval: 30s
+  ref:
+    branch: migrate-to-flux-test
+  url: https://github.com/giantswarm/management-clusters-fleet
