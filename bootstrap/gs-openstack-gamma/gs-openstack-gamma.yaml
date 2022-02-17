@@ -10979,18 +10979,12 @@ spec:
         - --log-encoding=json
         - --enable-leader-election
         - --storage-path=/data
-        - --storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc.$(CLUSTER_DOMAIN)
+        - --storage-adv-addr=source-controller.$(RUNTIME_NAMESPACE).svc
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        - name: CLUSTER_DOMAIN
-          valueFrom:
-            configMapKeyRef:
-              key: CLUSTER_DOMAIN
-              name: management-cluster-metadata
-              optional: false
         image: docker.io/giantswarm/fluxcd-source-controller:v0.17.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
