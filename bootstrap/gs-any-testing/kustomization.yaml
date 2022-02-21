@@ -1,4 +1,0 @@
-bases:
-- ../gs-aws/
-resources:
-- gs-aws-testing.yaml
