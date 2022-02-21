@@ -5,5 +5,4 @@ resources:
 - kustomization-collection.yaml
 - namespace.yaml
 - rbac.yaml
-- resume-collection-kustomization.yaml
 - vault-token-refresh.yaml

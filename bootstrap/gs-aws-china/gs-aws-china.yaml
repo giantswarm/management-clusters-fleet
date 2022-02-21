@@ -11070,29 +11070,6 @@ spec:
           serviceAccountName: refresh-vault-token
   schedule: 0 0 1 */5 *
 ---
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  name: resume-collection-kustomization
-  namespace: flux-giantswarm
-spec:
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-          - args:
-            - resume
-            - kustomization
-            - collection
-            - --namespace
-            - flux-giantswarm
-            image: docker.io/fluxcd/flux-cli:v0.27.0
-            name: resume-collection-kustomization
-          restartPolicy: OnFailure
-          serviceAccountName: automation
-  schedule: 0 0 * * *
----
 apiVersion: batch/v1
 kind: Job
 metadata:

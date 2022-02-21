@@ -14,7 +14,7 @@ manifests/flux-app: FLUXAPP_VERSION := v0.7.1
 manifests/flux-app:
 	@echo "====> $@"
 	git clean -fxd manifests/provider/
-	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "0,/version:/{s/version: .*/version: $(FLUXAPP_VERSION)/g}" {}
+	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "" "0,/version:/ s/version: .*/version: $(FLUXAPP_VERSION)/g" {}
 
 BOOTSRAP_DEPS :=
 BOOTSRAP_DEPS += bootstrap/customer-aws/customer-aws.yaml
@@ -25,6 +25,7 @@ BOOTSRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
 BOOTSRAP_DEPS += bootstrap/customer-kvm/customer-kvm.yaml
 BOOTSRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
 BOOTSRAP_DEPS += bootstrap/gs-aws/gs-aws.yaml
+BOOTSRAP_DEPS += bootstrap/gs-aws-testing/gs-aws-testing.yaml
 BOOTSRAP_DEPS += bootstrap/gs-aws-china/gs-aws-china.yaml
 BOOTSRAP_DEPS += bootstrap/gs-azure/gs-azure.yaml
 BOOTSRAP_DEPS += bootstrap/gs-gcp/gs-gcp.yaml
