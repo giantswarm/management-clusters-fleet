@@ -14,26 +14,27 @@ manifests/flux-app: FLUXAPP_VERSION := v0.7.1
 manifests/flux-app:
 	@echo "====> $@"
 	git clean -fxd manifests/provider/
-	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "0,/version:/{s/version: .*/version: $(FLUXAPP_VERSION)/g}" {}
+	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} gsed -i "0,/version:/{s/version: .*/version: $(FLUXAPP_VERSION)/g}" {}
 
-BOOTSRAP_DEPS :=
-BOOTSRAP_DEPS += bootstrap/customer-aws/customer-aws.yaml
-BOOTSRAP_DEPS += bootstrap/customer-aws-china/customer-aws-china.yaml
-BOOTSRAP_DEPS += bootstrap/customer-azure/customer-azure.yaml
-BOOTSRAP_DEPS += bootstrap/customer-gcp/customer-gcp.yaml
-BOOTSRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
-BOOTSRAP_DEPS += bootstrap/customer-kvm/customer-kvm.yaml
-BOOTSRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
-BOOTSRAP_DEPS += bootstrap/gs-aws/gs-aws.yaml
-BOOTSRAP_DEPS += bootstrap/gs-aws-china/gs-aws-china.yaml
-BOOTSRAP_DEPS += bootstrap/gs-azure/gs-azure.yaml
-BOOTSRAP_DEPS += bootstrap/gs-gcp/gs-gcp.yaml
-BOOTSRAP_DEPS += bootstrap/gs-kvm/gs-kvm.yaml
-BOOTSRAP_DEPS += bootstrap/gs-openstack/gs-openstack.yaml
-BOOTSRAP_DEPS += bootstrap/gs-openstack-galaxy/gs-openstack-galaxy.yaml
-BOOTSRAP_DEPS += bootstrap/gs-openstack-gamma/gs-openstack-gamma.yaml
-BOOTSRAP_DEPS += bootstrap/gs-openstack-gravity/gs-openstack-gravity.yaml
-bootstrap: $(BOOTSRAP_DEPS)
+BOOTSTRAP_DEPS :=
+BOOTSTRAP_DEPS += bootstrap/customer-aws/customer-aws.yaml
+BOOTSTRAP_DEPS += bootstrap/customer-aws-china/customer-aws-china.yaml
+BOOTSTRAP_DEPS += bootstrap/customer-azure/customer-azure.yaml
+BOOTSTRAP_DEPS += bootstrap/customer-gcp/customer-gcp.yaml
+BOOTSTRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
+BOOTSTRAP_DEPS += bootstrap/customer-kvm/customer-kvm.yaml
+BOOTSTRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-aws/gs-aws.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-aws-china/gs-aws-china.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-azure/gs-azure.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-gcp/gs-gcp.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-kvm/gs-kvm.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-openstack/gs-openstack.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-openstack-galaxy/gs-openstack-galaxy.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-openstack-gamma/gs-openstack-gamma.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-openstack-gravity/gs-openstack-gravity.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-rest-api/gs-rest-api.yaml
+bootstrap: $(BOOTSTRAP_DEPS)
 
 bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)
 	@echo "====> $@"
