@@ -1,0 +1,4 @@
+bases:
+- ../../giantswarm/additional-testing-resources
+resources:
+- flux-kustomization.yaml
