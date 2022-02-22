@@ -30,9 +30,6 @@ BOOTSRAP_DEPS += bootstrap/gs-azure/gs-azure.yaml
 BOOTSRAP_DEPS += bootstrap/gs-gcp/gs-gcp.yaml
 BOOTSRAP_DEPS += bootstrap/gs-kvm/gs-kvm.yaml
 BOOTSRAP_DEPS += bootstrap/gs-openstack/gs-openstack.yaml
-BOOTSRAP_DEPS += bootstrap/gs-openstack-galaxy/gs-openstack-galaxy.yaml
-BOOTSRAP_DEPS += bootstrap/gs-openstack-gamma/gs-openstack-gamma.yaml
-BOOTSRAP_DEPS += bootstrap/gs-openstack-gravity/gs-openstack-gravity.yaml
 bootstrap: $(BOOTSRAP_DEPS)
 
 bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)
