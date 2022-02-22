@@ -29,7 +29,7 @@ metadata:
   namespace: flux-giantswarm
 spec:
   interval: 30s
-  path: ./bootstrap/gs-any-testing
+  path: ./bootstrap/gs-testing
   prune: true
   serviceAccountName: automation
   sourceRef:
