@@ -17,7 +17,7 @@ spec:
                 - collection
                 - --namespace
                 - flux-giantswarm
-              image: docker.io/fluxcd/flux-cli:v0.27.0
+              image: quay.io/giantswarm/flux-cli:v0.27.0
               name: resume-collection-kustomization
           serviceAccountName: automation
           restartPolicy: OnFailure
