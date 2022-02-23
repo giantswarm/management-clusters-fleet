@@ -21,7 +21,6 @@ BOOTSTRAP_DEPS += bootstrap/customer-aws/customer-aws.yaml
 BOOTSTRAP_DEPS += bootstrap/customer-aws-china/customer-aws-china.yaml
 BOOTSTRAP_DEPS += bootstrap/customer-azure/customer-azure.yaml
 BOOTSTRAP_DEPS += bootstrap/customer-gcp/customer-gcp.yaml
-BOOTSTRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
 BOOTSTRAP_DEPS += bootstrap/customer-kvm/customer-kvm.yaml
 BOOTSTRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-aws/gs-aws.yaml
