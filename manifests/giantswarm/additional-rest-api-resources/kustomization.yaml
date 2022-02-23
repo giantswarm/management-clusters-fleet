@@ -1,0 +1,4 @@
+namespace: "flux-giantswarm"
+resources:
+- gitrepository-rest-api-collection.yaml
+- kustomization-rest-api-collection.yaml

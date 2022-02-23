@@ -1,0 +1,2 @@
+bases:
+- ../../giantswarm/additional-rest-api-resources

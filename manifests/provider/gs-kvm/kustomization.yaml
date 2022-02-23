@@ -1,5 +1,6 @@
 bases:
 - ../../giantswarm/additional-resources
+- ../../giantswarm/additional-rest-api-resources
 helmCharts:
   - name: flux-app
     includeCRDs: true

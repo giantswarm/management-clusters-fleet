@@ -11276,6 +11276,22 @@ spec:
     name: management-clusters-fleet
     namespace: flux-giantswarm
 ---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: rest-api-collection
+  namespace: flux-giantswarm
+spec:
+  interval: 10s
+  path: ./flux-manifests
+  prune: true
+  serviceAccountName: automation
+  sourceRef:
+    kind: GitRepository
+    name: rest-api-collection
+    namespace: flux-giantswarm
+  targetNamespace: giantswarm
+---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -11432,3 +11448,16 @@ spec:
   ref:
     branch: main
   url: https://github.com/giantswarm/management-clusters-fleet
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: rest-api-collection
+  namespace: flux-giantswarm
+spec:
+  interval: 30s
+  ref:
+    branch: main
+  secretRef:
+    name: github-giantswarm-https-credentials
+  url: https://github.com/giantswarm/rest-api-app-collection
