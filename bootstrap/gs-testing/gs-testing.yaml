@@ -10,12 +10,13 @@ spec:
       template:
         spec:
           containers:
-          - args:
-            - resume
-            - kustomization
-            - collection
-            - --namespace
-            - flux-giantswarm
+          - command:
+            - sh
+            - -c
+            - |
+              FLAGS="--namespace flux-giantswarm --verbose"
+              flux resume kustomization collection $FLAGS
+              flux resume kustomization flux $FLAGS
             image: quay.io/giantswarm/flux-cli:v0.27.0
             name: resume-collection-kustomization
           restartPolicy: OnFailure
