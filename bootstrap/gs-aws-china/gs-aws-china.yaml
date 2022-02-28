@@ -11434,5 +11434,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: capi-collection
   url: https://github.com/giantswarm/management-clusters-fleet
