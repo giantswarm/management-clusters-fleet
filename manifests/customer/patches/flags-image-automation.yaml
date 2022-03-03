@@ -3,6 +3,6 @@
   value:
     - --events-addr=http://notification-controller/
     - --watch-all-namespaces
-    - --log-level=debug
+    - --log-level=trace
     - --log-encoding=json
     - --enable-leader-election
