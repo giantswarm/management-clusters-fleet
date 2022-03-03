@@ -47,7 +47,7 @@ patchesJson6902:
       kind: Deployment
       name: image-automation-controller
       namespace: flux-system
-    path: ../../customer/patches/flags.yaml
+    path: ../../customer/patches/flags-image-automation.yaml
   - target:
       group: apps
       version: v1

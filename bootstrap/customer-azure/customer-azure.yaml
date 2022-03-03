@@ -631,7 +631,7 @@ spec:
       - args:
         - --events-addr=http://notification-controller/
         - --watch-all-namespaces
-        - --log-level=info
+        - --log-level=trace
         - --log-encoding=json
         - --enable-leader-election
         env:
