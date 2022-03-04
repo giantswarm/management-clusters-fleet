@@ -11446,7 +11446,7 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: break-collection-test
   url: https://github.com/giantswarm/management-clusters-fleet
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta1
