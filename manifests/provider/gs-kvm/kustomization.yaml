@@ -7,7 +7,7 @@ helmCharts:
     namespace: flux-giantswarm
     repo: https://giantswarm.github.io/giantswarm-catalog/
     releaseName: flux-giantswarm
-    version: v0.7.1
+    version: v0.10.0
     valuesInline:
       crds:
         install: true

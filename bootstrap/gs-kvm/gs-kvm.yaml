@@ -8,7 +8,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -84,6 +84,15 @@ spec:
                       - ImagePolicy
                       - ImageUpdateAutomation
                       type: string
+                    matchLabels:
+                      additionalProperties:
+                        type: string
+                      description: MatchLabels is a map of {key,value} pairs. A single
+                        {key,value} in the matchLabels map is equivalent to an element
+                        of matchExpressions, whose key field is "key", the operator
+                        is "In", and the values array contains only "value". The requirements
+                        are ANDed.
+                      type: object
                     name:
                       description: Name of the referent
                       maxLength: 53
@@ -219,7 +228,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -235,8 +244,8 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .spec.url
-      name: URL
+    - jsonPath: .spec.endpoint
+      name: Endpoint
       type: string
     - jsonPath: .status.conditions[?(@.type=="Ready")].status
       name: Ready
@@ -268,6 +277,33 @@ spec:
             description: BucketSpec defines the desired state of an S3 compatible
               bucket
             properties:
+              accessFrom:
+                description: AccessFrom defines an Access Control List for allowing
+                  cross-namespace references to this object.
+                properties:
+                  namespaceSelectors:
+                    description: NamespaceSelectors is the list of namespace selectors
+                      to which this ACL applies. Items in this list are evaluated
+                      using a logical OR operation.
+                    items:
+                      description: NamespaceSelector selects the namespaces to which
+                        this ACL applies. An empty map of MatchLabels matches all
+                        namespaces in a cluster.
+                      properties:
+                        matchLabels:
+                          additionalProperties:
+                            type: string
+                          description: MatchLabels is a map of {key,value} pairs.
+                            A single {key,value} in the matchLabels map is equivalent
+                            to an element of matchExpressions, whose key field is
+                            "key", the operator is "In", and the values array contains
+                            only "value". The requirements are ANDed.
+                          type: object
+                      type: object
+                    type: array
+                required:
+                - namespaceSelectors
+                type: object
               bucketName:
                 description: The bucket name.
                 type: string
@@ -312,8 +348,8 @@ spec:
                   of this source.
                 type: boolean
               timeout:
-                default: 20s
-                description: The timeout for download operations, defaults to 20s.
+                default: 60s
+                description: The timeout for download operations, defaults to 60s.
                 type: string
             required:
             - bucketName
@@ -321,6 +357,8 @@ spec:
             - interval
             type: object
           status:
+            default:
+              observedGeneration: -1
             description: BucketStatus defines the observed state of a bucket
             properties:
               artifact:
@@ -328,7 +366,7 @@ spec:
                   Bucket sync.
                 properties:
                   checksum:
-                    description: Checksum is the SHA1 checksum of the artifact.
+                    description: Checksum is the SHA256 checksum of the artifact.
                     type: string
                   lastUpdateTime:
                     description: LastUpdateTime is the timestamp corresponding to
@@ -449,7 +487,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -499,6 +537,33 @@ spec:
           spec:
             description: GitRepositorySpec defines the desired state of a Git repository.
             properties:
+              accessFrom:
+                description: AccessFrom defines an Access Control List for allowing
+                  cross-namespace references to this object.
+                properties:
+                  namespaceSelectors:
+                    description: NamespaceSelectors is the list of namespace selectors
+                      to which this ACL applies. Items in this list are evaluated
+                      using a logical OR operation.
+                    items:
+                      description: NamespaceSelector selects the namespaces to which
+                        this ACL applies. An empty map of MatchLabels matches all
+                        namespaces in a cluster.
+                      properties:
+                        matchLabels:
+                          additionalProperties:
+                            type: string
+                          description: MatchLabels is a map of {key,value} pairs.
+                            A single {key,value} in the matchLabels map is equivalent
+                            to an element of matchExpressions, whose key field is
+                            "key", the operator is "In", and the values array contains
+                            only "value". The requirements are ANDed.
+                          type: object
+                      type: object
+                    type: array
+                required:
+                - namespaceSelectors
+                type: object
               gitImplementation:
                 default: go-git
                 description: Determines which git client library to use. Defaults
@@ -584,9 +649,9 @@ spec:
                   of this source.
                 type: boolean
               timeout:
-                default: 20s
+                default: 60s
                 description: The timeout for remote Git operations like cloning, defaults
-                  to 20s.
+                  to 60s.
                 type: string
               url:
                 description: The repository URL, can be a HTTP/S or SSH address.
@@ -620,6 +685,8 @@ spec:
             - url
             type: object
           status:
+            default:
+              observedGeneration: -1
             description: GitRepositoryStatus defines the observed state of a Git repository.
             properties:
               artifact:
@@ -627,7 +694,7 @@ spec:
                   repository sync.
                 properties:
                   checksum:
-                    description: Checksum is the SHA1 checksum of the artifact.
+                    description: Checksum is the SHA256 checksum of the artifact.
                     type: string
                   lastUpdateTime:
                     description: LastUpdateTime is the timestamp corresponding to
@@ -726,7 +793,7 @@ spec:
                   description: Artifact represents the output of a source synchronisation.
                   properties:
                     checksum:
-                      description: Checksum is the SHA1 checksum of the artifact.
+                      description: Checksum is the SHA256 checksum of the artifact.
                       type: string
                     lastUpdateTime:
                       description: LastUpdateTime is the timestamp corresponding to
@@ -778,7 +845,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -837,6 +904,33 @@ spec:
           spec:
             description: HelmChartSpec defines the desired state of a Helm chart.
             properties:
+              accessFrom:
+                description: AccessFrom defines an Access Control List for allowing
+                  cross-namespace references to this object.
+                properties:
+                  namespaceSelectors:
+                    description: NamespaceSelectors is the list of namespace selectors
+                      to which this ACL applies. Items in this list are evaluated
+                      using a logical OR operation.
+                    items:
+                      description: NamespaceSelector selects the namespaces to which
+                        this ACL applies. An empty map of MatchLabels matches all
+                        namespaces in a cluster.
+                      properties:
+                        matchLabels:
+                          additionalProperties:
+                            type: string
+                          description: MatchLabels is a map of {key,value} pairs.
+                            A single {key,value} in the matchLabels map is equivalent
+                            to an element of matchExpressions, whose key field is
+                            "key", the operator is "In", and the values array contains
+                            only "value". The requirements are ANDed.
+                          type: object
+                      type: object
+                    type: array
+                required:
+                - namespaceSelectors
+                type: object
               chart:
                 description: The name or path the Helm chart is available at in the
                   SourceRef.
@@ -905,6 +999,8 @@ spec:
             - sourceRef
             type: object
           status:
+            default:
+              observedGeneration: -1
             description: HelmChartStatus defines the observed state of the HelmChart.
             properties:
               artifact:
@@ -912,7 +1008,7 @@ spec:
                   chart sync.
                 properties:
                   checksum:
-                    description: Checksum is the SHA1 checksum of the artifact.
+                    description: Checksum is the SHA256 checksum of the artifact.
                     type: string
                   lastUpdateTime:
                     description: LastUpdateTime is the timestamp corresponding to
@@ -1032,7 +1128,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -1341,11 +1437,20 @@ spec:
                                   with an array of operation objects.
                                 items:
                                   description: JSON6902 is a JSON6902 operation object.
-                                    https://tools.ietf.org/html/rfc6902#section-4
+                                    https://datatracker.ietf.org/doc/html/rfc6902#section-4
                                   properties:
                                     from:
+                                      description: From contains a JSON-pointer value
+                                        that references a location within the target
+                                        document where the operation is performed.
+                                        The meaning of the value depends on the value
+                                        of Op, and is NOT taken into account by all
+                                        operations.
                                       type: string
                                     op:
+                                      description: Op indicates the operation to perform.
+                                        Its value MUST be one of "add", "remove",
+                                        "replace", "move", "copy", or "test". https://datatracker.ietf.org/doc/html/rfc6902#section-4
                                       enum:
                                       - test
                                       - remove
@@ -1355,8 +1460,17 @@ spec:
                                       - copy
                                       type: string
                                     path:
+                                      description: Path contains the JSON-pointer
+                                        value that references a location within the
+                                        target document where the operation is performed.
+                                        The meaning of the value depends on the value
+                                        of Op.
                                       type: string
                                     value:
+                                      description: Value contains a valid JSON structure.
+                                        The meaning of the value depends on the value
+                                        of Op, and is NOT taken into account by all
+                                        operations.
                                       x-kubernetes-preserve-unknown-fields: true
                                   required:
                                   - op
@@ -1509,6 +1623,10 @@ spec:
                   disableHooks:
                     description: DisableHooks prevents hooks from running during the
                       Helm rollback action.
+                    type: boolean
+                  disableWait:
+                    description: DisableWait disables waiting for all the resources
+                      to be deleted after a Helm uninstall is performed.
                     type: boolean
                   keepHistory:
                     description: KeepHistory tells Helm to remove all associated resources
@@ -1791,7 +1909,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -1841,6 +1959,33 @@ spec:
           spec:
             description: HelmRepositorySpec defines the reference to a Helm repository.
             properties:
+              accessFrom:
+                description: AccessFrom defines an Access Control List for allowing
+                  cross-namespace references to this object.
+                properties:
+                  namespaceSelectors:
+                    description: NamespaceSelectors is the list of namespace selectors
+                      to which this ACL applies. Items in this list are evaluated
+                      using a logical OR operation.
+                    items:
+                      description: NamespaceSelector selects the namespaces to which
+                        this ACL applies. An empty map of MatchLabels matches all
+                        namespaces in a cluster.
+                      properties:
+                        matchLabels:
+                          additionalProperties:
+                            type: string
+                          description: MatchLabels is a map of {key,value} pairs.
+                            A single {key,value} in the matchLabels map is equivalent
+                            to an element of matchExpressions, whose key field is
+                            "key", the operator is "In", and the values array contains
+                            only "value". The requirements are ANDed.
+                          type: object
+                      type: object
+                    type: array
+                required:
+                - namespaceSelectors
+                type: object
               interval:
                 description: The interval at which to check the upstream for updates.
                 type: string
@@ -1881,6 +2026,8 @@ spec:
             - url
             type: object
           status:
+            default:
+              observedGeneration: -1
             description: HelmRepositoryStatus defines the observed state of the HelmRepository.
             properties:
               artifact:
@@ -1888,7 +2035,7 @@ spec:
                   repository sync.
                 properties:
                   checksum:
-                    description: Checksum is the SHA1 checksum of the artifact.
+                    description: Checksum is the SHA256 checksum of the artifact.
                     type: string
                   lastUpdateTime:
                     description: LastUpdateTime is the timestamp corresponding to
@@ -2008,7 +2155,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -2500,6 +2647,8 @@ spec:
             - policy
             type: object
           status:
+            default:
+              observedGeneration: -1
             description: ImagePolicyStatus defines the observed state of ImagePolicy
             properties:
               conditions:
@@ -2596,7 +2745,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -2989,14 +3138,27 @@ spec:
                   labels.
                 properties:
                   namespaceSelectors:
+                    description: NamespaceSelectors is the list of namespace selectors
+                      to which this ACL applies. Items in this list are evaluated
+                      using a logical OR operation.
                     items:
+                      description: NamespaceSelector selects the namespaces to which
+                        this ACL applies. An empty map of MatchLabels matches all
+                        namespaces in a cluster.
                       properties:
                         matchLabels:
                           additionalProperties:
                             type: string
+                          description: MatchLabels is a map of {key,value} pairs.
+                            A single {key,value} in the matchLabels map is equivalent
+                            to an element of matchExpressions, whose key field is
+                            "key", the operator is "In", and the values array contains
+                            only "value". The requirements are ANDed.
                           type: object
                       type: object
                     type: array
+                required:
+                - namespaceSelectors
                 type: object
               certSecretRef:
                 description: "CertSecretRef can be given the name of a secret containing
@@ -3041,6 +3203,8 @@ spec:
                 type: string
             type: object
           status:
+            default:
+              observedGeneration: -1
             description: ImageRepositoryStatus defines the observed state of ImageRepository
             properties:
               canonicalImageName:
@@ -3153,7 +3317,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -3440,7 +3604,6 @@ spec:
                           from the Git repository.
                         properties:
                           branch:
-                            default: master
                             description: The Git branch to checkout, defaults to master.
                             type: string
                           commit:
@@ -3712,7 +3875,6 @@ spec:
                           from the Git repository.
                         properties:
                           branch:
-                            default: master
                             description: The Git branch to checkout, defaults to master.
                             type: string
                           commit:
@@ -3799,16 +3961,20 @@ spec:
                   to a git repository.
                 properties:
                   apiVersion:
-                    description: API version of the referent
+                    description: API version of the referent.
                     type: string
                   kind:
                     default: GitRepository
-                    description: Kind of the referent
+                    description: Kind of the referent.
                     enum:
                     - GitRepository
                     type: string
                   name:
-                    description: Name of the referent
+                    description: Name of the referent.
+                    type: string
+                  namespace:
+                    description: Namespace of the referent, defaults to the namespace
+                      of the Kubernetes resource object that contains the reference.
                     type: string
                 required:
                 - kind
@@ -3844,6 +4010,8 @@ spec:
             - sourceRef
             type: object
           status:
+            default:
+              observedGeneration: -1
             description: ImageUpdateAutomationStatus defines the observed state of
               ImageUpdateAutomation
             properties:
@@ -3954,7 +4122,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -4128,13 +4296,12 @@ spec:
                   objects, capable of targeting objects based on kind, label and annotation
                   selectors.
                 items:
-                  description: Patch contains either a StrategicMerge or a JSON6902
-                    patch, either a file or inline, and the target the patch should
-                    be applied to.
+                  description: Patch contains an inline StrategicMerge or JSON6902
+                    patch, and the target the patch should be applied to.
                   properties:
                     patch:
-                      description: Patch contains the JSON6902 patch document with
-                        an array of operation objects.
+                      description: Patch contains an inline StrategicMerge patch or
+                        an inline JSON6902 patch with an array of operation objects.
                       type: string
                     target:
                       description: Target points to the resources that the patch document
@@ -4185,11 +4352,18 @@ spec:
                       description: Patch contains the JSON6902 patch document with
                         an array of operation objects.
                       items:
-                        description: JSON6902 is a JSON6902 operation object. https://tools.ietf.org/html/rfc6902#section-4
+                        description: JSON6902 is a JSON6902 operation object. https://datatracker.ietf.org/doc/html/rfc6902#section-4
                         properties:
                           from:
+                            description: From contains a JSON-pointer value that references
+                              a location within the target document where the operation
+                              is performed. The meaning of the value depends on the
+                              value of Op, and is NOT taken into account by all operations.
                             type: string
                           op:
+                            description: Op indicates the operation to perform. Its
+                              value MUST be one of "add", "remove", "replace", "move",
+                              "copy", or "test". https://datatracker.ietf.org/doc/html/rfc6902#section-4
                             enum:
                             - test
                             - remove
@@ -4199,8 +4373,15 @@ spec:
                             - copy
                             type: string
                           path:
+                            description: Path contains the JSON-pointer value that
+                              references a location within the target document where
+                              the operation is performed. The meaning of the value
+                              depends on the value of Op.
                             type: string
                           value:
+                            description: Value contains a valid JSON structure. The
+                              meaning of the value depends on the value of Op, and
+                              is NOT taken into account by all operations.
                             x-kubernetes-preserve-unknown-fields: true
                         required:
                         - op
@@ -4651,13 +4832,12 @@ spec:
                   objects, capable of targeting objects based on kind, label and annotation
                   selectors.
                 items:
-                  description: Patch contains either a StrategicMerge or a JSON6902
-                    patch, either a file or inline, and the target the patch should
-                    be applied to.
+                  description: Patch contains an inline StrategicMerge or JSON6902
+                    patch, and the target the patch should be applied to.
                   properties:
                     patch:
-                      description: Patch contains the JSON6902 patch document with
-                        an array of operation objects.
+                      description: Patch contains an inline StrategicMerge patch or
+                        an inline JSON6902 patch with an array of operation objects.
                       type: string
                     target:
                       description: Target points to the resources that the patch document
@@ -4709,11 +4889,18 @@ spec:
                       description: Patch contains the JSON6902 patch document with
                         an array of operation objects.
                       items:
-                        description: JSON6902 is a JSON6902 operation object. https://tools.ietf.org/html/rfc6902#section-4
+                        description: JSON6902 is a JSON6902 operation object. https://datatracker.ietf.org/doc/html/rfc6902#section-4
                         properties:
                           from:
+                            description: From contains a JSON-pointer value that references
+                              a location within the target document where the operation
+                              is performed. The meaning of the value depends on the
+                              value of Op, and is NOT taken into account by all operations.
                             type: string
                           op:
+                            description: Op indicates the operation to perform. Its
+                              value MUST be one of "add", "remove", "replace", "move",
+                              "copy", or "test". https://datatracker.ietf.org/doc/html/rfc6902#section-4
                             enum:
                             - test
                             - remove
@@ -4723,8 +4910,15 @@ spec:
                             - copy
                             type: string
                           path:
+                            description: Path contains the JSON-pointer value that
+                              references a location within the target document where
+                              the operation is performed. The meaning of the value
+                              depends on the value of Op.
                             type: string
                           value:
+                            description: Value contains a valid JSON structure. The
+                              meaning of the value depends on the value of Op, and
+                              is NOT taken into account by all operations.
                             x-kubernetes-preserve-unknown-fields: true
                         required:
                         - op
@@ -4821,6 +5015,14 @@ spec:
                           maxLength: 253
                           minLength: 1
                           type: string
+                        optional:
+                          default: false
+                          description: Optional indicates whether the referenced resource
+                            must exist, or whether to tolerate its absence. If true
+                            and the referenced resource is absent, proceed as if the
+                            resource was present but empty, without any variables
+                            defined.
+                          type: boolean
                       required:
                       - kind
                       - name
@@ -5028,7 +5230,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -5104,6 +5306,10 @@ spec:
                 required:
                 - name
                 type: object
+              suspend:
+                description: This flag tells the controller to suspend subsequent
+                  events handling. Defaults to false.
+                type: boolean
               type:
                 description: Type of provider
                 enum:
@@ -5125,6 +5331,7 @@ spec:
                 - matrix
                 - opsgenie
                 - alertmanager
+                - grafana
                 type: string
               username:
                 description: Bot username for this provider
@@ -5227,7 +5434,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.5.0
+    controller-gen.kubebuilder.io/version: v0.7.0
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -5300,6 +5507,15 @@ spec:
                       - ImagePolicy
                       - ImageUpdateAutomation
                       type: string
+                    matchLabels:
+                      additionalProperties:
+                        type: string
+                      description: MatchLabels is a map of {key,value} pairs. A single
+                        {key,value} in the matchLabels map is equivalent to an element
+                        of matchExpressions, whose key field is "key", the operator
+                        is "In", and the values array contains only "value". The requirements
+                        are ANDed.
+                      type: object
                     name:
                       description: Name of the referent
                       maxLength: 53
@@ -5471,9 +5687,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: helm-controller
   namespace: flux-giantswarm
 ---
@@ -5485,9 +5701,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: image-automation-controller
   namespace: flux-giantswarm
 ---
@@ -5499,9 +5715,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: image-reflector-controller
   namespace: flux-giantswarm
 ---
@@ -5513,9 +5729,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: kustomize-controller
   namespace: flux-giantswarm
 ---
@@ -5527,9 +5743,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: notification-controller
   namespace: flux-giantswarm
 ---
@@ -5547,9 +5763,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: source-controller
   namespace: flux-giantswarm
 ---
@@ -5596,9 +5812,9 @@ metadata:
     app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: flux-app-pvc-psp-giantswarm
 spec:
   allowPrivilegeEscalation: false
@@ -5684,9 +5900,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: crd-controller-giantswarm
 rules:
 - apiGroups:
@@ -5795,7 +6011,7 @@ metadata:
     app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
     role: crd-install-hook
   name: flux-app-crd-install
   namespace: flux-giantswarm
@@ -5816,9 +6032,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: cluster-reconciler-giantswarm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -5840,9 +6056,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: crd-controller-giantswarm
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -5888,7 +6104,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -5957,6 +6173,11 @@ data:
                               - ImagePolicy
                               - ImageUpdateAutomation
                             type: string
+                          matchLabels:
+                            additionalProperties:
+                              type: string
+                            description: MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                            type: object
                           name:
                             description: Name of the referent
                             maxLength: 53
@@ -6080,7 +6301,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -6096,8 +6317,8 @@ data:
       scope: Namespaced
       versions:
         - additionalPrinterColumns:
-            - jsonPath: .spec.url
-              name: URL
+            - jsonPath: .spec.endpoint
+              name: Endpoint
               type: string
             - jsonPath: .status.conditions[?(@.type=="Ready")].status
               name: Ready
@@ -6124,6 +6345,24 @@ data:
                 spec:
                   description: BucketSpec defines the desired state of an S3 compatible bucket
                   properties:
+                    accessFrom:
+                      description: AccessFrom defines an Access Control List for allowing cross-namespace references to this object.
+                      properties:
+                        namespaceSelectors:
+                          description: NamespaceSelectors is the list of namespace selectors to which this ACL applies. Items in this list are evaluated using a logical OR operation.
+                          items:
+                            description: NamespaceSelector selects the namespaces to which this ACL applies. An empty map of MatchLabels matches all namespaces in a cluster.
+                            properties:
+                              matchLabels:
+                                additionalProperties:
+                                  type: string
+                                description: MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                type: object
+                            type: object
+                          type: array
+                      required:
+                        - namespaceSelectors
+                      type: object
                     bucketName:
                       description: The bucket name.
                       type: string
@@ -6163,8 +6402,8 @@ data:
                       description: This flag tells the controller to suspend the reconciliation of this source.
                       type: boolean
                     timeout:
-                      default: 20s
-                      description: The timeout for download operations, defaults to 20s.
+                      default: 60s
+                      description: The timeout for download operations, defaults to 60s.
                       type: string
                   required:
                     - bucketName
@@ -6172,13 +6411,15 @@ data:
                     - interval
                   type: object
                 status:
+                  default:
+                    observedGeneration: -1
                   description: BucketStatus defines the observed state of a bucket
                   properties:
                     artifact:
                       description: Artifact represents the output of the last successful Bucket sync.
                       properties:
                         checksum:
-                          description: Checksum is the SHA1 checksum of the artifact.
+                          description: Checksum is the SHA256 checksum of the artifact.
                           type: string
                         lastUpdateTime:
                           description: LastUpdateTime is the timestamp corresponding to the last update of this artifact.
@@ -6284,7 +6525,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -6330,6 +6571,24 @@ data:
                 spec:
                   description: GitRepositorySpec defines the desired state of a Git repository.
                   properties:
+                    accessFrom:
+                      description: AccessFrom defines an Access Control List for allowing cross-namespace references to this object.
+                      properties:
+                        namespaceSelectors:
+                          description: NamespaceSelectors is the list of namespace selectors to which this ACL applies. Items in this list are evaluated using a logical OR operation.
+                          items:
+                            description: NamespaceSelector selects the namespaces to which this ACL applies. An empty map of MatchLabels matches all namespaces in a cluster.
+                            properties:
+                              matchLabels:
+                                additionalProperties:
+                                  type: string
+                                description: MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                type: object
+                            type: object
+                          type: array
+                      required:
+                        - namespaceSelectors
+                      type: object
                     gitImplementation:
                       default: go-git
                       description: Determines which git client library to use. Defaults to go-git, valid values are ('go-git', 'libgit2').
@@ -6399,8 +6658,8 @@ data:
                       description: This flag tells the controller to suspend the reconciliation of this source.
                       type: boolean
                     timeout:
-                      default: 20s
-                      description: The timeout for remote Git operations like cloning, defaults to 20s.
+                      default: 60s
+                      description: The timeout for remote Git operations like cloning, defaults to 60s.
                       type: string
                     url:
                       description: The repository URL, can be a HTTP/S or SSH address.
@@ -6431,13 +6690,15 @@ data:
                     - url
                   type: object
                 status:
+                  default:
+                    observedGeneration: -1
                   description: GitRepositoryStatus defines the observed state of a Git repository.
                   properties:
                     artifact:
                       description: Artifact represents the output of the last successful repository sync.
                       properties:
                         checksum:
-                          description: Checksum is the SHA1 checksum of the artifact.
+                          description: Checksum is the SHA256 checksum of the artifact.
                           type: string
                         lastUpdateTime:
                           description: LastUpdateTime is the timestamp corresponding to the last update of this artifact.
@@ -6506,7 +6767,7 @@ data:
                         description: Artifact represents the output of a source synchronisation.
                         properties:
                           checksum:
-                            description: Checksum is the SHA1 checksum of the artifact.
+                            description: Checksum is the SHA256 checksum of the artifact.
                             type: string
                           lastUpdateTime:
                             description: LastUpdateTime is the timestamp corresponding to the last update of this artifact.
@@ -6569,7 +6830,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -6624,6 +6885,24 @@ data:
                 spec:
                   description: HelmChartSpec defines the desired state of a Helm chart.
                   properties:
+                    accessFrom:
+                      description: AccessFrom defines an Access Control List for allowing cross-namespace references to this object.
+                      properties:
+                        namespaceSelectors:
+                          description: NamespaceSelectors is the list of namespace selectors to which this ACL applies. Items in this list are evaluated using a logical OR operation.
+                          items:
+                            description: NamespaceSelector selects the namespaces to which this ACL applies. An empty map of MatchLabels matches all namespaces in a cluster.
+                            properties:
+                              matchLabels:
+                                additionalProperties:
+                                  type: string
+                                description: MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                type: object
+                            type: object
+                          type: array
+                      required:
+                        - namespaceSelectors
+                      type: object
                     chart:
                       description: The name or path the Helm chart is available at in the SourceRef.
                       type: string
@@ -6678,13 +6957,15 @@ data:
                     - sourceRef
                   type: object
                 status:
+                  default:
+                    observedGeneration: -1
                   description: HelmChartStatus defines the observed state of the HelmChart.
                   properties:
                     artifact:
                       description: Artifact represents the output of the last successful chart sync.
                       properties:
                         checksum:
-                          description: Checksum is the SHA1 checksum of the artifact.
+                          description: Checksum is the SHA256 checksum of the artifact.
                           type: string
                         lastUpdateTime:
                           description: LastUpdateTime is the timestamp corresponding to the last update of this artifact.
@@ -6790,7 +7071,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -7016,11 +7297,13 @@ data:
                                     patch:
                                       description: Patch contains the JSON6902 patch document with an array of operation objects.
                                       items:
-                                        description: JSON6902 is a JSON6902 operation object. https://tools.ietf.org/html/rfc6902#section-4
+                                        description: JSON6902 is a JSON6902 operation object. https://datatracker.ietf.org/doc/html/rfc6902#section-4
                                         properties:
                                           from:
+                                            description: From contains a JSON-pointer value that references a location within the target document where the operation is performed. The meaning of the value depends on the value of Op, and is NOT taken into account by all operations.
                                             type: string
                                           op:
+                                            description: Op indicates the operation to perform. Its value MUST be one of "add", "remove", "replace", "move", "copy", or "test". https://datatracker.ietf.org/doc/html/rfc6902#section-4
                                             enum:
                                               - test
                                               - remove
@@ -7030,8 +7313,10 @@ data:
                                               - copy
                                             type: string
                                           path:
+                                            description: Path contains the JSON-pointer value that references a location within the target document where the operation is performed. The meaning of the value depends on the value of Op.
                                             type: string
                                           value:
+                                            description: Value contains a valid JSON structure. The meaning of the value depends on the value of Op, and is NOT taken into account by all operations.
                                             x-kubernetes-preserve-unknown-fields: true
                                         required:
                                           - op
@@ -7143,6 +7428,9 @@ data:
                       properties:
                         disableHooks:
                           description: DisableHooks prevents hooks from running during the Helm rollback action.
+                          type: boolean
+                        disableWait:
+                          description: DisableWait disables waiting for all the resources to be deleted after a Helm uninstall is performed.
                           type: boolean
                         keepHistory:
                           description: KeepHistory tells Helm to remove all associated resources and mark the release as deleted, but retain the release history.
@@ -7358,7 +7646,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -7404,6 +7692,24 @@ data:
                 spec:
                   description: HelmRepositorySpec defines the reference to a Helm repository.
                   properties:
+                    accessFrom:
+                      description: AccessFrom defines an Access Control List for allowing cross-namespace references to this object.
+                      properties:
+                        namespaceSelectors:
+                          description: NamespaceSelectors is the list of namespace selectors to which this ACL applies. Items in this list are evaluated using a logical OR operation.
+                          items:
+                            description: NamespaceSelector selects the namespaces to which this ACL applies. An empty map of MatchLabels matches all namespaces in a cluster.
+                            properties:
+                              matchLabels:
+                                additionalProperties:
+                                  type: string
+                                description: MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                                type: object
+                            type: object
+                          type: array
+                      required:
+                        - namespaceSelectors
+                      type: object
                     interval:
                       description: The interval at which to check the upstream for updates.
                       type: string
@@ -7434,13 +7740,15 @@ data:
                     - url
                   type: object
                 status:
+                  default:
+                    observedGeneration: -1
                   description: HelmRepositoryStatus defines the observed state of the HelmRepository.
                   properties:
                     artifact:
                       description: Artifact represents the output of the last successful repository sync.
                       properties:
                         checksum:
-                          description: Checksum is the SHA1 checksum of the artifact.
+                          description: Checksum is the SHA256 checksum of the artifact.
                           type: string
                         lastUpdateTime:
                           description: LastUpdateTime is the timestamp corresponding to the last update of this artifact.
@@ -7546,7 +7854,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -7915,6 +8223,8 @@ data:
                     - policy
                   type: object
                 status:
+                  default:
+                    observedGeneration: -1
                   description: ImagePolicyStatus defines the observed state of ImagePolicy
                   properties:
                     conditions:
@@ -7999,7 +8309,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -8295,14 +8605,19 @@ data:
                       description: AccessFrom defines an ACL for allowing cross-namespace references to the ImageRepository object based on the caller's namespace labels.
                       properties:
                         namespaceSelectors:
+                          description: NamespaceSelectors is the list of namespace selectors to which this ACL applies. Items in this list are evaluated using a logical OR operation.
                           items:
+                            description: NamespaceSelector selects the namespaces to which this ACL applies. An empty map of MatchLabels matches all namespaces in a cluster.
                             properties:
                               matchLabels:
                                 additionalProperties:
                                   type: string
+                                description: MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
                                 type: object
                             type: object
                           type: array
+                      required:
+                        - namespaceSelectors
                       type: object
                     certSecretRef:
                       description: "CertSecretRef can be given the name of a secret containing either or both of \n  - a PEM-encoded client certificate (`certFile`) and private  key (`keyFile`);  - a PEM-encoded CA certificate (`caFile`) \n  and whichever are supplied, will be used for connecting to the  registry. The client cert and key are useful if you are  authenticating with a certificate; the CA cert is useful if  you are using a self-signed server certificate."
@@ -8336,6 +8651,8 @@ data:
                       type: string
                   type: object
                 status:
+                  default:
+                    observedGeneration: -1
                   description: ImageRepositoryStatus defines the observed state of ImageRepository
                   properties:
                     canonicalImageName:
@@ -8435,7 +8752,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -8654,7 +8971,6 @@ data:
                               description: Reference gives a branch, tag or commit to clone from the Git repository.
                               properties:
                                 branch:
-                                  default: master
                                   description: The Git branch to checkout, defaults to master.
                                   type: string
                                 commit:
@@ -8861,7 +9177,6 @@ data:
                               description: Reference gives a branch, tag or commit to clone from the Git repository.
                               properties:
                                 branch:
-                                  default: master
                                   description: The Git branch to checkout, defaults to master.
                                   type: string
                                 commit:
@@ -8930,16 +9245,19 @@ data:
                       description: SourceRef refers to the resource giving access details to a git repository.
                       properties:
                         apiVersion:
-                          description: API version of the referent
+                          description: API version of the referent.
                           type: string
                         kind:
                           default: GitRepository
-                          description: Kind of the referent
+                          description: Kind of the referent.
                           enum:
                             - GitRepository
                           type: string
                         name:
-                          description: Name of the referent
+                          description: Name of the referent.
+                          type: string
+                        namespace:
+                          description: Namespace of the referent, defaults to the namespace of the Kubernetes resource object that contains the reference.
                           type: string
                       required:
                         - kind
@@ -8970,6 +9288,8 @@ data:
                     - sourceRef
                   type: object
                 status:
+                  default:
+                    observedGeneration: -1
                   description: ImageUpdateAutomationStatus defines the observed state of ImageUpdateAutomation
                   properties:
                     conditions:
@@ -9065,7 +9385,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -9209,10 +9529,10 @@ data:
                     patches:
                       description: Strategic merge and JSON patches, defined as inline YAML objects, capable of targeting objects based on kind, label and annotation selectors.
                       items:
-                        description: Patch contains either a StrategicMerge or a JSON6902 patch, either a file or inline, and the target the patch should be applied to.
+                        description: Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should be applied to.
                         properties:
                           patch:
-                            description: Patch contains the JSON6902 patch document with an array of operation objects.
+                            description: Patch contains an inline StrategicMerge patch or an inline JSON6902 patch with an array of operation objects.
                             type: string
                           target:
                             description: Target points to the resources that the patch document should be applied to.
@@ -9249,11 +9569,13 @@ data:
                           patch:
                             description: Patch contains the JSON6902 patch document with an array of operation objects.
                             items:
-                              description: JSON6902 is a JSON6902 operation object. https://tools.ietf.org/html/rfc6902#section-4
+                              description: JSON6902 is a JSON6902 operation object. https://datatracker.ietf.org/doc/html/rfc6902#section-4
                               properties:
                                 from:
+                                  description: From contains a JSON-pointer value that references a location within the target document where the operation is performed. The meaning of the value depends on the value of Op, and is NOT taken into account by all operations.
                                   type: string
                                 op:
+                                  description: Op indicates the operation to perform. Its value MUST be one of "add", "remove", "replace", "move", "copy", or "test". https://datatracker.ietf.org/doc/html/rfc6902#section-4
                                   enum:
                                     - test
                                     - remove
@@ -9263,8 +9585,10 @@ data:
                                     - copy
                                   type: string
                                 path:
+                                  description: Path contains the JSON-pointer value that references a location within the target document where the operation is performed. The meaning of the value depends on the value of Op.
                                   type: string
                                 value:
+                                  description: Value contains a valid JSON structure. The meaning of the value depends on the value of Op, and is NOT taken into account by all operations.
                                   x-kubernetes-preserve-unknown-fields: true
                               required:
                                 - op
@@ -9614,10 +9938,10 @@ data:
                     patches:
                       description: Strategic merge and JSON patches, defined as inline YAML objects, capable of targeting objects based on kind, label and annotation selectors.
                       items:
-                        description: Patch contains either a StrategicMerge or a JSON6902 patch, either a file or inline, and the target the patch should be applied to.
+                        description: Patch contains an inline StrategicMerge or JSON6902 patch, and the target the patch should be applied to.
                         properties:
                           patch:
-                            description: Patch contains the JSON6902 patch document with an array of operation objects.
+                            description: Patch contains an inline StrategicMerge patch or an inline JSON6902 patch with an array of operation objects.
                             type: string
                           target:
                             description: Target points to the resources that the patch document should be applied to.
@@ -9654,11 +9978,13 @@ data:
                           patch:
                             description: Patch contains the JSON6902 patch document with an array of operation objects.
                             items:
-                              description: JSON6902 is a JSON6902 operation object. https://tools.ietf.org/html/rfc6902#section-4
+                              description: JSON6902 is a JSON6902 operation object. https://datatracker.ietf.org/doc/html/rfc6902#section-4
                               properties:
                                 from:
+                                  description: From contains a JSON-pointer value that references a location within the target document where the operation is performed. The meaning of the value depends on the value of Op, and is NOT taken into account by all operations.
                                   type: string
                                 op:
+                                  description: Op indicates the operation to perform. Its value MUST be one of "add", "remove", "replace", "move", "copy", or "test". https://datatracker.ietf.org/doc/html/rfc6902#section-4
                                   enum:
                                     - test
                                     - remove
@@ -9668,8 +9994,10 @@ data:
                                     - copy
                                   type: string
                                 path:
+                                  description: Path contains the JSON-pointer value that references a location within the target document where the operation is performed. The meaning of the value depends on the value of Op.
                                   type: string
                                 value:
+                                  description: Value contains a valid JSON structure. The meaning of the value depends on the value of Op, and is NOT taken into account by all operations.
                                   x-kubernetes-preserve-unknown-fields: true
                               required:
                                 - op
@@ -9738,6 +10066,10 @@ data:
                                 maxLength: 253
                                 minLength: 1
                                 type: string
+                              optional:
+                                default: false
+                                description: Optional indicates whether the referenced resource must exist, or whether to tolerate its absence. If true and the referenced resource is absent, proceed as if the resource was present but empty, without any variables defined.
+                                type: boolean
                             required:
                               - kind
                               - name
@@ -9917,7 +10249,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -9987,6 +10319,9 @@ data:
                       required:
                         - name
                       type: object
+                    suspend:
+                      description: This flag tells the controller to suspend subsequent events handling. Defaults to false.
+                      type: boolean
                     type:
                       description: Type of provider
                       enum:
@@ -10008,6 +10343,7 @@ data:
                         - matrix
                         - opsgenie
                         - alertmanager
+                        - grafana
                       type: string
                     username:
                       description: Bot username for this provider
@@ -10100,7 +10436,7 @@ data:
     kind: CustomResourceDefinition
     metadata:
       annotations:
-        controller-gen.kubebuilder.io/version: v0.5.0
+        controller-gen.kubebuilder.io/version: v0.7.0
       creationTimestamp: null
       labels:
         app.kubernetes.io/instance: flux-system
@@ -10167,6 +10503,11 @@ data:
                               - ImagePolicy
                               - ImageUpdateAutomation
                             type: string
+                          matchLabels:
+                            additionalProperties:
+                              type: string
+                            description: MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is "key", the operator is "In", and the values array contains only "value". The requirements are ANDed.
+                            type: object
                           name:
                             description: Name of the referent
                             maxLength: 53
@@ -10303,10 +10644,10 @@ metadata:
     app.kubernetes.io/instance: flux-giantswarm
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/monitoring: "true"
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: flux-giantswarm-monitoring
   namespace: flux-giantswarm
 spec:
@@ -10328,10 +10669,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: notification-controller
   namespace: flux-giantswarm
 spec:
@@ -10355,10 +10696,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: source-controller
   namespace: flux-giantswarm
 spec:
@@ -10382,10 +10723,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: webhook-receiver
   namespace: flux-giantswarm
 spec:
@@ -10410,10 +10751,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: helm-controller
   namespace: flux-giantswarm
 spec:
@@ -10434,9 +10775,9 @@ spec:
         app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
-        app.kubernetes.io/version: 0.21.0
+        app.kubernetes.io/version: 0.27.3
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-0.7.1
+        helm.sh/chart: flux-app-0.10.0
     spec:
       containers:
       - args:
@@ -10450,7 +10791,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: docker.io/giantswarm/fluxcd-helm-controller:v0.12.1
+        image: docker.io/giantswarm/fluxcd-helm-controller:v0.17.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -10460,6 +10801,7 @@ spec:
         ports:
         - containerPort: 8080
           name: http-prom
+          protocol: TCP
         - containerPort: 9440
           name: healthz
           protocol: TCP
@@ -10496,10 +10838,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: image-automation-controller
   namespace: flux-giantswarm
 spec:
@@ -10520,9 +10862,9 @@ spec:
         app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
-        app.kubernetes.io/version: 0.21.0
+        app.kubernetes.io/version: 0.27.3
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-0.7.1
+        helm.sh/chart: flux-app-0.10.0
     spec:
       containers:
       - args:
@@ -10536,7 +10878,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: docker.io/giantswarm/fluxcd-image-automation-controller:v0.16.0
+        image: docker.io/giantswarm/fluxcd-image-automation-controller:v0.20.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -10546,6 +10888,7 @@ spec:
         ports:
         - containerPort: 8080
           name: http-prom
+          protocol: TCP
         - containerPort: 9440
           name: healthz
           protocol: TCP
@@ -10584,10 +10927,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: image-reflector-controller
   namespace: flux-giantswarm
 spec:
@@ -10608,9 +10951,9 @@ spec:
         app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
-        app.kubernetes.io/version: 0.21.0
+        app.kubernetes.io/version: 0.27.3
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-0.7.1
+        helm.sh/chart: flux-app-0.10.0
     spec:
       containers:
       - args:
@@ -10624,7 +10967,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: docker.io/giantswarm/fluxcd-image-reflector-controller:v0.13.0
+        image: docker.io/giantswarm/fluxcd-image-reflector-controller:v0.16.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -10634,6 +10977,7 @@ spec:
         ports:
         - containerPort: 8080
           name: http-prom
+          protocol: TCP
         - containerPort: 9440
           name: healthz
           protocol: TCP
@@ -10676,10 +11020,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: kustomize-controller
   namespace: flux-giantswarm
 spec:
@@ -10700,9 +11044,9 @@ spec:
         app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
-        app.kubernetes.io/version: 0.21.0
+        app.kubernetes.io/version: 0.27.3
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-0.7.1
+        helm.sh/chart: flux-app-0.10.0
     spec:
       containers:
       - args:
@@ -10749,6 +11093,7 @@ spec:
         ports:
         - containerPort: 8080
           name: http-prom
+          protocol: TCP
         - containerPort: 9440
           name: healthz
           protocol: TCP
@@ -10852,10 +11197,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: notification-controller
   namespace: flux-giantswarm
 spec:
@@ -10876,9 +11221,9 @@ spec:
         app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
-        app.kubernetes.io/version: 0.21.0
+        app.kubernetes.io/version: 0.27.3
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-0.7.1
+        helm.sh/chart: flux-app-0.10.0
     spec:
       containers:
       - args:
@@ -10891,7 +11236,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: docker.io/giantswarm/fluxcd-notification-controller:v0.18.1
+        image: docker.io/giantswarm/fluxcd-notification-controller:v0.22.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -10901,10 +11246,13 @@ spec:
         ports:
         - containerPort: 9090
           name: http
+          protocol: TCP
         - containerPort: 9292
           name: http-webhook
+          protocol: TCP
         - containerPort: 8080
           name: http-prom
+          protocol: TCP
         - containerPort: 9440
           name: healthz
           protocol: TCP
@@ -10941,10 +11289,10 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     control-plane: controller
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: source-controller
   namespace: flux-giantswarm
 spec:
@@ -10967,9 +11315,9 @@ spec:
         app.kubernetes.io/instance: flux-giantswarm
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: flux-app
-        app.kubernetes.io/version: 0.21.0
+        app.kubernetes.io/version: 0.27.3
         giantswarm.io/service_type: managed
-        helm.sh/chart: flux-app-0.7.1
+        helm.sh/chart: flux-app-0.10.0
     spec:
       containers:
       - args:
@@ -10985,7 +11333,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: docker.io/giantswarm/fluxcd-source-controller:v0.17.1
+        image: docker.io/giantswarm/fluxcd-source-controller:v0.21.2
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -10995,10 +11343,13 @@ spec:
         ports:
         - containerPort: 9090
           name: http
+          protocol: TCP
         - containerPort: 8080
           name: http-prom
+          protocol: TCP
         - containerPort: 9440
           name: healthz
+          protocol: TCP
         readinessProbe:
           httpGet:
             path: /
@@ -11300,9 +11651,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: allow-egress
   namespace: flux-giantswarm
 spec:
@@ -11324,9 +11675,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: allow-scraping
   namespace: flux-giantswarm
 spec:
@@ -11353,9 +11704,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: flux-app
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: 0.21.0
+    app.kubernetes.io/version: 0.27.3
     giantswarm.io/service_type: managed
-    helm.sh/chart: flux-app-0.7.1
+    helm.sh/chart: flux-app-0.10.0
   name: allow-webhooks
   namespace: flux-giantswarm
 spec:
