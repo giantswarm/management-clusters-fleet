@@ -45,7 +45,7 @@ spec:
         name: ensure-vault-token
       containers:
       - name: manager
-        image: docker.io/giantswarm/fluxcd-kustomize-controller:v0.21.1
+        image: docker.io/giantswarm/kustomize-controller:v0.18.0
         env:
           - name: KONFIGURE_MODE
             value: "kustomizepatch"
