@@ -11754,7 +11754,7 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: feature/update-flux
+    branch: master
   secretRef:
     name: github-giantswarm-https-credentials
   timeout: 5m
@@ -11768,7 +11768,7 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: feature/update-flux
+    branch: main
   secretRef:
     name: github-giantswarm-https-credentials
   url: https://github.com/giantswarm/config
