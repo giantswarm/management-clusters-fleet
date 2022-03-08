@@ -11772,7 +11772,7 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: feature/update-flux
   secretRef:
     name: github-giantswarm-https-credentials
   url: https://github.com/giantswarm/config
@@ -11785,5 +11785,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: feature/update-flux
   url: https://github.com/giantswarm/management-clusters-fleet

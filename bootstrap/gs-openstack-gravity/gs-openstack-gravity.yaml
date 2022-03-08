@@ -11781,5 +11781,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: feature/update-flux
   url: https://github.com/giantswarm/management-clusters-fleet
