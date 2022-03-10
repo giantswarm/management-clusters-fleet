@@ -118,3 +118,32 @@ subjects:
 - kind: ServiceAccount
   name: source-controller
   namespace: flux-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: impersonator-sa
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts
+  verbs:
+  - impersonate
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: flux-impersonate-sa
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: impersonator-sa
+subjects:
+- kind: ServiceAccount
+  name: kustomize-controller
+  namespace: flux-system
+- kind: ServiceAccount
+  name: helm-controller
+  namespace: flux-system
