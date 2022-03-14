@@ -19,7 +19,7 @@ manifests/flux-app:
 ifeq ($(GNUSED),0)
 	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "0,/version:/{s/version: .*/version: $(FLUXAPP_VERSION)/g}" {}
 else
-	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "" "0,/version:/ s/version: .*/version: $(FLUXAPP_VERSION)/g" {}
+	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "" "1,/version:/ s/version: .*/version: $(FLUXAPP_VERSION)/g" {}
 endif
 
 BOOTSTRAP_DEPS :=
