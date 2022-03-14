@@ -6,6 +6,8 @@ KUSTOMIZE := ./bin/kustomize
 
 HELM := ./bin/helm
 
+GNUSED := $(shell sed --version 1>/dev/null 2>&1; echo $$?)
+
 .PHONY: all
 all: manifests/flux-app bootstrap
 
@@ -14,7 +16,11 @@ manifests/flux-app: FLUXAPP_VERSION := v0.7.1
 manifests/flux-app:
 	@echo "====> $@"
 	git clean -fxd manifests/provider/
+ifeq ($(GNUSED),0)
+	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "0,/version:/{s/version: .*/version: $(FLUXAPP_VERSION)/g}" {}
+else
 	find manifests/provider/ -wholename '*/kustomization.yaml' | grep -v 'charts' | xargs -I{} sed -i "" "0,/version:/ s/version: .*/version: $(FLUXAPP_VERSION)/g" {}
+endif
 
 BOOTSTRAP_DEPS :=
 BOOTSTRAP_DEPS += bootstrap/customer-aws/customer-aws.yaml
