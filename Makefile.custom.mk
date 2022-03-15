@@ -40,6 +40,7 @@ BOOTSTRAP_DEPS += bootstrap/gs-openstack-gamma/gs-openstack-gamma.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-openstack-gravity/gs-openstack-gravity.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-rest-api/gs-rest-api.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-testing/gs-testing.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-vsphere/gs-vsphere.yaml
 bootstrap: $(BOOTSTRAP_DEPS)
 
 bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)
