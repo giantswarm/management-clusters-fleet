@@ -11147,7 +11147,7 @@ spec:
         command:
         - sh
         - -c
-        image: giantswarm/konfigure:0.5.4
+        image: giantswarm/konfigure:0.5.6
         name: ensure-konfigure
         volumeMounts:
         - mountPath: /giantswarm-bin
@@ -11781,5 +11781,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: hubble
   url: https://github.com/giantswarm/management-clusters-fleet
