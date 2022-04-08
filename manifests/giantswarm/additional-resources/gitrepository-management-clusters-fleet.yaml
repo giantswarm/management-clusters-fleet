@@ -7,5 +7,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: halley_auto_branch
+    branch: main
   url: https://github.com/giantswarm/management-clusters-fleet
