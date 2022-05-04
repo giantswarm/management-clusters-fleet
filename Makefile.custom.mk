@@ -56,6 +56,7 @@ $(KUSTOMIZE): ## Download kustomize locally if necessary.
 
 $(HELM): ## Download helm locally if necessary.
 	@echo "====> $@"
+	mkdir -p ./bin
 	curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | HELM_INSTALL_DIR=bin USE_SUDO=false bash
 
 # go-get-tool will 'go get' any package $2 and install it to $1.
