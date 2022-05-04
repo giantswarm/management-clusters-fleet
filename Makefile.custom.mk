@@ -3,6 +3,8 @@ AUTOGENMSG := \# This is an auto-generated file. DO NOT EDIT
 MANIFESTS := $(shell find manifests)
 
 KUSTOMIZE := ./bin/kustomize
+KUSTOMIZE_VERSION ?= v4.4.1
+KUSTOMIZE_INSTALL_SCRIPT ?= "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
 
 HELM := ./bin/helm
 
@@ -50,14 +52,18 @@ bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)
 	echo "$(AUTOGENMSG)" > $@
 	$(KUSTOMIZE) build --load-restrictor LoadRestrictionsNone --enable-helm --helm-command="$(HELM)" manifests/provider/$(lastword $(subst /, ,$(@D))) >> $@
 
-$(KUSTOMIZE): ## Download kustomize locally if necessary.
-	@echo "====> $@"
-	$(call go-get-tool,$(KUSTOMIZE),sigs.k8s.io/kustomize/kustomize/v4@v4.4.1)
+## Location to install dependencies to
+LOCALBIN ?= $(shell pwd)/bin
+$(LOCALBIN):
+	mkdir -p $(LOCALBIN)
 
-$(HELM): ## Download helm locally if necessary.
+.PHONY: kustomize
+$(KUSTOMIZE): $(LOCALBIN) ## Download kustomize locally if necessary.
+	curl -s $(KUSTOMIZE_INSTALL_SCRIPT) | bash -s -- $(subst v,,$(KUSTOMIZE_VERSION)) $(LOCALBIN)
+
+$(HELM): $(LOCALBIN) ## Download helm locally if necessary.
 	@echo "====> $@"
-	mkdir -p ./bin
-	curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | HELM_INSTALL_DIR=bin USE_SUDO=false bash
+	curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | HELM_INSTALL_DIR=$(LOCALBIN) USE_SUDO=false bash
 
 # go-get-tool will 'go get' any package $2 and install it to $1.
 PROJECT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
