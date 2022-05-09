@@ -32,9 +32,11 @@ spec:
       - args:
         - /giantswarm-bin/konfigure fetchkeys --sops-keys-dir /sopsenv
         command: ["sh", "-c"]
-        image: giantswarm/konfigure:0.6.0
+        image: docker.io/giantswarm/kustomize-controller:v0.18.0
         name: ensure-sopsenv
         volumeMounts:
+        - mountPath: /giantswarm-bin
+          name: giantswarm-bin
         - mountPath: /sopsenv
           name: sopsenv
       - args:
