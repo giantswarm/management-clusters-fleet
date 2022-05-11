@@ -24,11 +24,21 @@ spec:
       - args:
         - cp konfigure /giantswarm-bin && chmod +x /giantswarm-bin/konfigure
         command: ["sh", "-c"]
-        image: giantswarm/konfigure:0.6.0
+        image: giantswarm/konfigure:0.7.0
         name: ensure-konfigure
         volumeMounts:
         - mountPath: /giantswarm-bin
           name: giantswarm-bin
+      - args:
+        - /giantswarm-bin/konfigure fetchkeys --sops-keys-dir /sopsenv
+        command: ["sh", "-c"]
+        image: docker.io/giantswarm/kustomize-controller:v0.18.0
+        name: ensure-sopsenv
+        volumeMounts:
+        - mountPath: /giantswarm-bin
+          name: giantswarm-bin
+        - mountPath: /sopsenv
+          name: sopsenv
       - args:
         - --vault-address=$(VAULT_ADDR)
         - --vault-role=konfigure
@@ -58,6 +68,8 @@ spec:
             value: "flux-giantswarm/giantswarm-config"
           - name: KONFIGURE_SOURCE_SERVICE
             value: "source-controller.flux-giantswarm.svc"
+          - name: KONFIGURE_SOPS_KEYS_DIR
+            value: "/sopsenv"
           - name: VAULT_ADDR
             valueFrom:
               configMapKeyRef:
@@ -83,6 +95,8 @@ spec:
           name: ca-certs
         - mountPath: /etc/ssl/certs/
           name: ssl-certs
+        - mountPath: /sopsenv
+          name: sopsenv
       volumes:
       - hostPath:
           path: /etc/ssl/certs/ca-certificates.crt
@@ -98,3 +112,6 @@ spec:
         emptyDir: {}
       - name: cache
         emptyDir: {}
+      - name: sopsenv
+        emptyDir:
+          medium: "Memory"
