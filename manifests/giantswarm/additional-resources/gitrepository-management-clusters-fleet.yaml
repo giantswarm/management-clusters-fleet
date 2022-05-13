@@ -7,5 +7,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: gamma_auto_branch
   url: https://github.com/giantswarm/management-clusters-fleet
