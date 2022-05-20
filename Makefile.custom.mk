@@ -3,7 +3,7 @@ AUTOGENMSG := \# This is an auto-generated file. DO NOT EDIT
 MANIFESTS := $(shell find manifests)
 
 KUSTOMIZE := ./bin/kustomize
-KUSTOMIZE_VERSION ?= v4.4.1
+KUSTOMIZE_VERSION ?= v4.5.4
 KUSTOMIZE_INSTALL_SCRIPT ?= "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
 
 HELM := ./bin/helm
