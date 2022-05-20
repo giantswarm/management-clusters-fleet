@@ -32,7 +32,7 @@ spec:
       - args:
         - /giantswarm-bin/konfigure fetchkeys --sops-keys-dir /sopsenv
         command: ["sh", "-c"]
-        image: docker.io/giantswarm/kustomize-controller:v0.18.0
+        image: docker.io/giantswarm/kustomize-controller:v0.25.0
         name: ensure-sopsenv
         volumeMounts:
         - mountPath: /giantswarm-bin
@@ -55,7 +55,7 @@ spec:
         name: ensure-vault-token
       containers:
       - name: manager
-        image: docker.io/giantswarm/kustomize-controller:v0.18.0
+        image: docker.io/giantswarm/kustomize-controller:v0.25.0
         env:
           - name: KONFIGURE_MODE
             value: "kustomizepatch"
