@@ -5,6 +5,7 @@ metadata:
   name: flux
   namespace: flux-giantswarm
 spec:
+  force: true
   interval: 30s
   path: ./bootstrap/gs-azure
   prune: true
