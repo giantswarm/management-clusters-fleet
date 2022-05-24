@@ -21,7 +21,7 @@ patches:
       path: /metadata/name
       value: crd-controller-giantswarm
     - op: replace
-      path: /rules/9/resourceNames/0
+      path: /rules/10/resourceNames/0
       value: flux-app-pvc-psp-giantswarm
 - target:
     kind: PodSecurityPolicy
