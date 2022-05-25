@@ -2,7 +2,7 @@ bases:
 - ../../giantswarm/additional-resources
 helmCharts:
   - name: flux-app
-    includeCRDs: true
+    includeCRDs: false
     namespace: flux-giantswarm
     repo: https://giantswarm.github.io/giantswarm-catalog/
     releaseName: flux-giantswarm
