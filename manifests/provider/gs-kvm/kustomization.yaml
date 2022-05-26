@@ -48,6 +48,14 @@ patches:
     - op: replace
       path: /roleRef/name
       value: crd-controller-giantswarm
+- target:
+    kind: CustomResourceDefinition
+    name: ".*"
+  patch: |-
+    - op: add
+      # https://github.com/kubernetes-sigs/kustomize/issues/1256
+      path: /metadata/annotations/kustomize.toolkit.fluxcd.io~1prune
+      value: disabled
 patchesJson6902:
   - target:
       group: apps
