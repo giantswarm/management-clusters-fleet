@@ -2,6 +2,7 @@ namespace: "flux-giantswarm"
 resources:
 - gitrepository-giantswarm-config.yaml
 - gitrepository-management-clusters-fleet.yaml
+- job-remove-labels.yaml
 - kustomization-collection.yaml
 - namespace.yaml
 - rbac.yaml
