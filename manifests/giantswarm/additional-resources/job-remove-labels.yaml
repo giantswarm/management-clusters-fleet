@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: flux-remove-crd-labels
+  name: flux-remove-crd-labels
   namespace: flux-giantswarm
   labels:
     app.kubernetes.io/name: flux-giantswarm
