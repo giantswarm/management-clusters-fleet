@@ -9,6 +9,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -229,6 +230,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -488,6 +490,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -846,6 +849,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -1129,6 +1133,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -1910,6 +1915,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -2156,6 +2162,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -2746,6 +2753,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -3318,6 +3326,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -4123,6 +4132,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -5231,6 +5241,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
@@ -5435,6 +5446,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.7.0
+    kustomize.toolkit.fluxcd.io/prune: disabled
   creationTimestamp: null
   labels:
     app.kubernetes.io/instance: flux-system
