@@ -8,7 +8,6 @@ spec:
   interval: 10s
   path: ./flux-manifests
   prune: true
-  serviceAccountName: automation
   sourceRef:
     kind: GitRepository
     name: rest-api-collection
