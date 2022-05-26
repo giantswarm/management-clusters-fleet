@@ -14,7 +14,7 @@ GNUSED := $(shell sed --version 1>/dev/null 2>&1; echo $$?)
 all: manifests/flux-app bootstrap
 
 .PHONY: manifests/flux-app
-manifests/flux-app: FLUXAPP_VERSION := v0.10.0
+manifests/flux-app: FLUXAPP_VERSION := v0.11.0
 manifests/flux-app:
 	@echo "====> $@"
 	git clean -fxd manifests/provider/
