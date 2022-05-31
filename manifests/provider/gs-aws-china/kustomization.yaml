@@ -2,11 +2,11 @@ bases:
 - ../../giantswarm/additional-resources
 helmCharts:
   - name: flux-app
-    includeCRDs: true
+    includeCRDs: false
     namespace: flux-giantswarm
     repo: https://giantswarm.github.io/giantswarm-catalog/
     releaseName: flux-giantswarm
-    version: v0.10.0
+    version: v0.11.0
     valuesInline:
       crds:
         install: true
@@ -21,7 +21,7 @@ patches:
       path: /metadata/name
       value: crd-controller-giantswarm
     - op: replace
-      path: /rules/9/resourceNames/0
+      path: /rules/10/resourceNames/0
       value: flux-app-pvc-psp-giantswarm
 - target:
     kind: PodSecurityPolicy
