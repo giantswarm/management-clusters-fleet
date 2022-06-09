@@ -6976,6 +6976,41 @@ spec:
     name: management-clusters-fleet
     namespace: flux-giantswarm
 ---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: giantswarm-apiextensions-common
+  namespace: flux-giantswarm
+spec:
+  interval: 30s
+  patches:
+  - patch: '$patch: delete'
+    target:
+      kind: CustomResourceDefinition
+      name: appcatalogentries.application.giantswarm.io
+  - patch: '$patch: delete'
+    target:
+      kind: CustomResourceDefinition
+      name: appcatalogs.application.giantswarm.io
+  - patch: '$patch: delete'
+    target:
+      kind: CustomResourceDefinition
+      name: apps.application.giantswarm.io
+  - patch: '$patch: delete'
+    target:
+      kind: CustomResourceDefinition
+      name: catalogs.application.giantswarm.io
+  - patch: '$patch: delete'
+    target:
+      kind: CustomResourceDefinition
+      name: charts.application.giantswarm.io
+  path: ./helm/crds-common/templates
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: giantswarm-apiextensions
+    namespace: flux-giantswarm
+---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -7108,6 +7143,32 @@ spec:
     name: github-giantswarm-https-credentials
   timeout: 5m
   url: https://github.com/giantswarm/gcp-app-collection
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: giantswarm-apiextensions
+  namespace: flux-giantswarm
+spec:
+  interval: 5m
+  ref:
+    branch: master
+  secretRef:
+    name: github-giantswarm-https-credentials
+  url: https://github.com/giantswarm/apiextensions
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: giantswarm-apiextensions-application
+  namespace: flux-giantswarm
+spec:
+  interval: 5m
+  ref:
+    branch: main
+  secretRef:
+    name: github-giantswarm-https-credentials
+  url: https://github.com/giantswarm/apiextensions-application
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
