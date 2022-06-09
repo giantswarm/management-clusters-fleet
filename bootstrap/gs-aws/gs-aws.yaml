@@ -7201,5 +7201,5 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: ensure-crds
   url: https://github.com/giantswarm/management-clusters-fleet
