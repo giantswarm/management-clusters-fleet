@@ -1,0 +1,14 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: giantswarm-apiextensions-application
+  namespace: flux-giantswarm
+spec:
+  interval: 5m
+  ref:
+    branch: main
+  url: https://github.com/giantswarm/apiextensions-application
+  secretRef:
+    name: github-giantswarm-https-credentials
+
