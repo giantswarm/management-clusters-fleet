@@ -6984,23 +6984,48 @@ metadata:
 spec:
   interval: 30s
   patches:
-  - patch: '$patch: delete'
+  - patch: |-
+      $patch: delete
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      metadata:
+        name: appcatalogentries.application.giantswarm.io
     target:
       kind: CustomResourceDefinition
       name: appcatalogentries.application.giantswarm.io
-  - patch: '$patch: delete'
+  - patch: |-
+      $patch: delete
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      metadata:
+        name: appcatalogs.application.giantswarm.io
     target:
       kind: CustomResourceDefinition
       name: appcatalogs.application.giantswarm.io
-  - patch: '$patch: delete'
+  - patch: |-
+      $patch: delete
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      metadata:
+        name: apps.application.giantswarm.io
     target:
       kind: CustomResourceDefinition
       name: apps.application.giantswarm.io
-  - patch: '$patch: delete'
+  - patch: |-
+      $patch: delete
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      metadata:
+        name: catalogs.application.giantswarm.io
     target:
       kind: CustomResourceDefinition
       name: catalogs.application.giantswarm.io
-  - patch: '$patch: delete'
+  - patch: |-
+      $patch: delete
+      apiVersion: apiextensions.k8s.io/v1
+      kind: CustomResourceDefinition
+      metadata:
+        name: charts.application.giantswarm.io
     target:
       kind: CustomResourceDefinition
       name: charts.application.giantswarm.io

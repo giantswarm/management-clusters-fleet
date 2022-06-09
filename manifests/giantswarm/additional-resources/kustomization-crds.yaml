@@ -11,30 +11,3 @@ spec:
     kind: GitRepository
     name: giantswarm-apiextensions
     namespace: flux-giantswarm
-  # none of the apiextensions-application CRDs, please
-  patches:
-    - target:
-        kind: CustomResourceDefinition
-        name: appcatalogentries.application.giantswarm.io
-      patch: |-
-        $patch: delete
-    - target:
-        kind: CustomResourceDefinition
-        name: appcatalogs.application.giantswarm.io
-      patch: |-
-        $patch: delete
-    - target:
-        kind: CustomResourceDefinition
-        name: apps.application.giantswarm.io
-      patch: |-
-        $patch: delete
-    - target:
-        kind: CustomResourceDefinition
-        name: catalogs.application.giantswarm.io
-      patch: |-
-        $patch: delete
-    - target:
-        kind: CustomResourceDefinition
-        name: charts.application.giantswarm.io
-      patch: |-
-        $patch: delete

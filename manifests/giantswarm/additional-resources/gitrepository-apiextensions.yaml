@@ -5,10 +5,12 @@ metadata:
   name: giantswarm-apiextensions
   namespace: flux-giantswarm
 spec:
+  ignore: |
+    # none of the CRDs from apiextensions-application, please
+    helm/crds-common/templates/application.giantswarm.io*.yaml
   interval: 5m
   ref:
     branch: master
   url: https://github.com/giantswarm/apiextensions
   secretRef:
     name: github-giantswarm-https-credentials
-
