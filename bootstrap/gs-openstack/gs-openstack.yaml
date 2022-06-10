@@ -6978,6 +6978,34 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
+  name: giantswarm-apiextensions-${provider}
+  namespace: flux-giantswarm
+spec:
+  interval: 30s
+  path: ./helm/crds-${provider}/templates
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: giantswarm-apiextensions
+    namespace: flux-giantswarm
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: giantswarm-apiextensions-application
+  namespace: flux-giantswarm
+spec:
+  interval: 30s
+  path: ./config/crd
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: giantswarm-apiextensions-application
+    namespace: flux-giantswarm
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
   name: giantswarm-apiextensions-common
   namespace: flux-giantswarm
 spec:
