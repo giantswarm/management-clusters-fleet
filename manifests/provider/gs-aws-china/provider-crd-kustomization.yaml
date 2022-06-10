@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: giantswarm-apiextensions-aws
+  namespace: flux-giantswarm
+spec:
+  interval: 30s
+  path: ./helm/crds-aws/templates
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: giantswarm-apiextensions
+    namespace: flux-giantswarm

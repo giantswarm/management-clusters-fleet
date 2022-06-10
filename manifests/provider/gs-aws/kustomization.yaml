@@ -105,3 +105,4 @@ resources:
 - customer-flux-kustomization.yaml
 - flux-kustomization.yaml
 - gitrepository-collection.yaml
+- provider-crd-kustomization.yaml
