@@ -1,0 +1,26 @@
+name: mytests
+policies:
+  - ../../manifests/customer/additional-resources/kyverno-policies.yaml
+resources:
+  - resources/kustomization_bad.yaml
+  - resources/kustomization_sa.yaml
+  - resources/kustomization_kubeconfig.yaml
+results:
+- policy: flux-multi-tenancy
+  rule: serviceAccountNameMustBeSet
+  resource: kustomization-sa
+  namespace: default
+  kind: Kustomization
+  result: pass
+- policy: flux-multi-tenancy
+  rule: serviceAccountNameMustBeSet
+  resource: kustomization-kubeconfig
+  namespace: fake0
+  kind: Kustomization
+  result: pass
+- policy: flux-multi-tenancy
+  rule: serviceAccountNameMustBeSet
+  resource: kustomization-bad
+  namespace: default
+  kind: Kustomization
+  result: fail
