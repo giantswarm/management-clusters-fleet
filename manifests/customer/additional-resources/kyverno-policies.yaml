@@ -19,7 +19,7 @@ spec:
             - Kustomization
             - HelmRelease
       validate:
-        message: ".spec.serviceAccountName is required"
+        message: "either .spec.serviceAccountName or .spec.kubeConfig.secretRef.name is required"
         anyPattern:
         - spec:
             serviceAccountName: "?*"

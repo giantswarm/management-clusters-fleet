@@ -1116,10 +1116,15 @@ spec:
         - HelmRelease
     name: serviceAccountNameMustBeSet
     validate:
-      message: .spec.serviceAccountName is required
-      pattern:
-        spec:
+      anyPattern:
+      - spec:
           serviceAccountName: ?*
+      - spec:
+          kubeConfig:
+            secretRef:
+              name: ?*
+      message: either .spec.serviceAccountName or .spec.kubeConfig.secretRef.name
+        is required
   - exclude:
       resources:
         namespaces:
