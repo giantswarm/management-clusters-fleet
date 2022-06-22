@@ -1,0 +1,15 @@
+# Kustomization does not use neither `kubeconfig` nor
+# `serviceaccountName` what makes it wrong.
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: kustomization-bad
+  namespace: default
+spec:
+  interval: 1m
+  path: "./fake/path"
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: fake-repository
+  timeout: 2m

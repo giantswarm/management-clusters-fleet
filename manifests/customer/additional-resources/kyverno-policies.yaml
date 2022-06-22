@@ -20,9 +20,13 @@ spec:
             - HelmRelease
       validate:
         message: ".spec.serviceAccountName is required"
-        pattern:
-          spec:
+        anyPattern:
+        - spec:
             serviceAccountName: "?*"
+        - spec:
+            kubeConfig:
+              secretRef:
+                name: "?*"
     - name: kustomizationSourceRefNamespaceIsSafe
       exclude:
         resources:
@@ -214,4 +218,3 @@ spec:
           spec:
             imageRepositoryRef:
               namespace: "{{request.object.metadata.namespace}}"
-
