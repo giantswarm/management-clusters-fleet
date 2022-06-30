@@ -7094,7 +7094,7 @@ spec:
   - Egress
   - Ingress
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
+apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: GitRepository
 metadata:
   name: collection
@@ -7108,7 +7108,7 @@ spec:
   timeout: 5m
   url: https://github.com/giantswarm/openstack-app-collection
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
+apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: GitRepository
 metadata:
   name: giantswarm-config
@@ -7121,7 +7121,7 @@ spec:
     name: github-giantswarm-https-credentials
   url: https://github.com/giantswarm/config
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta1
+apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: GitRepository
 metadata:
   name: management-clusters-fleet
