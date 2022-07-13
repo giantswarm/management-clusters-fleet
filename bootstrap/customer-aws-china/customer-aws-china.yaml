@@ -225,6 +225,24 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  name: developer-apps-readonly
+rules:
+- apiGroups:
+  - application.giantswarm.io
+  resources:
+  - charts
+  - appcatalogs
+  - catalogs
+  - appcatalogentries
+  - apps
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
   name: flux-crd-watcher
 rules:
 - apiGroups:
