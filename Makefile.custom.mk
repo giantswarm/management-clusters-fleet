@@ -32,6 +32,7 @@ BOOTSTRAP_DEPS += bootstrap/customer-gcp/customer-gcp.yaml
 BOOTSTRAP_DEPS += bootstrap/customer-kvm/customer-kvm.yaml
 BOOTSTRAP_DEPS += bootstrap/customer-openstack/customer-openstack.yaml
 BOOTSTRAP_DEPS += bootstrap/customer-vsphere/customer-vsphere.yaml
+BOOTSTRAP_DEPS += bootstrap/customer-cloud-director/customer-cloud-director.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-aws/gs-aws.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-aws-china/gs-aws-china.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-azure/gs-azure.yaml
@@ -41,6 +42,7 @@ BOOTSTRAP_DEPS += bootstrap/gs-openstack/gs-openstack.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-rest-api/gs-rest-api.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-testing/gs-testing.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-vsphere/gs-vsphere.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-cloud-director/gs-cloud-director.yaml
 bootstrap: $(BOOTSTRAP_DEPS)
 
 bootstrap/%.yaml: $(KUSTOMIZE) $(HELM) $(MANIFESTS)
