@@ -39,6 +39,7 @@ BOOTSTRAP_DEPS += bootstrap/gs-azure/gs-azure.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-gcp/gs-gcp.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-kvm/gs-kvm.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-openstack/gs-openstack.yaml
+BOOTSTRAP_DEPS += bootstrap/gs-openstack-vaultless/gs-openstack.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-rest-api/gs-rest-api.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-testing/gs-testing.yaml
 BOOTSTRAP_DEPS += bootstrap/gs-vsphere/gs-vsphere.yaml
