@@ -7132,7 +7132,7 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: gerkan_auto_config
   secretRef:
     name: github-giantswarm-https-credentials
   url: https://github.com/giantswarm/config
@@ -7145,7 +7145,7 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: gerkan_auto_branch
   url: https://github.com/giantswarm/management-clusters-fleet
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
