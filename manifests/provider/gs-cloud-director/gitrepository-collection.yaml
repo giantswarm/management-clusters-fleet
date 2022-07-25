@@ -6,7 +6,7 @@ metadata:
 spec:
   interval: 30s
   ref:
-    branch: main
+    branch: gibbon_auto_branch
   secretRef:
     name: github-giantswarm-https-credentials
   timeout: 5m
